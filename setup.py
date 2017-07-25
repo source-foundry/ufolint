@@ -8,7 +8,7 @@ def docs_read(fname):
 
 
 def version_read():
-    settings_file = open(os.path.join(os.path.dirname(__file__), 'lib', '{{PROJECT}}', 'settings.py')).read()
+    settings_file = open(os.path.join(os.path.dirname(__file__), 'lib', 'ufolint', 'settings.py')).read()
     major_regex = """major_version\s*?=\s*?["']{1}(\d+)["']{1}"""
     minor_regex = """minor_version\s*?=\s*?["']{1}(\d+)["']{1}"""
     patch_regex = """patch_version\s*?=\s*?["']{1}(\d+)["']{1}"""
@@ -28,21 +28,21 @@ def version_read():
 
 
 setup(
-    name='{{PROJECT}}',
+    name='ufolint',
     version=version_read(),
-    description='',
+    description='UFO source file linter',
     long_description=(docs_read('README.rst')),
-    url='',
+    url='https://github.com/source-foundry/ufolint',
     license='MIT license',
-    author='',
-    author_email='',
+    author='Christopher Simpkins',
+    author_email='chris@sourcefoundry.org',
     platforms=['any'],
     packages=find_packages("lib"),
     package_dir={'': 'lib'},
-    install_requires=['commandlines', 'standardstreams'],
-    entry_points = {
+    install_requires=['commandlines', 'standardstreams', 'ufoLib'],
+    entry_points={
         'console_scripts': [
-            '{{PROJECT}} = {{PROJECT}}.app:main'
+            'ufolint = ufolint.app:main'
         ],
 },
     keywords='',
@@ -54,12 +54,11 @@ setup(
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
-        'Topic :: Software Development :: Libraries :: Python Modules',
+        'Programming Language :: Python :: 3.6',
+        'Topic :: Software Development :: Libraries :: Python Modules'
     ],
 )

@@ -1,2 +1,4 @@
-{{PROJECT}} Documentation
-=================================
+ufolint
+=======
+
+In development
