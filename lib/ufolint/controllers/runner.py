@@ -68,10 +68,12 @@ class HeadHoncho(object):
 
         # [START] Mandatory filepath tests
         if self.ufoversion == 2:
-            ufo2 = Ufo2(self.ufopath)
-            # TODO: implement necessary data for UFO 2 tests
+            ufoobj = Ufo2(self.ufopath, self.ufo_glyphs_dir_list)
         elif self.ufoversion == 3:
-            ufo3 = Ufo3(self.ufopath)
+            ufoobj = Ufo3(self.ufopath, self.ufo_glyphs_dir_list)
+        ufoobj.get_mandatory_filepaths_list()
+
+        ## TODO: START HERE
 
 
         # For UFO v3, determine glyphs directories from layercontents.plist

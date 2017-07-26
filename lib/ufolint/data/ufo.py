@@ -66,9 +66,10 @@ class Ufo2(Ufo):
 
 
 class Ufo3(Ufo):
-    def __init__(self, ufopath):
+    def __init__(self, ufopath, glyphsdir_list):
         super(Ufo, self).__init__()
         self.ufopath = ufopath
+        self.glyphsdir_list = glyphsdir_list
         self.mandatory_root_basefilepaths = [
             'metainfo.plist',
             'layercontents.plist'
