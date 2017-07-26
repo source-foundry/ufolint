@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os
 import sys
 try:
     from plistlib import readPlist as load
@@ -17,7 +18,7 @@ from ufolint.stdoutput import StdStreamer
 from ufolint.data.ufo import Ufo2, Ufo3
 
 
-class HeadHoncho(object):
+class MainRunner(object):
     def __init__(self, ufopath):
         self.ufopath = ufopath
         self.ufolib_reader = None

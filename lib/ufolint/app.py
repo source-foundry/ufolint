@@ -12,7 +12,7 @@ from commandlines import Command
 from standardstreams import stdout, stderr
 
 from ufolint.settings import HELP, VERSION, USAGE
-from ufolint.controllers.runner import HeadHoncho
+from ufolint.controllers.runner import MainRunner
 
 
 def main():
@@ -33,7 +33,7 @@ def main():
         sys.exit(0)
 
     # TODO: add support for multiple UFO file tests in same command
-    hh = HeadHoncho(sys.argv[1])
+    hh = MainRunner(sys.argv[1])
     hh.run()
 
 

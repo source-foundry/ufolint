@@ -8,8 +8,6 @@ class Ufo(object):
     def __init__(self, ufopath, glyphsdir_list):
         self.ufopath = ufopath
         self.glyphsdir_list = glyphsdir_list
-        self.plist_list = None
-        self.directory_list = None
         self.mandatory_root_basefilepaths = None
         self.mandatory_glyphsdir_basefilepaths = None
 
@@ -36,23 +34,26 @@ class Ufo(object):
     def get_root_plist_filepath(self, basefilename):
         return self._make_root_plist_path(basefilename)
 
-    def get_glyphsdir_plist_filepath_list(self, basefilename, glyphsdir_list):
+    def get_glyphsdir_plist_filepath_list(self, basefilename):
         path_list = []
-        for glyphsdir in glyphsdir_list:
+        for glyphsdir in self.glyphsdir_list:
             glyphsdir_basename = glyphsdir[1]
             path_list.append(self._make_glyphsdir_plist_path(glyphsdir_basename, basefilename))
         return path_list
 
     def get_mandatory_filepaths_list(self):
         """
-        Creates a list of relative filepaths to mandatory files in UFOv2
+        Creates a list of relative filepaths to mandatory files in UFO source.  These files are defined in the
+        Ufo2 and Ufo3 classes that inherit from Ufo
         :return: list of filepath strings
         """
         mandatory_filepath_list = []
         for mandatory_root_basefile in self.mandatory_root_basefilepaths:
             mandatory_filepath_list.append(self.get_root_plist_filepath(mandatory_root_basefile))
         for mandatory_glyphs_basefile in self.mandatory_glyphsdir_basefilepaths:
-            mandatory_filepath_list.append(self.get_root_plist_filepath(mandatory_glyphs_basefile))
+            glyphsdirs_filelist = self.get_glyphsdir_plist_filepath_list(mandatory_glyphs_basefile)
+            for a_file in glyphsdirs_filelist:
+                mandatory_filepath_list.append(a_file)
         return mandatory_filepath_list
 
 
