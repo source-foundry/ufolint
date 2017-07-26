@@ -15,9 +15,6 @@ class StdStreamer(object):
     def stream_testname(self, testname_string):
         sys.stdout.write("[" + testname_string + "] ")
 
-    def stream_end_test(self):
-        print(" ")
-
     def stream_results_list(self, result_list):
         for resultobj in result_list:
             self.stream_result(resultobj)

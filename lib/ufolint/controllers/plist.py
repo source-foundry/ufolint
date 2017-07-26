@@ -29,7 +29,6 @@ class AbstractPlistValidator(object):
             return Result(filepath)
 
 
-# return a list of Result objects to the calling code?
 class MetainfoPlistValidator(AbstractPlistValidator):
     def __init__(self, ufopath, ufoversion):
         super(MetainfoPlistValidator, self).__init__(ufopath, ufoversion)

@@ -1,19 +1,29 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import sys
+try:
+    from plistlib import readPlist as load
+    from plistlib import writePlist as dump
+except ImportError:
+    from plistlib import load
+    from plistlib import dump
+
 from ufoLib import UFOReader, UFOLibError
 
 from ufolint.utilities import file_exists, dir_exists
 from ufolint.data.tstobj import Result
 from ufolint.stdoutput import StdStreamer
+from ufolint.data.ufo import Ufo2, Ufo3
 
 
 class HeadHoncho(object):
     def __init__(self, ufopath):
         self.ufopath = ufopath
-        self.ufo = None
+        self.ufolib_reader = None
         self.ufoversion = None
         self.failures_list = []       # list of strings that include all failures across all tests for final report
+        self.ufo_glyphs_dir_list = []  # list of glyphs directory(ies) available in the source (>1 permitted in UFOv3+)
 
     def run(self):
         # =====================================
@@ -22,24 +32,55 @@ class HeadHoncho(object):
         #
         # =====================================
 
-        # [START] UFO directory filepath, import, version check, ufo obj define
-        ss = StdStreamer(self.ufopath)
+        # Print UFO filepath header
         print(" ")
         print('~' * len(self.ufopath))
         print(self.ufopath)
         print('~' * len(self.ufopath))
         print(" ")
+
+        # [START] EARLY FAIL TESTS -
+        #      UFO directory filepath
+        #      import with ufoLib
+        #      version check
+        #      ufo obj define
+        #        v3 only: presence of layercontents.plist to define the glyphs directories in source
+        #        v2 only: no layercontents.plist, define as single glyphs directory
+        ss = StdStreamer(self.ufopath)
         ss.stream_testname("UFO directory")
         self._check_ufo_dir_path_exists()                 # tests user defined UFO directory path
         self._check_ufo_dir_extension()                   # tests for .ufo extension on directory
         self._check_ufo_import_and_define_ufo_version()   # defines UFOReader object as class property after import
-        ss.stream_end_test()
-        # [END] UFO directory filepath, import, version check, ufo obj define
+        if self.ufoversion == 3:
+            self._check_layercontents_plist_present()     # tests for presence of a layercontents.plist in root of UFO
+            self._validate_read_load_glyphsdirs_layercontents_plist()  # validate layercontents.plist xml and load glyphs dirs
+        elif self.ufoversion == 2:
+            self.ufo_glyphs_dir_list = [['public.default', 'glyphs']]  # define as single glyphs directory for UFOv2
+        else:   # fail if unsupported UFO version (in ufolint)
+            sys.stderr.write(os.linesep + "[ufolint] UFO v" + self.ufoversion + " is not supported in ufolint" + os.linesep)
+            sys.exit(1)
+        print(" ")
+        print("   Found UFO v" + str(self.ufoversion))
+        print("   Found glyphs directories: ")
+        for glyphs_dir in self.ufo_glyphs_dir_list:
+            print("     -- " + glyphs_dir[1])
+        # [END] EARLY FAIL TESTS
+
+        # [START] Mandatory filepath tests
+        if self.ufoversion == 2:
+            ufo2 = Ufo2(self.ufopath)
+            # TODO: implement necessary data for UFO 2 tests
+        elif self.ufoversion == 3:
+            ufo3 = Ufo3(self.ufopath)
+
+
+        # For UFO v3, determine glyphs directories from layercontents.plist
+
+
 
         # [START] UFO version specific filepath tests
         ss.stream_testname("UFO v" + str(self.ufoversion) + " paths")
         # TODO: implement tests
-        ss.stream_end_test()
 
 
 
@@ -54,6 +95,28 @@ class HeadHoncho(object):
     #
     # =====================================
 
+    def _check_layercontents_plist_present(self):
+        """
+        UFO 3+ test for layercontents.plist file in the top level of UFO directory
+        :return: (boolean) True = file present, False = file absent
+        """
+        ufo3 = Ufo3(self.ufopath)
+        ss = StdStreamer(self.ufopath)
+        lcp_test_filepath = ufo3.get_root_plist_filepath('layercontents.plist')
+        res = Result(lcp_test_filepath)
+
+        if file_exists(lcp_test_filepath):
+            res.test_failed = False
+            ss.stream_result(res)
+        else:
+            res.test_failed = True
+            res.exit_failure = True  # early exit if cannot find this file to define glyphs directories in UFO source
+            res.test_long_stdstream_string = "layercontents.plist was not found in " + self.ufopath
+            ss.stream_result(res)
+
+
+
+
     def _check_ufo_import_and_define_ufo_version(self):
         """
         Tests UFO directory import with ufoLib UFOReader object and defines class property (ufo) with the
@@ -64,9 +127,9 @@ class HeadHoncho(object):
         ss = StdStreamer(self.ufopath)
         res = Result(self.ufopath)
         try:
-            ufo = UFOReader(self.ufopath)
-            self.ufoversion = ufo.formatVersion
-            self.ufo = ufo
+            ufolib_reader = UFOReader(self.ufopath)
+            self.ufoversion = ufolib_reader.formatVersion
+            self.ufolib_reader = ufolib_reader
             res.test_failed = False
             ss.stream_result(res)
         except UFOLibError as e:
@@ -112,3 +175,26 @@ class HeadHoncho(object):
             res = Result(self.ufopath)
             res.test_failed = False
             ss.stream_result(res)
+
+    # =====================================
+    #
+    #  UTILITIES
+    #
+    # =====================================
+
+    def _validate_read_load_glyphsdirs_layercontents_plist(self):
+        ufo = Ufo3(self.ufopath)
+        layercontents_plist_path = ufo.get_root_plist_filepath('layercontents.plist')
+        res = Result(layercontents_plist_path)
+        ss = StdStreamer(layercontents_plist_path)
+        try:
+            # loads as [ ['layername1', 'glyphsdir1'], ['layername2', 'glyphsdir2'] ]
+            self.ufo_glyphs_dir_list = load(layercontents_plist_path)
+            res.test_failed = False
+            ss.stream_result(res)
+        except Exception as e:
+            res.test_failed = True
+            res.exit_failure = True
+            res.test_long_stdstream_string = layercontents_plist_path + ": " + str(e)
+            ss.stream_result(res)
+
