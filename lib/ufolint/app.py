@@ -12,6 +12,7 @@ from commandlines import Command
 from standardstreams import stdout, stderr
 
 from ufolint.settings import HELP, VERSION, USAGE
+from ufolint.controllers.runner import HeadHoncho
 
 
 def main():
@@ -30,5 +31,8 @@ def main():
     elif c.is_usage_request():
         stdout(USAGE)
         sys.exit(0)
+
+    hh = HeadHoncho(sys.argv[1])
+    hh.run()
 
 

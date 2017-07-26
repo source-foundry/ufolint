@@ -13,7 +13,7 @@ from ufolint.utilities import dir_exists, file_exists
 # ///////////////////////////////////////////////////////
 
 valid_directory_test_path = os.path.join('tests', 'testfiles')
-valid_file_test_path = os.path.join('tests', 'testfiles', 'testfile.txt')
+valid_file_test_path = os.path.join('tests', 'testfiles', 'plaintext', 'testfile.txt')
 
 invalid_directory_test_path = os.path.join('tests', 'bogusdir')
 invalid_file_test_path = os.path.join('tests', 'testfiles', 'totallybogus_file.txt')

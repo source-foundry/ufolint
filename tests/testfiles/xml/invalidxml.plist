@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ascender</key>
+	<bogus>800</bogus><badtag>
+	<key>capHeight</key>
+	<integer>700</integer>
+	<key>copyright</key>
+	<string>Copyright (c) 2017 Christopher Simpkins</string>
+	<key>descender</key>
+	<integer>-200</integer>
+	<key>familyName</key>
+	<string>Vertical</string>
+	<key>note</key>
+	<string></string>
+	<key>openTypeHeadCreated</key>
+	<string>2017/07/18 17:46:09</string>
+	<key>openTypeHeadFlags</key>
+	<array>
+	</array>
+	<key>openTypeHheaAscender</key>
+	<integer>800</integer>
+	<key>openTypeHheaDescender</key>
+	<integer>-200</integer>
+	<key>openTypeHheaLineGap</key>
+	<integer>0</integer>
+	<key>openTypeNameDesigner</key>
+	<string>Christopher Simpkins</string>
+	<key>openTypeNameDesignerURL</key>
+	<string>https://github.com/chrissimpkins</string>
+	<key>openTypeNameManufacturer</key>
+	<string>Christopher Simpkins</string>
+	<key>openTypeNameManufacturerURL</key>
+	<string>https://github.com/chrissimpkins</string>
+	<key>openTypeNamePreferredFamilyName</key>
+	<string>Vertical</string>
+	<key>openTypeNamePreferredSubfamilyName</key>
+	<string>Regular</string>
+	<key>openTypeOS2Selection</key>
+	<array>
+	</array>
+	<key>openTypeOS2TypoAscender</key>
+	<integer>800</integer>
+	<key>openTypeOS2TypoDescender</key>
+	<integer>-200</integer>
+	<key>openTypeOS2TypoLineGap</key>
+	<integer>0</integer>
+	<key>openTypeOS2VendorID</key>
+	<string>simp</string>
+	<key>openTypeOS2WeightClass</key>
+	<integer>400</integer>
+	<key>openTypeOS2WidthClass</key>
+	<integer>5</integer>
+	<key>openTypeOS2WinAscent</key>
+	<integer>1250</integer>
+	<key>openTypeOS2WinDescent</key>
+	<integer>650</integer>
+	<key>postscriptBlueFuzz</key>
+	<integer>1</integer>
+	<key>postscriptBlueScale</key>
+	<real>0.039600000000000003</real>
+	<key>postscriptBlueShift</key>
+	<integer>7</integer>
+	<key>postscriptBlueValues</key>
+	<array>
+		<integer>-16</integer>
+		<integer>0</integer>
+		<integer>500</integer>
+		<integer>516</integer>
+		<integer>700</integer>
+		<integer>716</integer>
+		<integer>800</integer>
+		<integer>816</integer>
+	</array>
+	<key>postscriptFontName</key>
+	<string>Vertical-Regular</string>
+	<key>postscriptForceBold</key>
+	<false/>
+	<key>postscriptFullName</key>
+	<string>Vertical Regular</string>
+	<key>postscriptIsFixedPitch</key>
+	<true/>
+	<key>postscriptOtherBlues</key>
+	<array>
+		<integer>-216</integer>
+		<integer>-200</integer>
+	</array>
+	<key>postscriptUnderlinePosition</key>
+	<integer>-100</integer>
+	<key>postscriptUnderlineThickness</key>
+	<integer>50</integer>
+	<key>styleMapStyleName</key>
+	<string>regular</string>
+	<key>styleName</key>
+	<string>Regular</string>
+	<key>unitsPerEm</key>
+	<integer>1000</integer>
+	<key>versionMajor</key>
+	<integer>1</integer>
+	<key>versionMinor</key>
+	<integer>0</integer>
+	<key>xHeight</key>
+	<integer>500</integer>
+</dict>
+</plist>
