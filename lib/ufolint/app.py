@@ -19,7 +19,7 @@ def main():
     c = Command()
 
     if c.does_not_validate_missing_args():
-        stderr("[ufodiff] ERROR: Please include the appropriate arguments with your command.")
+        stderr("[ufolint] ERROR: Please include the appropriate arguments with your command.")
         sys.exit(1)
 
     if c.is_help_request():
@@ -32,6 +32,7 @@ def main():
         stdout(USAGE)
         sys.exit(0)
 
+    # TODO: add support for multiple UFO file tests in same command
     hh = HeadHoncho(sys.argv[1])
     hh.run()
 
