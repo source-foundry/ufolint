@@ -22,5 +22,5 @@ def is_valid_xml_path(filepath):
     try:
         tree = Etree.parse(filepath)
         return True, tree
-    except ParseError as e:
+    except Exception as e:
         return False, str(e)

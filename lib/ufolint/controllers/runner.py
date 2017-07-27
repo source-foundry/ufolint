@@ -16,6 +16,9 @@ from ufolint.utilities import file_exists, dir_exists
 from ufolint.data.tstobj import Result
 from ufolint.stdoutput import StdStreamer
 from ufolint.data.ufo import Ufo2, Ufo3
+from ufolint.controllers.plist import MetainfoPlistValidator, FontinfoPlistValidator, GroupsPlistValidator
+from ufolint.controllers.plist import KerningPlistValidator, LibPlistValidator, ContentsPlistValidator
+from ufolint.controllers.plist import LayercontentsPlistValidator, LayerinfoPlistValidator
 
 
 class MainRunner(object):
@@ -27,12 +30,6 @@ class MainRunner(object):
         self.ufo_glyphs_dir_list = []  # list of glyphs directory(ies) available in the source (>1 permitted in UFOv3+)
 
     def run(self):
-        # =====================================
-        #
-        #  UFO directory / filepath validations
-        #
-        # =====================================
-
         # Print UFO filepath header
         print(" ")
         print('~' * len(self.ufopath))
@@ -40,7 +37,7 @@ class MainRunner(object):
         print('~' * len(self.ufopath))
         print(" ")
 
-        # [START] EARLY FAIL TESTS -
+        # [START] EARLY FAIL TESTS ----------------------------------------------------------------
         #      UFO directory filepath
         #      import with ufoLib
         #      version check
@@ -62,33 +59,55 @@ class MainRunner(object):
             sys.exit(1)
         print(" ")
         print("   Found UFO v" + str(self.ufoversion))
-        print("   Found glyphs directories: ")
+        print("   Source defined glyphs directories: ")
         for glyphs_dir in self.ufo_glyphs_dir_list:
             print("     -- " + glyphs_dir[1])
-        # [END] EARLY FAIL TESTS
+        # [END] EARLY FAIL TESTS ----------------------------------------------------------------
 
-        # [START] Mandatory filepath tests
+        # [START] MANDATORY FILEPATH TESTS  -----------------------------------------------------
+        ss.stream_testname("UFO v" + str(self.ufoversion) + " mandatory filepaths")
+
         if self.ufoversion == 2:
             ufoobj = Ufo2(self.ufopath, self.ufo_glyphs_dir_list)
         elif self.ufoversion == 3:
             ufoobj = Ufo3(self.ufopath, self.ufo_glyphs_dir_list)
-        ufoobj.get_mandatory_filepaths_list()
+        mandatory_file_list = ufoobj.get_mandatory_filepaths_list()
+        for mandatory_file in mandatory_file_list:
+            res = Result(mandatory_file)
+            if file_exists(mandatory_file):
+                res.test_failed = False
+                ss.stream_result(res)
+            else:
+                res.test_failed = True
+                res.test_long_stdstream_string = mandatory_file + " was not found in " + self.ufopath
+                ss.stream_result(res)
+        print(" ")
+        # [END] MANDATORY FILEPATH TESTS ----------------------------------------------------------
 
-        ## TODO: START HERE
+        # [START] XML VALIDATION TESTS  -----------------------------------------------------------
+        ss.stream_testname("XML validations")
+        meta_val = MetainfoPlistValidator(self.ufopath, self.ufoversion, self.ufo_glyphs_dir_list)
+        fontinfo_val = FontinfoPlistValidator(self.ufopath, self.ufoversion, self.ufo_glyphs_dir_list)
+        groups_val = GroupsPlistValidator(self.ufopath, self.ufoversion, self.ufo_glyphs_dir_list)
+        kerning_val = KerningPlistValidator(self.ufopath, self.ufoversion, self.ufo_glyphs_dir_list)
+        lib_val = LibPlistValidator(self.ufopath, self.ufoversion, self.ufo_glyphs_dir_list)
+        contents_val = ContentsPlistValidator(self.ufopath, self.ufoversion, self.ufo_glyphs_dir_list)
+        layercont_val = LayercontentsPlistValidator(self.ufopath, self.ufoversion, self.ufo_glyphs_dir_list)
+        layerinfo_val = LayerinfoPlistValidator(self.ufopath, self.ufoversion, self.ufo_glyphs_dir_list)
 
+        meta_val.run_xml_validation()
+        fontinfo_val.run_xml_validation()
+        groups_val.run_xml_validation()
+        kerning_val.run_xml_validation()
+        lib_val.run_xml_validation()
+        contents_val.run_xml_validation()
+        layercont_val.run_xml_validation()
+        layerinfo_val.run_xml_validation()
+        # [END] XML VALIDATION TESTS  --------------------------------------------------------------
 
-        # For UFO v3, determine glyphs directories from layercontents.plist
-
-
-
-        # [START] UFO version specific filepath tests
-        ss.stream_testname("UFO v" + str(self.ufoversion) + " paths")
-        # TODO: implement tests
-
-
-
-        # Tests completed, stream all failure results as a newline delimited list to user and exit with status code 1
-        # if failures are present, status code 0 if failures are not present
+        # TESTS COMPLETED -------------------------------------------------------------------------
+        #   stream all failure results as a newline delimited list to user and exit with status code 1
+        #   if failures are present, status code 0 if failures are not present
         ss = StdStreamer(self.ufopath)
         ss.stream_final_failures(self.failures_list)
 

@@ -10,6 +10,8 @@ class Ufo(object):
         self.glyphsdir_list = glyphsdir_list
         self.mandatory_root_basefilepaths = None
         self.mandatory_glyphsdir_basefilepaths = None
+        self.all_root_plist_files_list = None
+        self.all_glyphsdir_plist_files_list = None
 
     def _make_root_plist_path(self, basefilename):
         if basefilename == "metainfo.plist":
@@ -59,16 +61,26 @@ class Ufo(object):
 
 class Ufo2(Ufo):
     def __init__(self, ufopath, glyphsdir_list):
-        super(Ufo, self).__init__()
+        super(Ufo2, self).__init__(ufopath, glyphsdir_list)
         self.ufopath = ufopath
         self.glyphsdir_list = glyphsdir_list
         self.mandatory_root_basefilepaths = ['metainfo.plist']
         self.mandatory_glyphsdir_basefilepaths = ['contents.plist']
+        self.all_root_plist_files_list = [
+            'metainfo.plist',
+            'fontinfo.plist',
+            'groups.plist',
+            'kerning.plist',
+            'lib.plist'
+        ]
+        self.all_glyphsdir_plist_files_list = [
+            'contents.plist'
+        ]
 
 
 class Ufo3(Ufo):
     def __init__(self, ufopath, glyphsdir_list):
-        super(Ufo, self).__init__()
+        super(Ufo3, self).__init__(ufopath, glyphsdir_list)
         self.ufopath = ufopath
         self.glyphsdir_list = glyphsdir_list
         self.mandatory_root_basefilepaths = [
@@ -76,4 +88,16 @@ class Ufo3(Ufo):
             'layercontents.plist'
         ]
         self.mandatory_glyphsdir_basefilepaths = ['contents.plist']
+        self.all_root_plist_files_list = [
+            'metainfo.plist',
+            'fontinfo.plist',
+            'groups.plist',
+            'kerning.plist',
+            'lib.plist',
+            'layercontents.plist'
+        ]
+        self.all_glyphsdir_plist_files_list = [
+            'contents.plist',
+            'layerinfo.plist'
+        ]
 

@@ -51,6 +51,7 @@ class StdStreamer(object):
         else:
             success_string = self.ufopath + " - All tests passed!"
             print(" ")
+            print(" ")
             print("=" * len(success_string))
             print(success_string)
             print("=" * len(success_string))
