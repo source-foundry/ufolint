@@ -26,7 +26,7 @@ class MainRunner(object):
         self.ufopath = ufopath
         self.ufolib_reader = None
         self.ufoversion = None
-        self.failures_list = []       # list of strings that include all failures across all tests for final report
+        self.failures_list = []        # list of strings that include all failures across all tests for final report
         self.ufo_glyphs_dir_list = []  # list of glyphs directory(ies) available in the source (>1 permitted in UFOv3+)
 
     def run(self):
@@ -95,14 +95,20 @@ class MainRunner(object):
         layercont_val = LayercontentsPlistValidator(self.ufopath, self.ufoversion, self.ufo_glyphs_dir_list)
         layerinfo_val = LayerinfoPlistValidator(self.ufopath, self.ufoversion, self.ufo_glyphs_dir_list)
 
-        meta_val.run_xml_validation()
-        fontinfo_val.run_xml_validation()
-        groups_val.run_xml_validation()
-        kerning_val.run_xml_validation()
-        lib_val.run_xml_validation()
-        contents_val.run_xml_validation()
-        layercont_val.run_xml_validation()
-        layerinfo_val.run_xml_validation()
+        # excute validations, returns list of failure Result() objects
+        mv_fail_list = meta_val.run_xml_validation()
+        fi_fail_list = fontinfo_val.run_xml_validation()
+        g_fail_list = groups_val.run_xml_validation()
+        k_fail_list = kerning_val.run_xml_validation()
+        l_fail_list = lib_val.run_xml_validation()
+        c_fail_list = contents_val.run_xml_validation()
+        lc_fail_list = layercont_val.run_xml_validation()
+        li_fail_list = layerinfo_val.run_xml_validation()
+
+        # xml validations return lists of all failures, append these to the class failures_list Python list
+        for thelist in [mv_fail_list, fi_fail_list, g_fail_list, k_fail_list, l_fail_list, c_fail_list, lc_fail_list, li_fail_list]:
+            for failed_test_result in thelist:
+                self.failures_list.append(failed_test_result)
         # [END] XML VALIDATION TESTS  --------------------------------------------------------------
 
         # TESTS COMPLETED -------------------------------------------------------------------------

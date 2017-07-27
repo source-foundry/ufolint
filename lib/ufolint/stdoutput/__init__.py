@@ -38,6 +38,7 @@ class StdStreamer(object):
 
     def stream_final_failures(self, result_list):
         if len(result_list) > 0:
+            print(" ")
             fail_string = self.ufopath + " failed! Exit with status code 1"
             print(" ")
             print("=" * len(fail_string))
