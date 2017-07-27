@@ -50,7 +50,7 @@ class MainRunner(object):
         self._check_ufo_dir_extension()                   # tests for .ufo extension on directory
         self._check_ufo_import_and_define_ufo_version()   # defines UFOReader object as class property after import
         if self.ufoversion == 3:
-            self._check_layercontents_plist_present()     # tests for presence of a layercontents.plist in root of UFO
+            self._check_layercontents_plist_present()               # tests for presence of a layercontents.plist in root of UFO
             self._validate_read_load_glyphsdirs_layercontents_plist()  # validate layercontents.plist xml and load glyphs dirs
         elif self.ufoversion == 2:
             self.ufo_glyphs_dir_list = [['public.default', 'glyphs']]  # define as single glyphs directory for UFOv2
@@ -128,9 +128,8 @@ class MainRunner(object):
         UFO 3+ test for layercontents.plist file in the top level of UFO directory
         :return: (boolean) True = file present, False = file absent
         """
-        ufo3 = Ufo3(self.ufopath)
         ss = StdStreamer(self.ufopath)
-        lcp_test_filepath = ufo3.get_root_plist_filepath('layercontents.plist')
+        lcp_test_filepath = os.path.join(self.ufopath, 'layercontents.plist')
         res = Result(lcp_test_filepath)
 
         if file_exists(lcp_test_filepath):
@@ -141,9 +140,6 @@ class MainRunner(object):
             res.exit_failure = True  # early exit if cannot find this file to define glyphs directories in UFO source
             res.test_long_stdstream_string = "layercontents.plist was not found in " + self.ufopath
             ss.stream_result(res)
-
-
-
 
     def _check_ufo_import_and_define_ufo_version(self):
         """
@@ -211,8 +207,7 @@ class MainRunner(object):
     # =====================================
 
     def _validate_read_load_glyphsdirs_layercontents_plist(self):
-        ufo = Ufo3(self.ufopath)
-        layercontents_plist_path = ufo.get_root_plist_filepath('layercontents.plist')
+        layercontents_plist_path = os.path.join(self.ufopath, 'layercontents.plist')
         res = Result(layercontents_plist_path)
         ss = StdStreamer(layercontents_plist_path)
         try:
