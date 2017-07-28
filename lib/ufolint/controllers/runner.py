@@ -28,6 +28,7 @@ class MainRunner(object):
         self.ufoversion = None
         self.failures_list = []        # list of strings that include all failures across all tests for final report
         self.ufo_glyphs_dir_list = []  # list of glyphs directory(ies) available in the source (>1 permitted in UFOv3+)
+        self.ufoobj = None
 
     def run(self):
         # Print UFO filepath header
@@ -50,12 +51,12 @@ class MainRunner(object):
         ss.stream_testname("UFO directory")
         self._check_ufo_dir_path_exists()                 # tests user defined UFO directory path
         self._check_ufo_dir_extension()                   # tests for .ufo extension on directory
-        self._check_metainfo_plist_present()              # confirm presence of metainfo.plist to define UFO version
+        self._check_metainfo_plist_exists()              # confirm presence of metainfo.plist to define UFO version
         self._validate_read_data_types_metainfo_plist()   # validate the version data type as integer (workaround for bug in ufoLib)
         self._check_ufo_import_and_define_ufo_version()   # confirm ufoLib can import directory. defines UFOReader object as class property
         if self.ufoversion == 3:
-            self._check_layercontents_plist_present()                  # tests for presence of a layercontents.plist in root of UFO
-            self._validate_read_load_glyphsdirs_layercontents_plist()  # validate layercontents.plist xml and load glyphs dirs
+            self._check_layercontents_plist_exists()                  # tests for presence of a layercontents.plist in root of UFO
+            self._validate_read_load_glyphsdirs_layercontents_plist() # validate layercontents.plist xml and load glyphs dirs
         elif self.ufoversion == 2:
             self.ufo_glyphs_dir_list = [['public.default', 'glyphs']]  # define as single glyphs directory for UFOv2
         else:   # fail if unsupported UFO version (ufolint fail in case behind released UFO version)
@@ -65,7 +66,7 @@ class MainRunner(object):
         print("   Found UFO v" + str(self.ufoversion))
         print("   Detected glyphs directories: ")
         for glyphs_dir in self.ufo_glyphs_dir_list:
-            sys.stdout.write("     -- " + glyphs_dir[1] + " ")               # display the name of the specified glyphs dirs
+            sys.stdout.write("     -- " + glyphs_dir[1] + " ")       # display the name of the specified glyphs dirs
             res = Result(glyphs_dir[1])
             if dir_exists(os.path.join(self.ufopath, glyphs_dir[1])):  # test for presence of specified glyphs dir
                 res.test_failed = False
@@ -76,16 +77,16 @@ class MainRunner(object):
                 ss.stream_result(res)
             print(" ")
 
-        # [END] EARLY FAIL TESTS ----------------------------------------------------------------
+        # create Ufo objects for subsequent tests - all Ufo object dependent tests must take place below this level
+        if self.ufoversion == 2:
+            self.ufoobj = Ufo2(self.ufopath, self.ufo_glyphs_dir_list)
+        elif self.ufoversion == 3:
+            self.ufoobj = Ufo3(self.ufopath, self.ufo_glyphs_dir_list)
 
-        # [START] MANDATORY FILEPATH TESTS  -----------------------------------------------------
+        # [START] Mandatory file path tests
         ss.stream_testname("UFO v" + str(self.ufoversion) + " mandatory files")
 
-        if self.ufoversion == 2:
-            ufoobj = Ufo2(self.ufopath, self.ufo_glyphs_dir_list)
-        elif self.ufoversion == 3:
-            ufoobj = Ufo3(self.ufopath, self.ufo_glyphs_dir_list)
-        mandatory_file_list = ufoobj.get_mandatory_filepaths_list()
+        mandatory_file_list = self.ufoobj.get_mandatory_filepaths_list()
         for mandatory_file in mandatory_file_list:
             res = Result(mandatory_file)
             if file_exists(mandatory_file):
@@ -93,10 +94,12 @@ class MainRunner(object):
                 ss.stream_result(res)
             else:
                 res.test_failed = True
+                res.exit_failure = True
                 res.test_long_stdstream_string = mandatory_file + " was not found in " + self.ufopath
                 ss.stream_result(res)
         print(" ")
-        # [END] MANDATORY FILEPATH TESTS ----------------------------------------------------------
+        # [END] Mandatory file path tests
+        # [END] EARLY FAIL TESTS ----------------------------------------------------------------
 
         # [START] XML VALIDATION TESTS  -----------------------------------------------------------
         ss.stream_testname("XML formatting")
@@ -140,12 +143,14 @@ class MainRunner(object):
         g_ufolib_import_fail_list = groups_val.run_ufolib_import_validation()
         k_ufolib_import_fail_list = kerning_val.run_ufolib_import_validation()
         l_ufolib_import_fail_list = lib_val.run_ufolib_import_validation()
+        c_ufolib_import_fail_list = contents_val.run_ufolib_import_validation()
 
         for thelist in (mv_ufolib_import_fail_list,
                         fi_ufolib_import_fail_list,
                         g_ufolib_import_fail_list,
                         k_ufolib_import_fail_list,
-                        l_ufolib_import_fail_list):
+                        l_ufolib_import_fail_list,
+                        c_ufolib_import_fail_list):
             for failed_test_result in thelist:
                 self.failures_list.append(failed_test_result)
 
@@ -163,7 +168,19 @@ class MainRunner(object):
     #
     # =====================================
 
-    def _check_layercontents_plist_present(self):
+    def _check_contents_plist_exists(self, glyphs_dir_list):
+        """
+        Test for presence of contents.plist file in each of the specified glyphs* directories.  Mandatory file that
+        defines the glyph name to file path mapping and permits import of a ufoLib GlyphSet for further tests
+        :return: None - method leads to early exit with status code 1 if file not found
+        """
+        contents_plist_path_list = []
+        for glyphs_dir in glyphs_dir_list:
+            contents_plist_path = os.path.join(glyphs_dir, 'contents.plist')
+            ## TODO: implement
+
+
+    def _check_layercontents_plist_exists(self):
         """
         UFO 3+ test for layercontents.plist file in the top level of UFO directory
         :return: None - method leads to early exit with status code 1 if file not found
@@ -181,7 +198,7 @@ class MainRunner(object):
             res.test_long_stdstream_string = "layercontents.plist was not found in " + self.ufopath
             ss.stream_result(res)
 
-    def _check_metainfo_plist_present(self):
+    def _check_metainfo_plist_exists(self):
         """
         Test for presence of metainfo.plist file in the UFO directory. Mandatory file that defines UFO version.
         :return: None = method leads to early exit with status code 1 if file not found

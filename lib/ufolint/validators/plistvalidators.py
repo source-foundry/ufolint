@@ -14,6 +14,7 @@ from ufolint.stdoutput import StdStreamer
 from ufolint.utilities import file_exists
 
 from ufoLib import UFOReader, UFOLibError
+from ufoLib.glifLib import GlyphSet, GlifLibError
 
 
 class AbstractPlistValidator(object):
@@ -158,7 +159,7 @@ class GroupsPlistValidator(AbstractPlistValidator):
             ss.stream_result(res)
             return self.test_fail_list
         try:
-            # read fontinfo.plist with ufoLib - the ufoLib library performs type validations on values on read
+            # read groups.plist with ufoLib - the ufoLib library performs type validations on values on read
             ufolib_reader = UFOReader(self.ufopath)
             ufolib_reader.readGroups()
             res.test_failed = False
@@ -189,7 +190,7 @@ class KerningPlistValidator(AbstractPlistValidator):
             ss.stream_result(res)
             return self.test_fail_list
         try:
-            # read fontinfo.plist with ufoLib - the ufoLib library performs type validations on values on read
+            # read kerning.plist with ufoLib - the ufoLib library performs type validations on values on read
             ufolib_reader = UFOReader(self.ufopath)
             ufolib_reader.readKerning()
             res.test_failed = False
@@ -220,7 +221,7 @@ class LibPlistValidator(AbstractPlistValidator):
             ss.stream_result(res)
             return self.test_fail_list
         try:
-            # read fontinfo.plist with ufoLib - the ufoLib library performs type validations on values on read
+            # read lib.plist with ufoLib - the ufoLib library performs type validations on values on read
             ufolib_reader = UFOReader(self.ufopath)
             ufolib_reader.readLib()
             res.test_failed = False
@@ -236,7 +237,40 @@ class LibPlistValidator(AbstractPlistValidator):
 class ContentsPlistValidator(AbstractPlistValidator):
     def __init__(self, ufopath, ufoversion, glyphs_dir_list):
         super(ContentsPlistValidator, self).__init__(ufopath, ufoversion, glyphs_dir_list)
-        self.testfile = "contents.plist"  # test multiple glyphs directories in v3+
+        self.testfile = "contents.plist"  # can occur in multiple glyphs directories in UFOv3+
+        self.glyphs_dir_list = glyphs_dir_list
+
+    def run_ufolib_import_validation(self):
+        """
+        ufoLib UFOReader.readLib method validates the lib.plist file
+        :return: (list) list of test failure Result objects
+        """
+        ss = StdStreamer(self.ufopath)
+
+        contents_plist_list = self.ufoobj.get_glyphsdir_plist_filepath_list(self.testfile)
+        glyphs_dir_list = self.ufoobj.glyphsdir_list
+        index = 0
+        for contents_plist_file in contents_plist_list:
+            res = Result(contents_plist_file)
+            if file_exists(contents_plist_file) is False:   # TODO: remove once implemented in early fail tests in runner
+                res.test_failed = True  # mandatory file, fails if not present
+                ss.stream_result(res)
+            else:
+                try:
+                    # read contents.plist with ufoLib as GlyphSet instantiation
+                    # the ufoLib library performs type validations on values on read
+                    # glyphs_dir_list is a list of lists mapped to glyphs dir name, glyphs dir path
+                    GlyphSet(glyphs_dir_list[index][1], ufoFormatVersion=self.ufoversion)  # test for raised exceptions
+                    res.test_failed = False
+                    ss.stream_result(res)
+                except GlifLibError as e:
+                    res.test_failed = True
+                    res.exit_failure = True  # mandatory file
+                    res.test_long_stdstream_string = contents_plist_file + " failed ufoLib import test with error: " + str(e)
+                    ss.stream_result(res)
+                    self.test_fail_list.append(res)
+            index += 1  # iterate the index that is used to obtain the proper glyphs directory for the GlyphSet instantiation
+        return self.test_fail_list
 
 
 class LayercontentsPlistValidator(AbstractPlistValidator):
