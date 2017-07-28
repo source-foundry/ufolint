@@ -246,30 +246,22 @@ class ContentsPlistValidator(AbstractPlistValidator):
         :return: (list) list of test failure Result objects
         """
         ss = StdStreamer(self.ufopath)
-
-        contents_plist_list = self.ufoobj.get_glyphsdir_plist_filepath_list(self.testfile)
-        glyphs_dir_list = self.ufoobj.glyphsdir_list
-        index = 0
-        for contents_plist_file in contents_plist_list:
-            res = Result(contents_plist_file)
-            if file_exists(contents_plist_file) is False:   # TODO: remove once implemented in early fail tests in runner
-                res.test_failed = True  # mandatory file, fails if not present
+        for glyphs_dir in self.ufoobj.glyphsdir_list:
+            res = Result(glyphs_dir)
+            rel_dir_path = os.path.join(self.ufopath, glyphs_dir[1])
+            try:
+                # read contents.plist with ufoLib as GlyphSet instantiation
+                # the ufoLib library performs type validations on values on read
+                # glyphs_dir_list is a list of lists mapped to glyphs dir name, glyphs dir path
+                gs = GlyphSet(rel_dir_path, ufoFormatVersion=self.ufoversion)  # test for raised exceptions
+                res.test_failed = False
                 ss.stream_result(res)
-            else:
-                try:
-                    # read contents.plist with ufoLib as GlyphSet instantiation
-                    # the ufoLib library performs type validations on values on read
-                    # glyphs_dir_list is a list of lists mapped to glyphs dir name, glyphs dir path
-                    GlyphSet(glyphs_dir_list[index][1], ufoFormatVersion=self.ufoversion)  # test for raised exceptions
-                    res.test_failed = False
-                    ss.stream_result(res)
-                except GlifLibError as e:
-                    res.test_failed = True
-                    res.exit_failure = True  # mandatory file
-                    res.test_long_stdstream_string = contents_plist_file + " failed ufoLib import test with error: " + str(e)
-                    ss.stream_result(res)
-                    self.test_fail_list.append(res)
-            index += 1  # iterate the index that is used to obtain the proper glyphs directory for the GlyphSet instantiation
+            except GlifLibError as e:
+                res.test_failed = True
+                res.exit_failure = True  # mandatory file
+                res.test_long_stdstream_string = rel_dir_path + " failed ufoLib import test with error: " + str(e)
+                ss.stream_result(res)
+                self.test_fail_list.append(res)
         return self.test_fail_list
 
 
