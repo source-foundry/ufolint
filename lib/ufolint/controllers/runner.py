@@ -63,7 +63,7 @@ class MainRunner(object):
             sys.exit(1)
         print(" ")
         print("   Found UFO v" + str(self.ufoversion))
-        print("   Defined glyphs directories: ")
+        print("   Detected glyphs directories: ")
         for glyphs_dir in self.ufo_glyphs_dir_list:
             sys.stdout.write("     -- " + glyphs_dir[1] + " ")               # display the name of the specified glyphs dirs
             res = Result(glyphs_dir[1])
@@ -99,7 +99,7 @@ class MainRunner(object):
         # [END] MANDATORY FILEPATH TESTS ----------------------------------------------------------
 
         # [START] XML VALIDATION TESTS  -----------------------------------------------------------
-        ss.stream_testname("XML validations")
+        ss.stream_testname("XML formatting")
         meta_val = MetainfoPlistValidator(self.ufopath, self.ufoversion, self.ufo_glyphs_dir_list)
         fontinfo_val = FontinfoPlistValidator(self.ufopath, self.ufoversion, self.ufo_glyphs_dir_list)
         groups_val = GroupsPlistValidator(self.ufopath, self.ufoversion, self.ufo_glyphs_dir_list)
@@ -120,18 +120,30 @@ class MainRunner(object):
         li_xml_fail_list = layerinfo_val.run_xml_validation()
 
         # xml validations return lists of all failures, append these to the class failures_list Python list
-        for thelist in (mv_xml_fail_list, fi_xml_fail_list, g_xml_fail_list, k_xml_fail_list, l_xml_fail_list,
-                        c_xml_fail_list, lc_xml_fail_list, li_xml_fail_list):
+        for thelist in (mv_xml_fail_list,
+                        fi_xml_fail_list,
+                        g_xml_fail_list,
+                        k_xml_fail_list,
+                        l_xml_fail_list,
+                        c_xml_fail_list,
+                        lc_xml_fail_list,
+                        li_xml_fail_list):
             for failed_test_result in thelist:
                 self.failures_list.append(failed_test_result)
         print(" ")
         # [END] XML VALIDATION TESTS  --------------------------------------------------------------
 
-        # [START] plist FILE VALIDATION TESTS (includes numerous ufoLib library validations + ufolint additions)
-        ss.stream_testname("plist validations")
+        # [START] plist FILE VALIDATION TESTS (includes numerous ufoLib library validations on plist file reads)
+        ss.stream_testname("plist spec")
         mv_ufolib_import_fail_list = meta_val.run_ufolib_import_validation()
+        fi_ufolib_import_fail_list = fontinfo_val.run_ufolib_import_validation()
 
-        # [END] ufoLib IMPORT TESTS
+        for thelist in (mv_ufolib_import_fail_list,
+                        fi_ufolib_import_fail_list):
+            for failed_test_result in thelist:
+                self.failures_list.append(failed_test_result)
+
+        # [END] plist FILE VALIDATION TESTS
 
         # TESTS COMPLETED --------------------------------------------------------------------------
         #   stream all failure results as a newline delimited list to user and exit with status code 1

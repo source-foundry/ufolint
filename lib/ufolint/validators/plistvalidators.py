@@ -73,16 +73,23 @@ class MetainfoPlistValidator(AbstractPlistValidator):
     def __init__(self, ufopath, ufoversion, glyphs_dir_list):
         super(MetainfoPlistValidator, self).__init__(ufopath, ufoversion, glyphs_dir_list)
         self.testfile = "metainfo.plist"
+        self.testpath = self.ufoobj.get_root_plist_filepath(self.testfile)
 
     def run_ufolib_import_validation(self):
         """
         ufoLib UFOReader.readMetaInfo method validates the UFO version number.  This method adds validation for
         expected reverse URL name scheme in
-        :return:
+        :return: (list) list of test failure Result objects
         """
-        testpath = self.ufoobj.get_root_plist_filepath(self.testfile)
-        res = Result(testpath)
+
+        res = Result(self.testpath)
         ss = StdStreamer(self.ufopath)
+        if file_exists(self.testpath) is False:  # fail test, exit early if file is missing
+            res.test_failed = True
+            res.exit_failure = True
+            res.test_long_stdstream_string = "metainfo.plist is not available on the path " + testpath
+            ss.stream_result(res)
+            return []
         try:
             ufolib_reader = UFOReader(self.ufopath)
             ufolib_reader.readMetaInfo()
@@ -90,7 +97,8 @@ class MetainfoPlistValidator(AbstractPlistValidator):
             ss.stream_result(res)
         except UFOLibError as e:
             res.test_failed = True
-            res.test_long_stdstream_string = testpath + " failed ufoLib import test with error: " + str(e)
+            res.exit_failure = True
+            res.test_long_stdstream_string = self.testpath + " failed ufoLib import test with error: " + str(e)
             ss.stream_result(res)
             self.test_fail_list.append(res)
         return self.test_fail_list
@@ -100,6 +108,37 @@ class FontinfoPlistValidator(AbstractPlistValidator):
     def __init__(self, ufopath, ufoversion, glyphs_dir_list):
         super(FontinfoPlistValidator, self).__init__(ufopath, ufoversion, glyphs_dir_list)
         self.testfile = "fontinfo.plist"
+        self.testpath = self.ufoobj.get_root_plist_filepath(self.testfile)
+
+        class FontInfoObj(object):
+            def __init__(self):
+                pass
+        self.fontinfo_obj = FontInfoObj()
+
+    def run_ufolib_import_validation(self):
+        """
+        ufoLib UFOReader.readMetaInfo method validates the UFO version number.  This method adds validation for
+        expected reverse URL name scheme in
+        :return: (list) list of test failure Result objects
+        """
+        res = Result(self.testpath)
+        ss = StdStreamer(self.ufopath)
+        if file_exists(self.testpath) is False:
+            res.test_failed = False     # not a mandatory file in UFO spec, test passes if missing
+            ss.stream_result(res)
+            return self.test_fail_list
+        try:
+            # read fontinfo.plist with ufoLib - the ufoLib library performs type validations on values on read
+            ufolib_reader = UFOReader(self.ufopath)
+            ufolib_reader.readInfo(self.fontinfo_obj)
+            res.test_failed = False
+            ss.stream_result(res)
+        except UFOLibError as e:
+            res.test_failed = True
+            res.test_long_stdstream_string = self.testpath + " failed ufoLib import test with error: " + str(e)
+            ss.stream_result(res)
+            self.test_fail_list.append(res)
+        return self.test_fail_list
 
 
 class GroupsPlistValidator(AbstractPlistValidator):

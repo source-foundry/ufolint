@@ -3,6 +3,7 @@
 
 import sys
 import os
+from collections import OrderedDict
 
 
 class StdStreamer(object):
@@ -46,7 +47,10 @@ class StdStreamer(object):
             print("=" * len(fail_string))
             print(" ")
 
-            for resultobj in result_list:
+            # remove duplicates by making an OrderedDict
+            result_list_deduped = OrderedDict((x, True) for x in result_list).keys()
+
+            for resultobj in result_list_deduped:
                 print(self.fail_long_indicator + " " + resultobj.test_long_stdstream_string)
             sys.exit(1)
         else:
