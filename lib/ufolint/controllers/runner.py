@@ -139,11 +139,13 @@ class MainRunner(object):
         fi_ufolib_import_fail_list = fontinfo_val.run_ufolib_import_validation()
         g_ufolib_import_fail_list = groups_val.run_ufolib_import_validation()
         k_ufolib_import_fail_list = kerning_val.run_ufolib_import_validation()
+        l_ufolib_import_fail_list = lib_val.run_ufolib_import_validation()
 
         for thelist in (mv_ufolib_import_fail_list,
                         fi_ufolib_import_fail_list,
                         g_ufolib_import_fail_list,
-                        k_ufolib_import_fail_list):
+                        k_ufolib_import_fail_list,
+                        l_ufolib_import_fail_list):
             for failed_test_result in thelist:
                 self.failures_list.append(failed_test_result)
 
