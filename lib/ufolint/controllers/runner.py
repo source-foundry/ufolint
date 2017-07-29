@@ -145,6 +145,7 @@ class MainRunner(object):
         l_ufolib_import_fail_list = lib_val.run_ufolib_import_validation()
         c_ufolib_import_fail_list = contents_val.run_ufolib_import_validation()
         lc_ufolib_import_fail_list = layercont_val.run_ufolib_import_validation()
+        li_ufolib_import_fail_list = layerinfo_val.run_ufolib_import_validation()
 
         for thelist in (mv_ufolib_import_fail_list,
                         fi_ufolib_import_fail_list,
@@ -152,7 +153,8 @@ class MainRunner(object):
                         k_ufolib_import_fail_list,
                         l_ufolib_import_fail_list,
                         c_ufolib_import_fail_list,
-                        lc_ufolib_import_fail_list):
+                        lc_ufolib_import_fail_list,
+                        li_ufolib_import_fail_list):
             for failed_test_result in thelist:
                 self.failures_list.append(failed_test_result)
 

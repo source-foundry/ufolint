@@ -259,7 +259,7 @@ class ContentsPlistValidator(AbstractPlistValidator):
             except GlifLibError as e:
                 res.test_failed = True
                 res.exit_failure = True  # mandatory file
-                res.test_long_stdstream_string = rel_dir_path + " failed ufoLib import test with error: " + str(e)
+                res.test_long_stdstream_string = "contents.plist in " + rel_dir_path + " failed ufoLib import test with error: " + str(e)
                 ss.stream_result(res)
                 self.test_fail_list.append(res)
         return self.test_fail_list
@@ -301,3 +301,28 @@ class LayerinfoPlistValidator(AbstractPlistValidator):
         super(LayerinfoPlistValidator, self).__init__(ufopath, ufoversion, glyphs_dir_list)
         self.testfile = "layerinfo.plist"
 
+        class LayerInfoObj(object):
+            def __init__(self):
+                pass
+        self.layerinfo_obj = LayerInfoObj()
+
+    def run_ufolib_import_validation(self):
+        """
+        ufolint implements the tests of this file.  There is no public method in ufoLib to access this file/these data
+        :return: (list) list of test failure Result objects
+        """
+        ss = StdStreamer(self.ufopath)
+        for glyphs_dir in self.ufoobj.glyphsdir_list:
+            res = Result(glyphs_dir)
+            rel_dir_path = os.path.join(self.ufopath, glyphs_dir[1])
+
+            try:
+                gs = GlyphSet(rel_dir_path, ufoFormatVersion=self.ufoversion)
+                gs.readLayerInfo(self.layerinfo_obj)
+                res.test_failed = False
+                ss.stream_result(res)
+            except Exception as e:
+                res.test_failed = True
+                res.test_long_stdstream_string = "layerinfo.plist in " + rel_dir_path + " failed ufoLib import test with error: " + str(e)
+                self.test_fail_list.append(res)
+            return self.test_fail_list
