@@ -15,6 +15,7 @@ class StdStreamer(object):
 
     def stream_testname(self, testname_string):
         sys.stdout.write("[" + testname_string + "] ")
+        sys.stdout.flush()
 
     def stream_results_list(self, result_list):
         for resultobj in result_list:
@@ -64,6 +65,7 @@ class StdStreamer(object):
 
     def _stream_short(self, output_string):
         sys.stdout.write(output_string)
+        sys.stdout.flush()
 
     def _stream_long(self, output_string):
         print(output_string)
