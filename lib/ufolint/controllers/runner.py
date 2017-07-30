@@ -16,6 +16,7 @@ from ufolint.data.tstobj import Result
 from ufolint.data.ufo import Ufo2, Ufo3
 from ufolint.stdoutput import StdStreamer
 from ufolint.utilities import file_exists, dir_exists
+from ufolint.validators.glifvalidators import run_all_glif_validations
 from ufolint.validators.plistvalidators import MetainfoPlistValidator, FontinfoPlistValidator, GroupsPlistValidator
 from ufolint.validators.plistvalidators import KerningPlistValidator, LibPlistValidator, ContentsPlistValidator
 from ufolint.validators.plistvalidators import LayercontentsPlistValidator, LayerinfoPlistValidator
@@ -41,7 +42,6 @@ class MainRunner(object):
         # [START] EARLY FAIL TESTS ----------------------------------------------------------------
         #      UFO directory filepath
         #      .ufo directory extension
-        #
         #      import with ufoLib
         #      version check
         #      ufo obj define
@@ -137,7 +137,7 @@ class MainRunner(object):
         # [END] XML VALIDATION TESTS  --------------------------------------------------------------
 
         # [START] plist FILE VALIDATION TESTS (includes numerous ufoLib library validations on plist file reads)
-        ss.stream_testname("plist spec")
+        ss.stream_testname("*.plist spec")
         mv_ufolib_import_fail_list = meta_val.run_ufolib_import_validation()
         fi_ufolib_import_fail_list = fontinfo_val.run_ufolib_import_validation()
         g_ufolib_import_fail_list = groups_val.run_ufolib_import_validation()
@@ -159,6 +159,15 @@ class MainRunner(object):
                 self.failures_list.append(failed_test_result)
 
         # [END] plist FILE VALIDATION TESTS
+
+        # [START] *.glif VALIDATION TESTS
+        print(" ")
+        ss.stream_testname("*.glif spec")
+        glif_validation_failures = run_all_glif_validations(self.ufoobj)
+        for glif_failure_result in glif_validation_failures:
+            self.failures_list.append(glif_failure_result)
+
+        # [END] *.glif VALIDATION TESTS
 
         # TESTS COMPLETED --------------------------------------------------------------------------
         #   stream all failure results as a newline delimited list to user and exit with status code 1
