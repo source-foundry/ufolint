@@ -7,6 +7,7 @@ import os.path
 class Ufo(object):
     def __init__(self, ufopath, glyphsdir_list):
         self.ufopath = ufopath
+        self.ufoversion = None  # defined on instantiation in the classes that inherit Ufo
         self.glyphsdir_list = glyphsdir_list
         self.mandatory_root_basefilepaths = None
         self.mandatory_glyphsdir_basefilepaths = None
@@ -58,11 +59,18 @@ class Ufo(object):
                 mandatory_filepath_list.append(a_file)
         return mandatory_filepath_list
 
+    def get_glyphsdir_path_list(self):
+        raise NotImplementedError
+
+    def get_ufo_version(self):
+        return self.ufoversion
+
 
 class Ufo2(Ufo):
     def __init__(self, ufopath, glyphsdir_list):
         super(Ufo2, self).__init__(ufopath, glyphsdir_list)
         self.ufopath = ufopath
+        self.ufoversion = 2
         self.glyphsdir_list = glyphsdir_list
         self.mandatory_root_basefilepaths = ['metainfo.plist']
         self.mandatory_glyphsdir_basefilepaths = ['contents.plist']
@@ -77,11 +85,16 @@ class Ufo2(Ufo):
             'contents.plist'
         ]
 
+    def get_glyphsdir_path_list(self):
+        glyphsdir_path = os.path.join(self.ufopath, 'glyphs')     # UFOv2 includes only one glyphs directory
+        return glyphsdir_path
+
 
 class Ufo3(Ufo):
     def __init__(self, ufopath, glyphsdir_list):
         super(Ufo3, self).__init__(ufopath, glyphsdir_list)
         self.ufopath = ufopath
+        self.ufoversion = 3
         self.glyphsdir_list = glyphsdir_list
         self.mandatory_root_basefilepaths = [
             'metainfo.plist',
@@ -100,4 +113,12 @@ class Ufo3(Ufo):
             'contents.plist',
             'layerinfo.plist'
         ]
+
+    def get_glyphsdir_path_list(self):
+        glyphsdir_path_list = []
+        for glyphsdir in self.glyphsdir_list:
+            glyphsdir_path = os.path.join(self.ufopath, glyphsdir[1])
+            glyphsdir_path_list.append(glyphsdir_path)
+        return glyphsdir_path_list
+
 
