@@ -13,6 +13,10 @@ class StdStreamer(object):
         self.short_fail_string = "F"
         self.fail_long_indicator = "[FAIL]"
 
+    def _stream_short(self, output_string):
+        sys.stdout.write(output_string)
+        sys.stdout.flush()
+
     def stream_testname(self, testname_string):
         sys.stdout.write("[" + testname_string + "] ")
         sys.stdout.flush()
@@ -44,7 +48,7 @@ class StdStreamer(object):
             fail_string = self.ufopath + " failed! Exit with status code 1"
             print(" ")
             print("=" * len(fail_string))
-            print(self.ufopath + " failed! Exit with status code 1")
+            print(fail_string)
             print("=" * len(fail_string))
             print(" ")
 
@@ -63,7 +67,4 @@ class StdStreamer(object):
             print("=" * len(success_string))
             sys.exit(0)
 
-    def _stream_short(self, output_string):
-        sys.stdout.write(output_string)
-        sys.stdout.flush()
 
