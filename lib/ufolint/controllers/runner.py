@@ -181,17 +181,6 @@ class MainRunner(object):
     #
     # =====================================
 
-    def _check_contents_plist_exists(self, glyphs_dir_list):
-        """
-        Test for presence of contents.plist file in each of the specified glyphs* directories.  Mandatory file that
-        defines the glyph name to file path mapping and permits import of a ufoLib GlyphSet for further tests
-        :return: None - method leads to early exit with status code 1 if file not found
-        """
-        contents_plist_path_list = []
-        for glyphs_dir in glyphs_dir_list:
-            contents_plist_path = os.path.join(glyphs_dir, 'contents.plist')
-            ## TODO: implement
-
 
     def _check_layercontents_plist_exists(self):
         """

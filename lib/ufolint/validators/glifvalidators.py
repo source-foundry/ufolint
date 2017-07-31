@@ -51,8 +51,8 @@ def run_all_glif_validations(ufoobj):
                 ss.stream_result(res)
                 test_error_list.append(res)
                 glif_count += 1
-        print("   " + str(glif_count) + " .glif files tested")
-
+        print("   " + str(glif_count) + " .glif tests completed")
+        # TODO: confirm that the number of .glif tests completed = number of .glif files included in source
     return test_error_list
 
 

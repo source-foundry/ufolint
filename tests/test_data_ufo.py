@@ -32,6 +32,11 @@ layerinfo_plist_path_2 = os.path.join('Test-Regular.ufo', 'glyphsOther', 'layeri
 mandatory_list_v2 = [metainfo_plist_path, contents_plist_path_1]
 mandatory_list_v3 = [metainfo_plist_path, layercontents_plist_path, contents_plist_path_1, contents_plist_path_2]
 
+# Expected glyphs directory path lists
+glyphs_dir_list_v2 = os.path.join('Test-Regular.ufo', 'glyphs')
+glyphs_dir_list_v3_1 = os.path.join('Test-Regular.ufo', 'glyphs')
+glyphs_dir_list_v3_2 = os.path.join('Test-Regular.ufo', 'glyphsOther')
+
 
 def test_data_ufo_ufo_class_instantiation_with_single_glyphsdir():
     ufoobj = Ufo(test_ufopath, test_glyphs_dirlist_2)
@@ -170,7 +175,49 @@ def test_data_ufo_ufo3_get_mandatory_filepaths_list():
     assert (fontinfo_plist_path in res_list) is False
 
 
+def test_data_ufo_ufoclass_get_glyphsdir_pathlist():
+    ufoobj = Ufo(test_ufopath, test_glyphs_dirlist_2)
+    with pytest.raises(NotImplementedError):
+        ufoobj.get_glyphsdir_path_list()
 
 
+def test_data_ufo_ufo2_get_glyphsdir_pathlist():
+    ufoobj = Ufo2(test_ufopath, test_glyphs_dirlist_2)
+
+    pathlist = ufoobj.get_glyphsdir_path_list()
+    assert isinstance(pathlist, list)
+    assert len(pathlist) == 1
+    assert pathlist[0] == glyphs_dir_list_v2
+
+
+def test_data_ufo_ufo3_get_glyphsdir_pathlist():
+    ufoobj = Ufo3(test_ufopath, test_glyphs_dirlist_3)
+
+    pathlist = ufoobj.get_glyphsdir_path_list()
+    assert isinstance(pathlist, list)
+    assert len(pathlist) == 2
+    assert pathlist[0] == glyphs_dir_list_v3_1
+    assert pathlist[1] == glyphs_dir_list_v3_2
+
+
+def test_data_ufo_ufoobj_get_ufo_version():
+    ufoobj = Ufo(test_ufopath, test_glyphs_dirlist_2)
+
+    version = ufoobj.get_ufo_version()
+    assert version is None
+
+
+def test_data_ufo_ufo2_get_ufo_version():
+    ufoobj = Ufo2(test_ufopath, test_glyphs_dirlist_2)
+
+    version = ufoobj.get_ufo_version()
+    assert version == 2
+
+
+def test_data_ufo_ufo3_get_ufo_version():
+    ufoobj = Ufo3(test_ufopath, test_glyphs_dirlist_3)
+
+    version = ufoobj.get_ufo_version()
+    assert version == 3
 
 

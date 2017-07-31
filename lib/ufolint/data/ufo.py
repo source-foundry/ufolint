@@ -87,7 +87,7 @@ class Ufo2(Ufo):
 
     def get_glyphsdir_path_list(self):
         glyphsdir_path = os.path.join(self.ufopath, 'glyphs')     # UFOv2 includes only one glyphs directory
-        return glyphsdir_path
+        return [glyphsdir_path]
 
 
 class Ufo3(Ufo):
