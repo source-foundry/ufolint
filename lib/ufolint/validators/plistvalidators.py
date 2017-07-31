@@ -13,8 +13,8 @@ from ufolint.data.ufo import Ufo2, Ufo3
 from ufolint.stdoutput import StdStreamer
 from ufolint.utilities import file_exists
 
-from ufoLib import UFOReader, UFOLibError
-from ufoLib.glifLib import GlyphSet, GlifLibError
+from ufoLib import UFOReader
+from ufoLib.glifLib import GlyphSet
 
 
 class AbstractPlistValidator(object):
@@ -88,7 +88,7 @@ class MetainfoPlistValidator(AbstractPlistValidator):
         if file_exists(self.testpath) is False:  # fail test, exit early if file is missing
             res.test_failed = True
             res.exit_failure = True
-            res.test_long_stdstream_string = "metainfo.plist is not available on the path " + testpath
+            res.test_long_stdstream_string = "metainfo.plist is not available on the path " + self.testpath
             ss.stream_result(res)
             return []
         try:
@@ -96,7 +96,7 @@ class MetainfoPlistValidator(AbstractPlistValidator):
             ufolib_reader.readMetaInfo()
             res.test_failed = False
             ss.stream_result(res)
-        except UFOLibError as e:
+        except Exception as e:
             res.test_failed = True
             res.exit_failure = True
             res.test_long_stdstream_string = self.testpath + " failed ufoLib import test with error: " + str(e)
@@ -133,7 +133,7 @@ class FontinfoPlistValidator(AbstractPlistValidator):
             ufolib_reader.readInfo(self.fontinfo_obj)
             res.test_failed = False
             ss.stream_result(res)
-        except UFOLibError as e:
+        except Exception as e:
             res.test_failed = True
             res.test_long_stdstream_string = self.testpath + " failed ufoLib import test with error: " + str(e)
             ss.stream_result(res)
@@ -164,7 +164,7 @@ class GroupsPlistValidator(AbstractPlistValidator):
             ufolib_reader.readGroups()
             res.test_failed = False
             ss.stream_result(res)
-        except UFOLibError as e:
+        except Exception as e:
             res.test_failed = True
             res.test_long_stdstream_string = self.testpath + " failed ufoLib import test with error: " + str(e)
             ss.stream_result(res)
@@ -195,7 +195,7 @@ class KerningPlistValidator(AbstractPlistValidator):
             ufolib_reader.readKerning()
             res.test_failed = False
             ss.stream_result(res)
-        except UFOLibError as e:
+        except Exception as e:
             res.test_failed = True
             res.test_long_stdstream_string = self.testpath + " failed ufoLib import test with error: " + str(e)
             ss.stream_result(res)
@@ -226,7 +226,7 @@ class LibPlistValidator(AbstractPlistValidator):
             ufolib_reader.readLib()
             res.test_failed = False
             ss.stream_result(res)
-        except UFOLibError as e:
+        except Exception as e:
             res.test_failed = True
             res.test_long_stdstream_string = self.testpath + " failed ufoLib import test with error: " + str(e)
             ss.stream_result(res)
@@ -256,7 +256,7 @@ class ContentsPlistValidator(AbstractPlistValidator):
                 gs = GlyphSet(rel_dir_path, ufoFormatVersion=self.ufoversion)  # test for raised exceptions
                 res.test_failed = False
                 ss.stream_result(res)
-            except GlifLibError as e:
+            except Exception as e:
                 res.test_failed = True
                 res.exit_failure = True  # mandatory file
                 res.test_long_stdstream_string = "contents.plist in " + rel_dir_path + " failed ufoLib import test with error: " + str(e)
@@ -288,7 +288,7 @@ class LayercontentsPlistValidator(AbstractPlistValidator):
             ufolib_reader.getLayerNames()
             res.test_failed = False
             ss.stream_result(res)
-        except UFOLibError as e:
+        except Exception as e:
             res.test_failed = True
             res.test_long_stdstream_string = self.testpath + " failed ufoLib import test with error: " + str(e)
             ss.stream_result(res)
