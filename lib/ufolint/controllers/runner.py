@@ -266,6 +266,7 @@ class MainRunner(object):
             ss.stream_result(res)
         else:
             res.test_failed = True
+            res.exit_failure = True
             res.test_long_stdstream_string = self.ufopath + " directory does not have a .ufo extension"
             self.failures_list.append(res)
             ss.stream_result(res)
