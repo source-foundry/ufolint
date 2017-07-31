@@ -51,6 +51,11 @@ def test_validators_plist_abstractplist_ufo3_instantiation():
     assert abvalid.test_fail_list == []
 
 
+def test_validators_plist_abstractplist_ufo3_unimplemented_ufolib_import_method():
+    with pytest.raises(NotImplementedError):
+        abvalid = plistvalidators.AbstractPlistValidator(ufo3_test_success_path, 3, ufo3_dir_list)
+        abvalid.run_ufolib_import_validation()
+
 
 # ///////////////////////////////////////////////////////
 #
@@ -87,8 +92,11 @@ def test_validators_plist_ufo2_metainfo_missing_file_fail(capsys):
     meta_missingfile_ufo_path = os.path.join(metainfo_test_dir_failpath, 'UFO2-MissingMeta.ufo')
     meta_validator = plistvalidators.MetainfoPlistValidator(meta_missingfile_ufo_path, 2, ufo2_dir_list)
 
+    meta_validator.run_xml_validation()   # should not raise SystemExit
+
     with pytest.raises(SystemExit) as pytest_wrapped_e:
         fail_list = meta_validator.run_ufolib_import_validation()
+        assert len(fail_list) == 0
 
     out, err = capsys.readouterr()
     assert pytest_wrapped_e.type == SystemExit
@@ -101,8 +109,11 @@ def test_validators_plist_ufo3_metainfo_missing_file_fail(capsys):
     meta_missingfile_ufo_path = os.path.join(metainfo_test_dir_failpath, 'UFO3-MissingMeta.ufo')
     meta_validator = plistvalidators.MetainfoPlistValidator(meta_missingfile_ufo_path, 3, ufo3_dir_list)
 
+    meta_validator.run_xml_validation()   # should not raise SystemExit
+
     with pytest.raises(SystemExit) as pytest_wrapped_e:
         fail_list = meta_validator.run_ufolib_import_validation()
+        assert len(fail_list) == 0
 
     out, err = capsys.readouterr()
     assert pytest_wrapped_e.type == SystemExit
@@ -112,8 +123,8 @@ def test_validators_plist_ufo3_metainfo_missing_file_fail(capsys):
 
 
 def test_validators_plist_ufo2_metainfo_xml_fail(capsys):
-    meta_missingfile_ufo_path = os.path.join(metainfo_test_dir_failpath, 'UFO2-XMLmeta.ufo')
-    meta_validator = plistvalidators.MetainfoPlistValidator(meta_missingfile_ufo_path, 2, ufo2_dir_list)
+    meta_ufo_path = os.path.join(metainfo_test_dir_failpath, 'UFO2-XMLmeta.ufo')
+    meta_validator = plistvalidators.MetainfoPlistValidator(meta_ufo_path, 2, ufo2_dir_list)
 
     fail_list = meta_validator.run_xml_validation()
 
@@ -122,8 +133,8 @@ def test_validators_plist_ufo2_metainfo_xml_fail(capsys):
 
 
 def test_validators_plist_ufo3_metainfo_xml_fail(capsys):
-    meta_missingfile_ufo_path = os.path.join(metainfo_test_dir_failpath, 'UFO3-XMLmeta.ufo')
-    meta_validator = plistvalidators.MetainfoPlistValidator(meta_missingfile_ufo_path, 3, ufo3_dir_list)
+    meta_ufo_path = os.path.join(metainfo_test_dir_failpath, 'UFO3-XMLmeta.ufo')
+    meta_validator = plistvalidators.MetainfoPlistValidator(meta_ufo_path, 3, ufo3_dir_list)
 
     fail_list = meta_validator.run_xml_validation()
 
@@ -132,8 +143,8 @@ def test_validators_plist_ufo3_metainfo_xml_fail(capsys):
 
 
 def test_validators_plist_ufo2_metainfo_version_fail(capsys):
-    meta_missingfile_ufo_path = os.path.join(metainfo_test_dir_failpath, 'UFO2-VersionFail.ufo')
-    meta_validator = plistvalidators.MetainfoPlistValidator(meta_missingfile_ufo_path, 2, ufo2_dir_list)
+    meta_ufo_path = os.path.join(metainfo_test_dir_failpath, 'UFO2-VersionFail.ufo')
+    meta_validator = plistvalidators.MetainfoPlistValidator(meta_ufo_path, 2, ufo2_dir_list)
 
     with pytest.raises(SystemExit) as pytest_wrapped_e:
         fail_list = meta_validator.run_ufolib_import_validation()
@@ -145,8 +156,8 @@ def test_validators_plist_ufo2_metainfo_version_fail(capsys):
 
 
 def test_validators_plist_ufo3_metainfo_version_fail(capsys):
-    meta_missingfile_ufo_path = os.path.join(metainfo_test_dir_failpath, 'UFO3-VersionFail.ufo')
-    meta_validator = plistvalidators.MetainfoPlistValidator(meta_missingfile_ufo_path, 3, ufo3_dir_list)
+    meta_ufo_path = os.path.join(metainfo_test_dir_failpath, 'UFO3-VersionFail.ufo')
+    meta_validator = plistvalidators.MetainfoPlistValidator(meta_ufo_path, 3, ufo3_dir_list)
 
     with pytest.raises(SystemExit) as pytest_wrapped_e:
         fail_list = meta_validator.run_ufolib_import_validation()
@@ -155,3 +166,102 @@ def test_validators_plist_ufo3_metainfo_version_fail(capsys):
     assert pytest_wrapped_e.type == SystemExit
     assert pytest_wrapped_e.value.code == 1
     assert 'metainfo.plist' in out
+
+
+# ///////////////////////////////////////////////////////
+#
+#  fontinfo.plist validator tests
+#
+# ///////////////////////////////////////////////////////
+
+# Success tests
+
+def test_validators_plist_ufo2_fontinfo_success():
+    fontinfo_validator = plistvalidators.FontinfoPlistValidator(ufo2_test_success_path, 2, ufo2_dir_list)
+
+    xml_fail_list = fontinfo_validator.run_xml_validation()
+    ufolib_fail_list = fontinfo_validator.run_ufolib_import_validation()
+
+    assert len(xml_fail_list) == 0
+    assert len(ufolib_fail_list) == 0
+
+
+def test_validators_plist_ufo3_fontinfo_success():
+    fontinfo_validator = plistvalidators.FontinfoPlistValidator(ufo3_test_success_path, 3, ufo3_dir_list)
+
+    xml_fail_list = fontinfo_validator.run_xml_validation()
+    ufolib_fail_list = fontinfo_validator.run_ufolib_import_validation()
+
+    assert len(xml_fail_list) == 0
+    assert len(ufolib_fail_list) == 0
+
+
+# Fail tests
+
+def test_validators_plist_ufo2_fontinfo_missing_file_fail(capsys):
+    fontinfo_ufo_path = os.path.join(fontinfo_test_dir_failpath, 'UFO2-MissingFI.ufo')
+    fontinfo_validator = plistvalidators.FontinfoPlistValidator(fontinfo_ufo_path, 2, ufo2_dir_list)
+
+    xml_fail_list = fontinfo_validator.run_xml_validation()
+    ufolib_fail_list = fontinfo_validator.run_ufolib_import_validation()
+
+    assert isinstance(xml_fail_list, list)
+    assert isinstance(ufolib_fail_list, list)
+    assert len(xml_fail_list) == 0
+    assert len(ufolib_fail_list) == 0
+
+
+def test_validators_plist_ufo3_fontinfo_missing_file_fail(capsys):
+    fontinfo_ufo_path = os.path.join(fontinfo_test_dir_failpath, 'UFO3-MissingFI.ufo')
+    fontinfo_validator = plistvalidators.FontinfoPlistValidator(fontinfo_ufo_path, 3, ufo3_dir_list)
+
+    xml_fail_list = fontinfo_validator.run_xml_validation()
+    ufolib_fail_list = fontinfo_validator.run_ufolib_import_validation()
+
+    assert isinstance(xml_fail_list, list)
+    assert isinstance(ufolib_fail_list, list)
+    assert len(xml_fail_list) == 0
+    assert len(ufolib_fail_list) == 0
+
+
+def test_validators_plist_ufo2_fontinfo_xml_fail(capsys):
+    fontinfo_ufo_path = os.path.join(fontinfo_test_dir_failpath, 'UFO2-XMLfi.ufo')
+    fontinfo_validator = plistvalidators.FontinfoPlistValidator(fontinfo_ufo_path, 2, ufo2_dir_list)
+
+    fail_list = fontinfo_validator.run_xml_validation()
+
+    assert len(fail_list) == 1
+    assert 'fontinfo.plist' in fail_list[0].test_long_stdstream_string
+
+
+def test_validators_plist_ufo3_fontinfo_xml_fail(capsys):
+    fontinfo_ufo_path = os.path.join(fontinfo_test_dir_failpath, 'UFO3-XMLfi.ufo')
+    fontinfo_validator = plistvalidators.FontinfoPlistValidator(fontinfo_ufo_path, 3, ufo3_dir_list)
+
+    fail_list = fontinfo_validator.run_xml_validation()
+
+    assert len(fail_list) == 1
+    assert 'fontinfo.plist' in fail_list[0].test_long_stdstream_string
+
+
+def test_validators_plist_ufo2_fontinfo_ufolib_import_fail(capsys):
+    fontinfo_ufo_path = os.path.join(fontinfo_test_dir_failpath, 'UFO2-UFOlibError.ufo')
+    fontinfo_validator = plistvalidators.FontinfoPlistValidator(fontinfo_ufo_path, 2, ufo2_dir_list)
+
+    fail_list = fontinfo_validator.run_ufolib_import_validation()
+
+    assert len(fail_list) == 1
+    assert 'fontinfo.plist' in fail_list[0].test_long_stdstream_string
+
+
+def test_validators_plist_ufo3_fontinfo_ufolib_import_fail(capsys):
+    fontinfo_ufo_path = os.path.join(fontinfo_test_dir_failpath, 'UFO3-UFOlibError.ufo')
+    fontinfo_validator = plistvalidators.FontinfoPlistValidator(fontinfo_ufo_path, 3, ufo3_dir_list)
+
+    fail_list = fontinfo_validator.run_ufolib_import_validation()
+
+    assert len(fail_list) == 1
+    assert 'fontinfo.plist' in fail_list[0].test_long_stdstream_string
+
+
+

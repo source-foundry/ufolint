@@ -3,10 +3,10 @@
 
 import os.path
 
-try:
-    import xml.etree.cElementTree as ETree           # python 2
-except ImportError:
-    import xml.etree.ElementTree as ETree            # python 3
+try:  # pragma: no cover
+    import xml.etree.cElementTree as ETree
+except ImportError:   # pragma: no cover
+    import xml.etree.ElementTree as ETree
 
 from ufolint.data.tstobj import Result
 from ufolint.data.ufo import Ufo2, Ufo3
@@ -90,7 +90,6 @@ class MetainfoPlistValidator(AbstractPlistValidator):
             res.exit_failure = True
             res.test_long_stdstream_string = "metainfo.plist is not available on the path " + self.testpath
             ss.stream_result(res)
-            return []
         try:
             ufolib_reader = UFOReader(self.ufopath)
             ufolib_reader.readMetaInfo()
