@@ -40,7 +40,7 @@ class AbstractPlistValidator(object):
         except Exception as e:
             res.test_failed = True
             res.test_long_stdstream_string = testpath + " failed XML validation test with error: " + str(e)
-            self.test_fail_list.append(res)  # add each failure to test failures list, returned to calling code from run_xml_validation
+            self.test_fail_list.append(res)  # add each failure to test failures list
             return res
 
     def run_xml_validation(self):
