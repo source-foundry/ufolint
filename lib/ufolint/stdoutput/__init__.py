@@ -67,6 +67,3 @@ class StdStreamer(object):
         sys.stdout.write(output_string)
         sys.stdout.flush()
 
-    def _stream_long(self, output_string):
-        print(output_string)
-
