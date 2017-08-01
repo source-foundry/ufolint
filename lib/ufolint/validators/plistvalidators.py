@@ -99,8 +99,8 @@ class MetainfoPlistValidator(AbstractPlistValidator):
             res.test_failed = True
             res.exit_failure = True
             res.test_long_stdstream_string = self.testpath + " failed ufoLib import test with error: " + str(e)
-            ss.stream_result(res)
             self.test_fail_list.append(res)
+            ss.stream_result(res)
         return self.test_fail_list
 
 
@@ -241,7 +241,7 @@ class ContentsPlistValidator(AbstractPlistValidator):
 
     def run_ufolib_import_validation(self):
         """
-        ufoLib UFOReader.readLib method validates the lib.plist file
+        ufoLib GlyphSet instantiation validates the contents.plist file
         :return: (list) list of test failure Result objects
         """
         ss = StdStreamer(self.ufopath)
@@ -272,7 +272,7 @@ class LayercontentsPlistValidator(AbstractPlistValidator):
 
     def run_ufolib_import_validation(self):
         """
-        ufoLib UFOReader.readLayerNames method validates the lib.plist file
+        ufoLib UFOReader.getLayerNames method validates the layercontents.plist file
         :return: (list) list of test failure Result objects
         """
         res = Result(self.testpath)
@@ -282,7 +282,7 @@ class LayercontentsPlistValidator(AbstractPlistValidator):
             ss.stream_result(res)
             return self.test_fail_list
         try:
-            # read lib.plist with ufoLib - the ufoLib library performs type validations on values on read
+            # read layercontents.plist with ufoLib - the ufoLib library performs type validations on values on read
             ufolib_reader = UFOReader(self.ufopath)
             ufolib_reader.getLayerNames()
             res.test_failed = False
@@ -307,7 +307,7 @@ class LayerinfoPlistValidator(AbstractPlistValidator):
 
     def run_ufolib_import_validation(self):
         """
-        ufolint implements the tests of this file.  There is no public method in ufoLib to access this file/these data
+        ufoLib GlyphSet.readLayerInfo method performs validations of layerinfo.plist file(s)
         :return: (list) list of test failure Result objects
         """
         ss = StdStreamer(self.ufopath)

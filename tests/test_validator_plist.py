@@ -24,7 +24,7 @@ metainfo_test_dir_failpath = os.path.join('tests', 'testfiles', 'ufo', 'fails', 
 fontinfo_test_dir_failpath = os.path.join('tests', 'testfiles', 'ufo', 'fails', 'fontinfoPL')
 groups_test_dir_failpath = os.path.join('tests', 'testfiles', 'ufo', 'fails', 'groupsPL')
 kerning_test_dir_failpath = os.path.join('tests', 'testfiles', 'ufo', 'fails', 'kerningPL')
-
+lib_test_dir_failpath = os.path.join('tests', 'testfiles', 'ufo', 'fails', 'libPL')
 
 # ///////////////////////////////////////////////////////
 #
@@ -466,4 +466,108 @@ def test_validators_plist_ufo3_kerning_ufo_import_fail():
     assert isinstance(fail_list, list)
     assert len(fail_list) == 1
     assert 'kerning.plist' in fail_list[0].test_long_stdstream_string
+
+
+# ///////////////////////////////////////////////////////
+#
+#  lib.plist validator tests
+#
+# ///////////////////////////////////////////////////////
+
+# Success tests
+
+def test_validators_plist_ufo2_lib_success():
+    lib_validator = plistvalidators.LibPlistValidator(ufo2_test_success_path, 2, ufo2_dir_list)
+
+    xml_fail_list = lib_validator.run_xml_validation()
+    ufolib_fail_list = lib_validator.run_ufolib_import_validation()
+
+    assert isinstance(xml_fail_list, list)
+    assert isinstance(ufolib_fail_list, list)
+    assert len(xml_fail_list) == 0
+    assert len(ufolib_fail_list) == 0
+
+
+def test_validators_plist_ufo3_lib_success():
+    lib_validator = plistvalidators.LibPlistValidator(ufo3_test_success_path, 3, ufo3_dir_list)
+
+    xml_fail_list = lib_validator.run_xml_validation()
+    ufolib_fail_list = lib_validator.run_ufolib_import_validation()
+
+    assert isinstance(xml_fail_list, list)
+    assert isinstance(ufolib_fail_list, list)
+    assert len(xml_fail_list) == 0
+    assert len(ufolib_fail_list) == 0
+
+
+# Fail tests
+
+def test_validators_plist_ufo2_lib_missing_file_fail():
+    lib_ufo_path = os.path.join(lib_test_dir_failpath, 'UFO2-MissingLib.ufo')
+    lib_validator = plistvalidators.LibPlistValidator(lib_ufo_path, 2, ufo2_dir_list)
+
+    xml_fail_list = lib_validator.run_xml_validation()
+    ufolib_fail_list = lib_validator.run_ufolib_import_validation()
+
+    assert isinstance(xml_fail_list, list)
+    assert isinstance(ufolib_fail_list, list)
+    assert len(xml_fail_list) == 0
+    assert len(ufolib_fail_list) == 0
+
+
+def test_validators_plist_ufo3_lib_missing_file_fail():
+    lib_ufo_path = os.path.join(lib_test_dir_failpath, 'UFO3-MissingLib.ufo')
+    lib_validator = plistvalidators.LibPlistValidator(lib_ufo_path, 3, ufo3_dir_list)
+
+    xml_fail_list = lib_validator.run_xml_validation()
+    ufolib_fail_list = lib_validator.run_ufolib_import_validation()
+
+    assert isinstance(xml_fail_list, list)
+    assert isinstance(ufolib_fail_list, list)
+    assert len(xml_fail_list) == 0
+    assert len(ufolib_fail_list) == 0
+
+
+def test_validators_plist_ufo2_lib_xml_fail():
+    lib_ufo_path = os.path.join(lib_test_dir_failpath, 'UFO2-XMLlib.ufo')
+    lib_validator = plistvalidators.LibPlistValidator(lib_ufo_path, 2, ufo2_dir_list)
+
+    fail_list = lib_validator.run_xml_validation()
+
+    assert isinstance(fail_list, list)
+    assert len(fail_list) == 1
+    assert 'lib.plist' in fail_list[0].test_long_stdstream_string
+
+
+def test_validators_plist_ufo3_lib_xml_fail():
+    lib_ufo_path = os.path.join(lib_test_dir_failpath, 'UFO3-XMLlib.ufo')
+    lib_validator = plistvalidators.LibPlistValidator(lib_ufo_path, 3, ufo3_dir_list)
+
+    fail_list = lib_validator.run_xml_validation()
+
+    assert isinstance(fail_list, list)
+    assert len(fail_list) == 1
+    assert 'lib.plist' in fail_list[0].test_long_stdstream_string
+
+
+def test_validators_plist_ufo2_lib_ufolib_import_fail():
+    lib_ufo_path = os.path.join(lib_test_dir_failpath, 'UFO2-UFOlibError.ufo')
+    lib_validator = plistvalidators.LibPlistValidator(lib_ufo_path, 2, ufo2_dir_list)
+
+    fail_list = lib_validator.run_ufolib_import_validation()
+
+    assert isinstance(fail_list, list)
+    assert len(fail_list) == 1
+    assert 'lib.plist' in fail_list[0].test_long_stdstream_string
+
+
+def test_validators_plist_ufo3_lib_ufolib_import_fail():
+    lib_ufo_path = os.path.join(lib_test_dir_failpath, 'UFO3-UFOlibError.ufo')
+    lib_validator = plistvalidators.LibPlistValidator(lib_ufo_path, 3, ufo3_dir_list)
+
+    fail_list = lib_validator.run_ufolib_import_validation()
+
+    assert isinstance(fail_list, list)
+    assert len(fail_list) == 1
+    assert 'lib.plist' in fail_list[0].test_long_stdstream_string
 
