@@ -29,6 +29,7 @@ class AbstractPlistValidator(object):
             self.ufoobj = Ufo3(self.ufopath, self.glyphs_dir_list)
         self.root_plist_list = self.ufoobj.all_root_plist_files_list
         self.glyphsdir_plist_list = self.ufoobj.all_glyphsdir_plist_files_list
+        self.mandatory_filepaths_list = self.ufoobj.get_mandatory_filepaths_list()
         self.test_fail_list = []
 
     def _parse_xml(self, testpath):
@@ -39,6 +40,8 @@ class AbstractPlistValidator(object):
             return res
         except Exception as e:
             res.test_failed = True
+            if testpath in self.mandatory_filepaths_list:  # if this test is on a mandatory file, exit early with fail
+                res.exit_failure = True
             res.test_long_stdstream_string = testpath + " failed XML validation test with error: " + str(e)
             self.test_fail_list.append(res)  # add each failure to test failures list
             return res
@@ -54,7 +57,7 @@ class AbstractPlistValidator(object):
                 res = Result(testpath)
                 res.test_failed = False
                 ss.stream_result(res)
-        elif self.testfile in self.glyphs_dir_list:
+        elif self.testfile in self.glyphsdir_plist_list:
             testpath_list = self.ufoobj.get_glyphsdir_plist_filepath_list(self.testfile)
             for testpath in testpath_list:
                 if file_exists(testpath):

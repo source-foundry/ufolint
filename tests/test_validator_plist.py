@@ -25,6 +25,7 @@ fontinfo_test_dir_failpath = os.path.join('tests', 'testfiles', 'ufo', 'fails', 
 groups_test_dir_failpath = os.path.join('tests', 'testfiles', 'ufo', 'fails', 'groupsPL')
 kerning_test_dir_failpath = os.path.join('tests', 'testfiles', 'ufo', 'fails', 'kerningPL')
 lib_test_dir_failpath = os.path.join('tests', 'testfiles', 'ufo', 'fails', 'libPL')
+contents_test_dir_failpath = os.path.join('tests', 'testfiles', 'ufo', 'fails', 'contentsPL')
 
 # ///////////////////////////////////////////////////////
 #
@@ -128,20 +129,32 @@ def test_validators_plist_ufo2_metainfo_xml_fail(capsys):
     meta_ufo_path = os.path.join(metainfo_test_dir_failpath, 'UFO2-XMLmeta.ufo')
     meta_validator = plistvalidators.MetainfoPlistValidator(meta_ufo_path, 2, ufo2_dir_list)
 
-    fail_list = meta_validator.run_xml_validation()
+    with pytest.raises(SystemExit) as pytest_wrapped_e:
+        fail_list = meta_validator.run_xml_validation()
 
-    assert len(fail_list) == 1
-    assert 'metainfo.plist failed XML validation' in fail_list[0].test_long_stdstream_string
+        assert len(fail_list) == 1
+        assert 'metainfo.plist failed XML validation' in fail_list[0].test_long_stdstream_string
+    out, err = capsys.readouterr()
+    assert pytest_wrapped_e.type == SystemExit
+    assert pytest_wrapped_e.value.code == 1
+    assert 'UFO2-XMLmeta.ufo' in out
+    assert 'metainfo.plist' in out
 
 
 def test_validators_plist_ufo3_metainfo_xml_fail(capsys):
     meta_ufo_path = os.path.join(metainfo_test_dir_failpath, 'UFO3-XMLmeta.ufo')
     meta_validator = plistvalidators.MetainfoPlistValidator(meta_ufo_path, 3, ufo3_dir_list)
 
-    fail_list = meta_validator.run_xml_validation()
+    with pytest.raises(SystemExit) as pytest_wrapped_e:
+        fail_list = meta_validator.run_xml_validation()
 
-    assert len(fail_list) == 1
-    assert 'metainfo.plist failed XML validation' in fail_list[0].test_long_stdstream_string
+        assert len(fail_list) == 1
+        assert 'metainfo.plist failed XML validation' in fail_list[0].test_long_stdstream_string
+    out, err = capsys.readouterr()
+    assert pytest_wrapped_e.type == SystemExit
+    assert pytest_wrapped_e.value.code == 1
+    assert 'UFO3-XMLmeta.ufo' in out
+    assert 'metainfo.plist' in out
 
 
 def test_validators_plist_ufo2_metainfo_version_fail(capsys):
@@ -570,4 +583,99 @@ def test_validators_plist_ufo3_lib_ufolib_import_fail():
     assert isinstance(fail_list, list)
     assert len(fail_list) == 1
     assert 'lib.plist' in fail_list[0].test_long_stdstream_string
+
+
+# ///////////////////////////////////////////////////////
+#
+#  contents.plist validator tests
+#
+# ///////////////////////////////////////////////////////
+
+# Success tests
+
+def test_validators_plist_ufo2_contents_success():
+    lib_validator = plistvalidators.ContentsPlistValidator(ufo2_test_success_path, 2, ufo2_dir_list)
+
+    xml_fail_list = lib_validator.run_xml_validation()
+    ufolib_fail_list = lib_validator.run_ufolib_import_validation()
+
+    assert isinstance(xml_fail_list, list)
+    assert isinstance(ufolib_fail_list, list)
+    assert len(xml_fail_list) == 0
+    assert len(ufolib_fail_list) == 0
+
+
+def test_validators_plist_ufo3_contents_success():
+    lib_validator = plistvalidators.ContentsPlistValidator(ufo3_test_success_path, 3, ufo3_dir_list)
+
+    xml_fail_list = lib_validator.run_xml_validation()
+    ufolib_fail_list = lib_validator.run_ufolib_import_validation()
+
+    assert isinstance(xml_fail_list, list)
+    assert isinstance(ufolib_fail_list, list)
+    assert len(xml_fail_list) == 0
+    assert len(ufolib_fail_list) == 0
+
+
+# Fail tests
+
+def test_validators_plist_ufo2_contents_missing_file_fail():
+    contents_ufo_path = os.path.join(contents_test_dir_failpath, 'UFO2-MissingCont.ufo')
+    contents_validator = plistvalidators.ContentsPlistValidator(contents_ufo_path, 2, ufo2_dir_list)
+
+    xml_fail_list = contents_validator.run_xml_validation()
+    ufolib_fail_list = contents_validator.run_ufolib_import_validation()
+
+    assert isinstance(xml_fail_list, list)
+    assert isinstance(ufolib_fail_list, list)
+    assert len(xml_fail_list) == 0
+    assert len(ufolib_fail_list) == 0
+
+
+def test_validators_plist_ufo3_contents_missing_file_fail():
+    contents_ufo_path = os.path.join(contents_test_dir_failpath, 'UFO3-MissingCont.ufo')
+    contents_validator = plistvalidators.ContentsPlistValidator(contents_ufo_path, 3, ufo3_dir_list)
+
+    xml_fail_list = contents_validator.run_xml_validation()
+    ufolib_fail_list = contents_validator.run_ufolib_import_validation()
+
+    assert isinstance(xml_fail_list, list)
+    assert isinstance(ufolib_fail_list, list)
+    assert len(xml_fail_list) == 0
+    assert len(ufolib_fail_list) == 0
+
+
+def test_validators_plist_ufo2_contents_xml_fail(capsys):
+    contents_ufo_path = os.path.join(contents_test_dir_failpath, 'UFO2-XMLcont.ufo')
+    contents_validator = plistvalidators.ContentsPlistValidator(contents_ufo_path, 2, ufo2_dir_list)
+
+    with pytest.raises(SystemExit) as pytest_wrapped_e:
+        xml_fail_list = contents_validator.run_xml_validation()
+
+        assert isinstance(xml_fail_list, list)
+        assert len(xml_fail_list) == 1
+        assert 'contents.plist' in xml_fail_list[0].test_long_stdstream_string
+    out, err = capsys.readouterr()
+    assert pytest_wrapped_e.type == SystemExit
+    assert pytest_wrapped_e.value.code == 1
+    assert 'UFO2-XMLcont.ufo' in out
+    assert 'contents.plist' in out
+
+
+def test_validators_plist_ufo3_contents_xml_fail(capsys):
+    contents_ufo_path = os.path.join(contents_test_dir_failpath, 'UFO3-XMLcont.ufo')
+    contents_validator = plistvalidators.ContentsPlistValidator(contents_ufo_path, 3, ufo3_dir_list)
+
+    with pytest.raises(SystemExit) as pytest_wrapped_e:
+        xml_fail_list = contents_validator.run_xml_validation()
+
+        assert isinstance(xml_fail_list, list)
+        assert len(xml_fail_list) == 1
+        assert 'contents.plist' in xml_fail_list[0].test_long_stdstream_string
+    out, err = capsys.readouterr()
+    assert pytest_wrapped_e.type == SystemExit
+    assert pytest_wrapped_e.value.code == 1
+    assert 'UFO3-XMLcont.ufo' in out
+    assert 'contents.plist' in out
+
 
