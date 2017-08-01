@@ -66,6 +66,7 @@ class MainRunner(object):
         print("   Found UFO v" + str(self.ufoversion))
         print("   Detected glyphs directories: ")
         for glyphs_dir in self.ufo_glyphs_dir_list:
+            # TODO: add glyphs directory validation here : confirm naming = 'glyphs.*'
             sys.stdout.write("     -- " + glyphs_dir[1] + " ")       # display the name of the specified glyphs dirs
             res = Result(glyphs_dir[1])
             if dir_exists(os.path.join(self.ufopath, glyphs_dir[1])):  # test for presence of specified glyphs dir

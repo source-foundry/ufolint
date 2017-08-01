@@ -26,6 +26,7 @@ groups_test_dir_failpath = os.path.join('tests', 'testfiles', 'ufo', 'fails', 'g
 kerning_test_dir_failpath = os.path.join('tests', 'testfiles', 'ufo', 'fails', 'kerningPL')
 lib_test_dir_failpath = os.path.join('tests', 'testfiles', 'ufo', 'fails', 'libPL')
 contents_test_dir_failpath = os.path.join('tests', 'testfiles', 'ufo', 'fails', 'contentsPL')
+layercontents_test_dir_failpath = os.path.join('tests', 'testfiles', 'ufo', 'fails', 'layercontentsPL')
 
 # ///////////////////////////////////////////////////////
 #
@@ -678,4 +679,143 @@ def test_validators_plist_ufo3_contents_xml_fail(capsys):
     assert 'UFO3-XMLcont.ufo' in out
     assert 'contents.plist' in out
 
+
+def test_validators_plist_ufo2_contents_ufolib_import_fail(capsys):
+    contents_ufo_path = os.path.join(contents_test_dir_failpath, 'UFO2-UFOlibError.ufo')
+    contents_validator = plistvalidators.ContentsPlistValidator(contents_ufo_path, 2, ufo2_dir_list)
+
+    with pytest.raises(SystemExit) as pytest_wrapped_e:
+        fail_list = contents_validator.run_ufolib_import_validation()
+
+        assert isinstance(fail_list, list)
+        assert len(fail_list) == 1
+        assert 'contents.plist' in fail_list[0].test_long_stdstream_string
+    out, err = capsys.readouterr()
+    assert pytest_wrapped_e.type == SystemExit
+    assert pytest_wrapped_e.value.code == 1
+    assert 'UFO2-UFOlibError.ufo' in out
+    assert 'contents.plist' in out
+
+
+def test_validators_plist_ufo3_contents_ufolib_import_fail(capsys):
+    contents_ufo_path = os.path.join(contents_test_dir_failpath, 'UFO3-UFOlibError.ufo')
+    contents_validator = plistvalidators.ContentsPlistValidator(contents_ufo_path, 3, ufo3_dir_list)
+
+    with pytest.raises(SystemExit) as pytest_wrapped_e:
+        fail_list = contents_validator.run_ufolib_import_validation()
+
+        assert isinstance(fail_list, list)
+        assert len(fail_list) == 1
+        assert 'contents.plist' in fail_list[0].test_long_stdstream_string
+    out, err = capsys.readouterr()
+    assert pytest_wrapped_e.type == SystemExit
+    assert pytest_wrapped_e.value.code == 1
+    assert 'UFO3-UFOlibError.ufo' in out
+    assert 'contents.plist' in out
+
+
+# ///////////////////////////////////////////////////////
+#
+#  layercontents.plist validator tests
+#
+# ///////////////////////////////////////////////////////
+
+# Success tests
+
+def test_validators_plist_ufo2_layercontents_success():
+    """
+    Not part of the UFO v2 spec so should not fail without the file in the source directory
+    """
+    lc_validator = plistvalidators.LayercontentsPlistValidator(ufo2_test_success_path, 2, ufo2_dir_list)
+
+    xml_fail_list = lc_validator.run_xml_validation()
+    ufolib_fail_list = lc_validator.run_ufolib_import_validation()
+
+    assert isinstance(xml_fail_list, list)
+    assert isinstance(ufolib_fail_list, list)
+    assert len(xml_fail_list) == 0
+    assert len(ufolib_fail_list) == 0
+
+
+def test_validators_plist_ufo3_layercontents_success():
+    """
+    UFO 3+ spec only
+    :return:
+    """
+    lc_validator = plistvalidators.LayercontentsPlistValidator(ufo3_test_success_path, 3, ufo3_dir_list)
+
+    xml_fail_list = lc_validator.run_xml_validation()
+    ufolib_fail_list = lc_validator.run_ufolib_import_validation()
+
+    assert isinstance(xml_fail_list, list)
+    assert isinstance(ufolib_fail_list, list)
+    assert len(xml_fail_list) == 0
+    assert len(ufolib_fail_list) == 0
+
+
+# Fail tests
+
+def test_validators_plist_ufo2_layercontents_missing_file_fail():
+    """
+    Not part of UFO v2 spec should not fail on missing file
+    """
+    lc_ufo_path = os.path.join(layercontents_test_dir_failpath, 'UFO2-MissingLC.ufo')
+    lc_validator = plistvalidators.LayercontentsPlistValidator(lc_ufo_path, 2, ufo2_dir_list)
+
+    xml_fail_list = lc_validator.run_xml_validation()
+    ufolib_fail_list = lc_validator.run_ufolib_import_validation()
+
+    assert isinstance(xml_fail_list, list)
+    assert isinstance(ufolib_fail_list, list)
+    assert len(xml_fail_list) == 0
+    assert len(ufolib_fail_list) == 0
+
+
+def test_validators_plist_ufo3_layercontents_missing_file_fail():
+    """
+    UFO v3+ spec only.
+    Does not fail here for missing file, missing mandatory file check is performed in runner.py module
+    """
+    lc_ufo_path = os.path.join(layercontents_test_dir_failpath, 'UFO3-MissingLC.ufo')
+    lc_validator = plistvalidators.LayercontentsPlistValidator(lc_ufo_path, 3, ufo3_dir_list)
+
+    xml_fail_list = lc_validator.run_xml_validation()
+    ufolib_fail_list = lc_validator.run_ufolib_import_validation()
+
+    assert isinstance(xml_fail_list, list)
+    assert isinstance(ufolib_fail_list, list)
+    assert len(xml_fail_list) == 0
+    assert len(ufolib_fail_list) == 0
+
+
+def test_validators_plist_ufo3_layercontents_xml_fail(capsys):
+    lc_ufo_path = os.path.join(layercontents_test_dir_failpath, 'UFO3-XMLlc.ufo')
+    lc_validator = plistvalidators.LayercontentsPlistValidator(lc_ufo_path, 3, ufo3_dir_list)
+
+    with pytest.raises(SystemExit) as pytest_wrapped_e:
+        xml_fail_list = lc_validator.run_xml_validation()
+
+        assert isinstance(xml_fail_list, list)
+        assert len(xml_fail_list) == 1
+    out, err = capsys.readouterr()
+    assert pytest_wrapped_e.type == SystemExit
+    assert pytest_wrapped_e.value.code == 1
+    assert 'UFO3-XMLlc.ufo' in out
+    assert 'layercontents.plist' in out
+
+
+def test_validators_plist_ufo3_layercontents_ufolib_import_fail(capsys):
+    lc_ufo_path = os.path.join(layercontents_test_dir_failpath, 'UFO3-UFOlibError.ufo')
+    lc_validator = plistvalidators.LayercontentsPlistValidator(lc_ufo_path, 3, ufo3_dir_list)
+
+    with pytest.raises(SystemExit) as pytest_wrapped_e:
+        fail_list = lc_validator.run_ufolib_import_validation()
+
+        assert isinstance(fail_list, list)
+        assert len(fail_list) == 1
+    out, err = capsys.readouterr()
+    assert pytest_wrapped_e.type == SystemExit
+    assert pytest_wrapped_e.value.code == 1
+    assert 'UFO3-UFOlibError.ufo' in out
+    assert 'layercontents.plist' in out
 
