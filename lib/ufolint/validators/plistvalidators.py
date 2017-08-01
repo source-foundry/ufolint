@@ -325,7 +325,6 @@ class LayerinfoPlistValidator(AbstractPlistValidator):
             try:
                 gs = GlyphSet(rel_dir_path, ufoFormatVersion=self.ufoversion)
                 gs.readLayerInfo(self.layerinfo_obj)
-                print(self.layerinfo_obj.__dict__)
                 res.test_failed = False
                 ss.stream_result(res)
             except Exception as e:
