@@ -32,8 +32,11 @@ def main():
         stdout(USAGE)
         sys.exit(0)
 
-    # TODO: add support for multiple UFO file tests in same command
-    hh = MainRunner(sys.argv[1])
-    hh.run()
+    for argument in sys.argv:
+        if argument[-4:] == ".ufo":
+            hh = MainRunner(argument)
+            hh.run()
+
+    sys.exit(0)  # if the script completes without status code 1 SystemExit being raised, then all tests passed
 
 
