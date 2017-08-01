@@ -249,7 +249,7 @@ class ContentsPlistValidator(AbstractPlistValidator):
         """
         ss = StdStreamer(self.ufopath)
         for glyphs_dir in self.ufoobj.glyphsdir_list:
-            res = Result(glyphs_dir)
+            res = Result(glyphs_dir[1])
             rel_dir_path = os.path.join(self.ufopath, glyphs_dir[1])
             try:
                 # read contents.plist with ufoLib as GlyphSet instantiation
@@ -319,12 +319,13 @@ class LayerinfoPlistValidator(AbstractPlistValidator):
         """
         ss = StdStreamer(self.ufopath)
         for glyphs_dir in self.ufoobj.glyphsdir_list:
-            res = Result(glyphs_dir)
+            res = Result(glyphs_dir[1])
             rel_dir_path = os.path.join(self.ufopath, glyphs_dir[1])
 
             try:
                 gs = GlyphSet(rel_dir_path, ufoFormatVersion=self.ufoversion)
                 gs.readLayerInfo(self.layerinfo_obj)
+                print(self.layerinfo_obj.__dict__)
                 res.test_failed = False
                 ss.stream_result(res)
             except Exception as e:
@@ -332,4 +333,4 @@ class LayerinfoPlistValidator(AbstractPlistValidator):
                 res.test_long_stdstream_string = "layerinfo.plist in " + rel_dir_path + " failed ufoLib import test with error: " + str(e)
                 self.test_fail_list.append(res)
                 ss.stream_result(res)
-            return self.test_fail_list
+        return self.test_fail_list
