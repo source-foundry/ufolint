@@ -27,6 +27,7 @@ kerning_test_dir_failpath = os.path.join('tests', 'testfiles', 'ufo', 'fails', '
 lib_test_dir_failpath = os.path.join('tests', 'testfiles', 'ufo', 'fails', 'libPL')
 contents_test_dir_failpath = os.path.join('tests', 'testfiles', 'ufo', 'fails', 'contentsPL')
 layercontents_test_dir_failpath = os.path.join('tests', 'testfiles', 'ufo', 'fails', 'layercontentsPL')
+layerinfo_test_dir_failpath = os.path.join('tests', 'testfiles', 'ufo', 'fails', 'layerinfoPL')
 
 # ///////////////////////////////////////////////////////
 #
@@ -819,3 +820,74 @@ def test_validators_plist_ufo3_layercontents_ufolib_import_fail(capsys):
     assert 'UFO3-UFOlibError.ufo' in out
     assert 'layercontents.plist' in out
 
+
+# ///////////////////////////////////////////////////////
+#
+#  layerinfo.plist validator tests
+#
+# ///////////////////////////////////////////////////////
+
+# Success tests
+
+def test_validators_plist_ufo2_layerinfo_success():
+    """
+    file is missing from UFO2 test directory.  Should not fail, not part of UFO2 spec
+    """
+    li_validator = plistvalidators.LayerinfoPlistValidator(ufo2_test_success_path, 2, ufo2_dir_list)
+
+    xml_fail_list = li_validator.run_xml_validation()
+    ufolib_fail_list = li_validator.run_ufolib_import_validation()
+
+    assert isinstance(xml_fail_list, list)
+    assert isinstance(ufolib_fail_list, list)
+    assert len(xml_fail_list) == 0
+    assert len(ufolib_fail_list) == 0
+
+
+def test_validators_plist_ufo3_layerinfo_success():
+    li_validator = plistvalidators.LayerinfoPlistValidator(ufo3_test_success_path, 3, ufo3_dir_list)
+
+    xml_fail_list = li_validator.run_xml_validation()
+    ufolib_fail_list = li_validator.run_ufolib_import_validation()
+
+    assert isinstance(xml_fail_list, list)
+    assert isinstance(ufolib_fail_list, list)
+    assert len(xml_fail_list) == 0
+    assert len(ufolib_fail_list) == 0
+
+
+# Fail tests
+
+def test_validators_plist_ufo3_layerinfo_missing_file_fail():
+    li_ufo_path = os.path.join(layerinfo_test_dir_failpath, 'UFO3-MissingLI.ufo')
+    li_validator = plistvalidators.LayerinfoPlistValidator(li_ufo_path, 3, ufo3_dir_list)
+
+    xml_fail_list = li_validator.run_xml_validation()
+    ufolib_fail_list = li_validator.run_ufolib_import_validation()
+
+    assert isinstance(xml_fail_list, list)
+    assert isinstance(ufolib_fail_list, list)
+    assert len(xml_fail_list) == 0
+    assert len(ufolib_fail_list) == 0
+
+
+def test_validators_plist_ufo3_layerinfo_xml_fail():
+    li_ufo_path = os.path.join(layerinfo_test_dir_failpath, 'UFO3-XMLli.ufo')
+    li_validator = plistvalidators.LayerinfoPlistValidator(li_ufo_path, 3, ufo3_dir_list)
+
+    xml_fail_list = li_validator.run_xml_validation()
+
+    assert isinstance(xml_fail_list, list)
+    assert len(xml_fail_list) == 1
+    assert 'layerinfo.plist' in xml_fail_list[0].test_long_stdstream_string
+
+
+def test_validators_plist_ufo3_layerinfo_ufolib_import_fail():
+    li_ufo_path = os.path.join(layerinfo_test_dir_failpath, 'UFO3-UFOlibError.ufo')
+    li_validator = plistvalidators.LayerinfoPlistValidator(li_ufo_path, 3, ufo3_dir_list)
+
+    fail_list = li_validator.run_ufolib_import_validation()
+
+    assert isinstance(fail_list, list)
+    assert len(fail_list) == 1
+    assert 'layerinfo.plist' in fail_list[0].test_long_stdstream_string
