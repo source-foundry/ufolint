@@ -262,8 +262,8 @@ class ContentsPlistValidator(AbstractPlistValidator):
                 res.test_failed = True
                 res.exit_failure = True  # mandatory file
                 res.test_long_stdstream_string = "contents.plist in " + rel_dir_path + " failed ufoLib import test with error: " + str(e)
-                ss.stream_result(res)
                 self.test_fail_list.append(res)
+                ss.stream_result(res)
         return self.test_fail_list
 
 
@@ -280,8 +280,8 @@ class LayercontentsPlistValidator(AbstractPlistValidator):
         """
         res = Result(self.testpath)
         ss = StdStreamer(self.ufopath)
-        if file_exists(self.testpath) is False:
-            res.test_failed = False     # not a mandatory file in UFO spec, test passes if missing
+        if file_exists(self.testpath) is False:   # should only meet this condition if not a mandatory file (runner.py checks)
+            res.test_failed = False
             ss.stream_result(res)
             return self.test_fail_list
         try:
@@ -291,10 +291,14 @@ class LayercontentsPlistValidator(AbstractPlistValidator):
             res.test_failed = False
             ss.stream_result(res)
         except Exception as e:
-            res.test_failed = True
+            if self.testpath in self.mandatory_filepaths_list:  # if part of mandatory file spec for UFO version, fail early
+                res.test_failed = True
+                res.exit_failure = True   # fail early b/c it is mandatory part of spec
+            else:
+                res.test_failed = True    # fail the test, but wait to report until all other tests complete
             res.test_long_stdstream_string = self.testpath + " failed ufoLib import test with error: " + str(e)
-            ss.stream_result(res)
             self.test_fail_list.append(res)
+            ss.stream_result(res)
         return self.test_fail_list
 
 
@@ -327,4 +331,5 @@ class LayerinfoPlistValidator(AbstractPlistValidator):
                 res.test_failed = True
                 res.test_long_stdstream_string = "layerinfo.plist in " + rel_dir_path + " failed ufoLib import test with error: " + str(e)
                 self.test_fail_list.append(res)
+                ss.stream_result(res)
             return self.test_fail_list
