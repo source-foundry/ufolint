@@ -182,15 +182,12 @@ def test_ufolint_stdout_stream_results_list_with_fail_with_exit(capsys):
 
 
 def test_ufolint_stdout_stream_final_failures_all_successes(capsys):
-    # the final failures list should be empty and should exit with status code 0
-    with pytest.raises(SystemExit) as pytest_wrapped_e:
-        ss = StdStreamer(test_ufopath)
-        fail_result_list = []  # there were no failures included in the fail list
-        ss.stream_final_failures(fail_result_list)
-
+    # the final failures list should be empty
+    ss = StdStreamer(test_ufopath)
+    fail_result_list = []  # there were no failures included in the fail list
+    ss.stream_final_failures(fail_result_list)
     out, err = capsys.readouterr()
-    assert pytest_wrapped_e.type == SystemExit
-    assert pytest_wrapped_e.value.code == 0
+    assert 'All tests passed' in out
 
 
 def test_ufolint_stdout_stream_final_failures_singlefail(capsys):
