@@ -26,8 +26,8 @@ def run_all_glif_validations(ufoobj):
         print(" ")
         sys.stdout.write(" - " + glyphsdir + "  ")
         sys.stdout.flush()
+        res = Result(glyphsdir)
         try:
-            res = Result(glyphsdir)
             gs = GlyphSet(glyphsdir, ufoFormatVersion=ufoversion)   # create a ufoLib GlyphSet
             # do not report success for this, previous testing has passed this
         except Exception as e:
@@ -35,6 +35,7 @@ def run_all_glif_validations(ufoobj):
             res.test_long_stdstream_string = " Failed to read glif file paths from " + glyphsdir + ". Error: " + str(e)
             ss.stream_result(res)
             test_error_list.append(res)
+            break  # break out loop as it was not possible to read the GlyphSet for this directory, gs not instantiated
 
         glif_count = 0  # reset glyphs directory .glif file counter
         for glyphname in gs.contents.keys():    # for each .glif file (read from glyph name in glyph set contents dict)

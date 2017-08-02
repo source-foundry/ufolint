@@ -891,3 +891,5 @@ def test_validators_plist_ufo3_layerinfo_ufolib_import_fail():
     assert isinstance(fail_list, list)
     assert len(fail_list) == 1
     assert 'layerinfo.plist' in fail_list[0].test_long_stdstream_string
+
+
