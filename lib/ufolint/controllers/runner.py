@@ -3,10 +3,10 @@
 
 import os
 import sys
-try:
+try:  # pragma nocoverage
     from plistlib import readPlist as load
     from plistlib import writePlist as dump
-except ImportError:
+except ImportError:  # pragma nocoverage
     from plistlib import load
     from plistlib import dump
 
@@ -75,6 +75,7 @@ class MainRunner(object):
             else:
                 res.test_failed = True
                 res.exit_failure = True
+                res.test_long_stdstream_string = "Unable to find the UFO directory " + glyphs_dir + " defined in layercontents.plist"
                 ss.stream_result(res)
             print(" ")
 
@@ -182,7 +183,6 @@ class MainRunner(object):
     #
     # =====================================
 
-
     def _check_layercontents_plist_exists(self):
         """
         UFO 3+ test for layercontents.plist file in the top level of UFO directory
@@ -234,18 +234,6 @@ class MainRunner(object):
             self.ufolib_reader = ufolib_reader
             res.test_failed = False
             ss.stream_result(res)
-        except UFOLibError as e:
-            res.test_failed = True
-            res.exit_failure = True
-            res.test_long_stdstream_string = "ufoLib raised a UFOLibError with import of " + self.ufopath + os.linesep+ str(e)
-            self.failures_list.append(res)
-            ss.stream_result(res)
-        except TypeError as e:
-            res.test_failed = True
-            res.exit_failure = True
-            res.test_long_stdstream_string = "ufoLib raised a TypeError with import of " + self.ufopath + os.linesep + str(e)
-            self.failures_list.append(res)
-            ss.stream_result(res)
         except Exception as e:
             res.test_failed = True
             res.exit_failure = True
@@ -280,17 +268,18 @@ class MainRunner(object):
         :return: None
         """
         ss = StdStreamer(self.ufopath)
-        if dir_exists(self.ufopath) is False:
+        if dir_exists(self.ufopath):
+            res = Result(self.ufopath)
+            res.test_failed = False
+            ss.stream_result(res)
+
+        else:
             res = Result(self.ufopath)
             res.test_failed = True
             res.exit_failure = True
             res.test_long_stdstream_string = self.ufopath + " does not appear to be a valid UFO directory"
             self.failures_list.append(res.test_long_stdstream_string)
-            ss.stream_result(res)  # raises sys.exit(1) on this failure, do not need to add to failures_list
-        else:
-            res = Result(self.ufopath)
-            res.test_failed = False
-            ss.stream_result(res)
+            ss.stream_result(res)  # raises sys.exit(1) on this failure
 
     def _validate_read_data_types_metainfo_plist(self):
         metainfo_plist_path = os.path.join(self.ufopath, 'metainfo.plist')
