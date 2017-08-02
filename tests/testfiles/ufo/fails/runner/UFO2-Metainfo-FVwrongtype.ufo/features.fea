@@ -1,0 +1,6 @@
+@myClass = [a b c];
+
+feature liga {
+  sub f i by fi;
+  sub f l by fl;
+} liga;
