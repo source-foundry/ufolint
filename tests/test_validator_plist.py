@@ -883,7 +883,7 @@ def test_validators_plist_ufo3_layerinfo_xml_fail():
 
 
 def test_validators_plist_ufo3_layerinfo_ufolib_import_fail():
-    li_ufo_path = os.path.join(layerinfo_test_dir_failpath, 'UFO3-UFOlibError.ufo')
+    li_ufo_path = os.path.join(layerinfo_test_dir_failpath, 'UFO3-UFOLibError.ufo')
     li_validator = plistvalidators.LayerinfoPlistValidator(li_ufo_path, 3, ufo3_dir_list)
 
     fail_list = li_validator.run_ufolib_import_validation()
