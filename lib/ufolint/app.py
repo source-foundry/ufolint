@@ -6,10 +6,10 @@
 # MIT License
 # ====================================================
 
+import os
 import sys
 
 from commandlines import Command
-from standardstreams import stdout, stderr
 
 from ufolint.settings import HELP, VERSION, USAGE
 from ufolint.controllers.runner import MainRunner
@@ -19,17 +19,17 @@ def main():
     c = Command()
 
     if c.does_not_validate_missing_args():
-        stderr("[ufolint] ERROR: Please include the appropriate arguments with your command.")
+        sys.stderr.write("[ufolint] ERROR: Please include one or more UFO directory arguments with your command." + os.linesep)
         sys.exit(1)
 
     if c.is_help_request():
-        stdout(HELP)
+        print(HELP)
         sys.exit(0)
     elif c.is_version_request():
-        stdout(VERSION)
+        print(VERSION)
         sys.exit(0)
     elif c.is_usage_request():
-        stdout(USAGE)
+        print(USAGE)
         sys.exit(0)
 
     for argument in sys.argv:
