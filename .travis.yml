@@ -12,10 +12,6 @@ matrix:
       env: TOX_ENV=py35
     - python: 3.6
       env: TOX_ENV=py36
-    - os: osx
-      osx_image: xcode8.3
-    - os: osx
-      osx_image: xcode9
 
 script: tox -e $TOX_ENV
 
