@@ -39,7 +39,7 @@ setup(
     platforms=['any'],
     packages=find_packages("lib"),
     package_dir={'': 'lib'},
-    install_requires=['commandlines', 'standardstreams', 'ufoLib'],
+    install_requires=['commandlines', 'ufoLib'],
     entry_points={
         'console_scripts': [
             'ufolint = ufolint.app:main'
