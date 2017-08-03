@@ -17,6 +17,7 @@ from ufolint.data.ufo import Ufo2, Ufo3
 from ufolint.stdoutput import StdStreamer
 from ufolint.utilities import file_exists, dir_exists
 from ufolint.validators.glifvalidators import run_all_glif_validations
+from ufolint.validators.imagesvalidators import run_all_images_validations
 from ufolint.validators.plistvalidators import MetainfoPlistValidator, FontinfoPlistValidator, GroupsPlistValidator
 from ufolint.validators.plistvalidators import KerningPlistValidator, LibPlistValidator, ContentsPlistValidator
 from ufolint.validators.plistvalidators import LayercontentsPlistValidator, LayerinfoPlistValidator
@@ -198,7 +199,9 @@ class MainRunner(object):
             images_dir_path = os.path.join(self.ufopath, 'images')
 
             if dir_exists(images_dir_path):
-                pass  # TODO: implement code for images testing with UFOReader.getImageDirectoryListing + .readImage
+                images_dir_failures = run_all_images_validations(self.ufoobj)
+                for images_failure_result in images_dir_failures:
+                    self.failures_list.append(images_failure_result)
             else:
                 sys.stdout.write("not present")  # not a mandatory directory, not a failure
         # [END] IMAGES DIRECTORY TESTS
