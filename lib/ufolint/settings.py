@@ -5,7 +5,7 @@
 # Version Number
 # ------------------------------------------------------------------------------
 major_version = "0"
-minor_version = "1"
+minor_version = "2"
 patch_version = "0"
 
 # ------------------------------------------------------------------------------
@@ -19,6 +19,13 @@ MIT License
 Source: https://github.com/source-foundry/ufolint
 ====================================================
 
+ufolint is a UFO source file linter.
+
+Usage:
+
+  $ ufolint [UFO path 1] ([UFO path2] [UFO path ...])
+  
+The application returns exit status code 0 if all tests are successful and exit status code 1 if any failures are detected.
 
 """
 
@@ -32,4 +39,4 @@ VERSION = "ufolint v" + major_version + "." + minor_version + "." + patch_versio
 # ------------------------------------------------------------------------------
 # Usage String
 # ------------------------------------------------------------------------------
-USAGE = "ufolint [UFO directory path]"
+USAGE = "ufolint [UFO path 1] ([UFO path2] [UFO path ...])"
