@@ -2,14 +2,16 @@
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN"
 "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<array>
+<dict>
+  <key>Group1</key>
   <array>
-    <string>public.default</string>
-    <string>glyphs</string>
+    <string>A</string>
+    <string>A.alt</string>
   </array>
+  <key>B</key>
   <array>
-    <string>public.background</string>
-    <string>glyphs.bogus</string>
+    <string>B</string>
+    <string>B.alt</string>
   </array>
-</array>
+</dict>
 </plist>

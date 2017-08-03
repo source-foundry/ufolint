@@ -14,6 +14,7 @@ ufo2_test_success_path = os.path.join('tests', 'testfiles', 'ufo', 'passes', 'UF
 ufo3_test_success_path = os.path.join('tests', 'testfiles', 'ufo', 'passes', 'UFO3-Pass.ufo')
 ufo_fail_dir_basepath = os.path.join('tests', 'testfiles', 'ufo', 'fails')
 
+
 # MainRunner class instantiation
 
 def test_ufolint_runner_ufo2_mainrunner_class_instantiation():
@@ -384,6 +385,80 @@ def test_ufolint_runner_ufolib_import_fail_test():
     mr = MainRunner(testpath)
 
     with pytest.raises(SystemExit) as pytest_wrapped_e:
+        mr.run()
+
+    assert pytest_wrapped_e.type == SystemExit
+    assert pytest_wrapped_e.value.code == 1
+
+
+#  -- features.fea validation
+def test_ufolint_runner_ufo2_featuresfea_success(capsys):
+    mr = MainRunner(ufo2_test_success_path)
+
+    mr.run()
+    out, err = capsys.readouterr()
+    assert '[features.fea] .' in out
+
+
+def test_ufolint_runner_ufo3_featuresfea_success(capsys):
+    mr = MainRunner(ufo3_test_success_path)
+
+    mr.run()
+    out, err = capsys.readouterr()
+    assert '[features.fea] .' in out
+
+
+def test_ufolint_runner_ufo2_featuresfea_missing(capsys):
+    test_path = os.path.join(ufo_fail_dir_basepath, 'featuresfea', 'UFO2-FeaturesFeaMissing.ufo')
+    mr = MainRunner(test_path)
+
+    mr.run()
+    out, err = capsys.readouterr()
+    assert '[features.fea] not present' in out
+
+
+def test_ufolint_runner_ufo3_featuresfea_missing(capsys):
+    test_path = os.path.join(ufo_fail_dir_basepath, 'featuresfea', 'UFO3-FeaturesFeaMissing.ufo')
+    mr = MainRunner(test_path)
+
+    mr.run()
+    out, err = capsys.readouterr()
+    assert '[features.fea] not present' in out
+
+
+#  -- data directory validations
+def test_ufolint_runner_ufo3_data_success(capsys):
+    mr = MainRunner(ufo3_test_success_path)
+
+    mr.run()
+    out, err = capsys.readouterr()
+    assert '[data] 2 data files' in out
+
+
+def test_ufolint_runner_ufo3_data_missing_data_dir_fail(capsys):
+    test_path = os.path.join(ufo_fail_dir_basepath, 'data', 'UFO3-DataDirNotPresent.ufo')
+
+    mr = MainRunner(test_path)
+    mr.run()
+    out, err = capsys.readouterr()
+    assert '[data] not present' in out
+
+
+def test_ufolint_runner_ufo3_data_empty_data_dir_fail(capsys):
+    test_path = os.path.join(ufo_fail_dir_basepath, 'data', 'UFO3-EmptyData.ufo')
+
+    mr = MainRunner(test_path)
+    mr.run()
+    out, err = capsys.readouterr()
+    assert '[data] empty' in out
+
+
+#  -- images directory tests in runner module (see test_validator_images for unit tests of validator function)
+def test_ufolint_runner_ufo3_images_fail_test(capsys):
+    test_path = os.path.join(ufo_fail_dir_basepath, 'images', 'UFO3-NonPNGImage.ufo')
+
+    with pytest.raises(SystemExit) as pytest_wrapped_e:
+        mr = MainRunner(test_path)
         mr.run()
 
     assert pytest_wrapped_e.type == SystemExit
