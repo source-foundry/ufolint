@@ -60,7 +60,7 @@ class MainRunner(object):
             self._validate_read_load_glyphsdirs_layercontents_plist() # validate layercontents.plist xml and load glyphs dirs
         elif self.ufoversion == 2:
             self.ufo_glyphs_dir_list = [['public.default', 'glyphs']]  # define as single glyphs directory for UFOv2
-        else:   # fail if unsupported UFO version (ufolint fail in case behind released UFO version)
+        else:   # pragma nocoverage fail if unsupported UFO version (ufolint fail in case behind released UFO version)
             sys.stderr.write(os.linesep + "[ufolint] UFO v" + self.ufoversion + " is not supported in ufolint" + os.linesep)
             sys.exit(1)
         print(" ")
@@ -76,7 +76,7 @@ class MainRunner(object):
             else:
                 res.test_failed = True
                 res.exit_failure = True
-                res.test_long_stdstream_string = "Unable to find the UFO directory " + glyphs_dir + " defined in layercontents.plist"
+                res.test_long_stdstream_string = "Unable to find the UFO directory '" + glyphs_dir[1] + "' defined in layercontents.plist"
                 ss.stream_result(res)
             print(" ")
 
@@ -183,7 +183,11 @@ class MainRunner(object):
 
             if dir_exists(data_dir_path):
                 ufo_reader = UFOReader(self.ufopath)
-                data_list = ufo_reader.getDataDirectoryListing()
+                raw_data_list = ufo_reader.getDataDirectoryListing()
+                data_list = []
+                for item in raw_data_list:
+                    if not item[0] == ".":   # eliminate dotfiles picked up by the ufoLib method (e.g. .DS_Store on OSX)
+                        data_list.append(item)
                 if len(data_list) == 0:
                     sys.stdout.write("empty")
                 else:
