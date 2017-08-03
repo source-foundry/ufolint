@@ -10,7 +10,7 @@ except ImportError:  # pragma nocoverage
     from plistlib import load
     from plistlib import dump
 
-from ufoLib import UFOReader, UFOLibError
+from ufoLib import UFOReader
 
 from ufolint.data.tstobj import Result
 from ufolint.data.ufo import Ufo2, Ufo3
@@ -162,13 +162,53 @@ class MainRunner(object):
 
         # [END] plist FILE VALIDATION TESTS
 
+        # [START] features.fea TESTS
+        print(" ")
+        ss.stream_testname("features.fea")
+        ff_path = os.path.join(self.ufopath, 'features.fea')
+        res = Result(ff_path)
+        if file_exists(ff_path):
+            res.test_failed = False
+            ss.stream_result(res)
+        else:
+            sys.stdout.write("not present")  # not a mandatory file, not a failure
+        # [END] features.fea TESTS
+
+        # [START] DATA DIRECTORY TESTS - no fails in these tests, reporting only
+        if self.ufoversion == 3:  # UFOv3+ only
+            print(" ")
+            ss.stream_testname("data")
+            data_dir_path = os.path.join(self.ufopath, 'data')
+
+            if dir_exists(data_dir_path):
+                ufo_reader = UFOReader(self.ufopath)
+                data_list = ufo_reader.getDataDirectoryListing()
+                if len(data_list) == 0:
+                    sys.stdout.write("empty")
+                else:
+                    sys.stdout.write(str(len(data_list)) + " data files")
+            else:
+                sys.stdout.write("not present")   # not a mandatory directory, not a failure
+        # [END] DATA DIRECTORY TESTS
+
+        # [START] IMAGES DIRECTORY TESTS
+        if self.ufoversion == 3:   # UFO v3+ only
+            print(" ")
+            ss.stream_testname("images")
+            images_dir_path = os.path.join(self.ufopath, 'images')
+
+            if dir_exists(images_dir_path):
+                pass  # TODO: implement code for images testing with UFOReader.getImageDirectoryListing + .readImage
+            else:
+                sys.stdout.write("not present")  # not a mandatory directory, not a failure
+        # [END] IMAGES DIRECTORY TESTS
+
         # [START] *.glif VALIDATION TESTS
         print(" ")
         ss.stream_testname("*.glif spec")
         glif_validation_failures = run_all_glif_validations(self.ufoobj)
         for glif_failure_result in glif_validation_failures:
             self.failures_list.append(glif_failure_result)
-
         # [END] *.glif VALIDATION TESTS
 
         # TESTS COMPLETED --------------------------------------------------------------------------
