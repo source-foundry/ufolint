@@ -17,6 +17,10 @@ script: tox -e $TOX_ENV
 
 install:
     - pip install tox
+    - pip install --user codecov
+
+after_success:
+  - codecov
 
 notifications:
   email: false
