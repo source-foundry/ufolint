@@ -17,12 +17,6 @@ script: tox -e $TOX_ENV
 
 install:
     - pip install tox
-    - pip install codecov
-
-after_success:
-  - coverage run --source ufolint -m py.test
-  - coverage report -m
-  - codecov
 
 notifications:
   email: false
