@@ -20,7 +20,7 @@ The application performs a UFO version specific static analysis of the source te
   - *.plist file property list value checks
   - *.plist file property list value type checks
   - fontinfo.plist OpenType property naming conventions
-  - fontinfo.plist data validations
+  - fontinfo.plist OpenType property data validations
   - *.glif file format version testing
   - *.glif file outline, attribute, anchor, guideline, image, note validations
   - images follow UFO v3+ png specification
