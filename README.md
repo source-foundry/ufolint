@@ -62,6 +62,12 @@ For critical failures that prevent the completion of further testing, ufolint ex
 
 ufolint provides verbose, useful error messages that include the file(s) of concern, the error type, and in many cases, the problematic line in the file.
 
+
+## Acknowledgments
+
+Built with the fantastic [ufoLib library](https://github.com/unified-font-object/ufoLib) where the lion's share of validation work has been performed!
+
+
 ## License
 
 [MIT License](https://github.com/source-foundry/ufolint/blob/master/docs/LICENSE)
