@@ -1,10 +1,14 @@
-## ufolint
+# ufolint
 
 [![Build Status](https://travis-ci.org/source-foundry/ufolint.svg?branch=master)](https://travis-ci.org/source-foundry/ufolint) [![Build status](https://ci.appveyor.com/api/projects/status/lsuj8p7myp6mdo2e/branch/master?svg=true)](https://ci.appveyor.com/project/chrissimpkins/ufolint/branch/master) [![codecov](https://codecov.io/gh/source-foundry/ufolint/branch/master/graph/badge.svg)](https://codecov.io/gh/source-foundry/ufolint)
 
-# ufolint
 
 ufolint is a source file linter for typeface development in [Unified Font Object](http://unifiedfontobject.org/) (UFO) source code.  It was designed for continuous integration testing of UFO source contributions to typeface projects. 
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/source-foundry/ufolint/images/images/ufolint_example.gif"/>
+</p>
+
 
 The application performs a UFO version specific static analysis of the source against the [UFO v2 and v3 specifications](http://unifiedfontobject.org/) for issues that include:
 
