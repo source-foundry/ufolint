@@ -10,7 +10,7 @@ ufolint is a source file linter for typeface development in [Unified Font Object
 </p>
 
 
-The application performs a UFO version specific static analysis of the source against the [UFO v2 and v3 specifications](http://unifiedfontobject.org/) for issues that include:
+The application performs a UFO version specific static analysis of the source text files against the [UFO v2 and v3 specifications](http://unifiedfontobject.org/) for issues that include:
 
   - supported UFO version
   - mandatory files and directories
