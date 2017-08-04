@@ -12,15 +12,36 @@ ufolint is a source file linter for typeface development in [Unified Font Object
 
 The application performs a UFO version specific static analysis of the source against the [UFO v2 and v3 specifications](http://unifiedfontobject.org/) for issues that include:
 
+  - supported UFO version
   - mandatory files and directories
   - mandatory file path naming conventions
   - source defined file path and directory path consistency across source files
   - valid XML file format
-  - *.plist file property list value checks (with ufoLib)
-  - *.plist file property list value type checks (with ufoLib)
-  - *.glif file **TODO**
+  - *.plist file property list value checks
+  - *.plist file property list value type checks
+  - fontinfo.plist OpenType property naming conventions
+  - fontinfo.plist data validations
+  - *.glif file format version testing
+  - *.glif file outline, attribute, anchor, guideline, image, note validations
+  - images follow UFO v3+ png specification
+  - source files import into ufoLib library with ufoLib public methods
 
-These tests are performed through a combination of public  methods in the [ufoLib library](https://github.com/unified-font-object/ufoLib) (released by the authors of the UFO specification) and tests that are implemented in the ufolint application.  ufolint catches, reports, and exits with status code 1 for all exceptions raised in the ufoLib public read methods for all *.plist files and *.glif files in the UFO source.
+These tests are performed through a combination of public methods in the [ufoLib library](https://github.com/unified-font-object/ufoLib) (released by the authors of the UFO specification) and additional tests that are implemented in the ufolint application.  ufolint catches exceptions raised in the ufoLib public read methods for all *.plist file types and all ufoLib validations performed on *.glif files.  These are returned to users with informative error messages that indicate the filepath(s) of concern and exit status code 1.
+
+
+## Install and Upgrade
+
+Use the command:
+
+```
+$ pip install ufolint
+```
+
+Upgrade to a new version of the application with the command:
+
+```
+$ pip install --upgrade ufolint
+```
 
 
 ## Usage
@@ -43,4 +64,4 @@ ufolint provides verbose, useful error messages that include the file(s) of conc
 
 ## License
 
-MIT License
+[MIT License](https://github.com/source-foundry/ufolint/blob/master/docs/LICENSE)
