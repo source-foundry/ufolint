@@ -33,6 +33,11 @@ The application performs a UFO version specific static analysis of the source te
 These tests are performed through a combination of public methods in the [ufoLib library](https://github.com/unified-font-object/ufoLib) (released by the authors of the UFO specification) and additional tests that are implemented in the ufolint application.  ufolint catches exceptions raised in the ufoLib public read methods for all *.plist file types and all ufoLib validations performed on *.glif files.  These are returned to users with informative error messages that indicate the filepath(s) of concern and exit status code 1.
 
 
+# Install and Upgrade
+
+ufolint can be run locally or with remote CI testing services.
+
+
 ## Local Install and Upgrade
 
 Use the command:
@@ -48,7 +53,7 @@ $ pip install --upgrade ufolint
 ```
 
 
-## Usage
+## Local Usage
 
 The process is fully automated.  Simply point ufolint to one or more UFO source directories and it takes care of the rest.  ufolint exits with status code 0 if all tests pass and exits with status code 1 if any tests fail.
 
