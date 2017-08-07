@@ -9,6 +9,10 @@ ufolint is a source file linter for typeface development in [Unified Font Object
   <img src="https://raw.githubusercontent.com/source-foundry/ufolint/images/images/ufolint_example.gif"/>
 </p>
 
+<p align="center">
+  <img src ="https://raw.githubusercontent.com/source-foundry/ufolint/images/images/ufolint_travis_example-crunch.png" />
+</p>
+
 
 The application performs a UFO version specific static analysis of the source text files against the [UFO v2 and v3 specifications](http://unifiedfontobject.org/) for issues that include:
 
@@ -97,6 +101,11 @@ notifications:
 - **Step 4**: Replace the `VARIANT=src/Test-*.ufo` lines in the `.travis.yml` file with the actual paths to your UFO source files after the `=` character.  Use one line per variant and add or subtract lines as necessary to test the desired source UFO directories in the repository.  These should be relative paths from the root of your git repository.
 
 This Travis setting structure performs the variant tests in parallel for each of the variants specified under the `env` field of the Travis settings file.  Each variant will be labeled on the Travis testing page like this:
+
+
+<p align="center">
+  <img src ="https://raw.githubusercontent.com/source-foundry/ufolint/images/images/parallel_ufolint_jobs-crunch.png" />
+</p>
 
 
 - **Step 5**: With each new commit pushed to your Github repository (or any new pull request submitted by others) Travis is automatically notified and performs the ufolint tests on the modified (or proposed modifications for pull requests) UFO source.  You can view the test results on your Travis account page for the repository.
