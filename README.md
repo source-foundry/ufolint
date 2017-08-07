@@ -63,9 +63,54 @@ For critical failures that prevent the completion of further testing, ufolint ex
 ufolint provides verbose, useful error messages that include the file(s) of concern, the error type, and in many cases, the problematic line in the file.
 
 
+### Travis CI Setup
+
+To continuously test your UFO source changes on [Travis](https://travis-ci.org) with each commit pushed or pull request submitted to your Github repository, use these initial two steps from the [Travis Getting Started Guide](https://docs.travis-ci.com/user/getting-started/):
+
+- **Step 1**: [Sign in to Travis](https://travis-ci.org/auth) with your Github account
+- **Step 2**: Go to your [Travis Profile page](https://travis-ci.org/profile) and enable Travis for the typeface repository where you would like to enable ufolint testing
+
+Then in your Github repository, 
+
+- **Step 3**: Add a file on the path `.travis.yml` in the root of your Github repository that includes the following text:
+
+##### .travis.yml
+
+```yaml
+sudo: false
+language: python
+
+env:
+  - VARIANT=src/Test-Regular.ufo
+  - VARIANT=src/Test-Bold.ufo
+  - VARIANT=src/Test-Italic.ufo
+  - VARIANT=src/Test-BoldItalic.ufo
+
+before_script: pip install ufolint
+
+script: "ufolint $VARIANT"
+
+notifications:
+  email: false
+```
+
+- **Step 4**: Replace the `VARIANT=src/Test-*.ufo` lines in the `.travis.yml` file with the actual paths to your UFO source files after the `=` character.  Use one line per variant and add or subtract lines as necessary to test the desired source UFO directories in the repository.  These should be relative paths from the root of your git repository.
+
+This Travis setting structure performs the variant tests in parallel for each of the variants specified under the `env` field of the Travis settings file.  Each variant will be labeled on the Travis testing page like this:
+
+
+- **Step 5**: With each new commit pushed to your Github repository (or any new pull request submitted by others) Travis is automatically notified and performs the ufolint tests on the modified (or proposed modifications for pull requests) UFO source.  You can view the test results on your Travis account page for the repository.
+
+- **Optional**: To add a Travis test result badge to your repository README page, insert the following Markdown in your README page and modify `[ACCOUNT]` and `[REPOSITORY]` with your Travis account and repository details:
+
+```
+[![Build Status](https://travis-ci.org/[ACCOUNT]/[REPOSITORY].svg?branch=master)](https://travis-ci.org/[ACCOUNT]/[REPOSITORY])
+```
+
+
 ## Acknowledgments
 
-Built with the fantastic [ufoLib library](https://github.com/unified-font-object/ufoLib) where the lion's share of validation work has been performed!
+Built with the fantastic [ufoLib library](https://github.com/unified-font-object/ufoLib) where a majority of the UFO validation work has been performed!
 
 
 ## License
