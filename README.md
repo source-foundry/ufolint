@@ -33,7 +33,7 @@ The application performs a UFO version specific static analysis of the source te
 These tests are performed through a combination of public methods in the [ufoLib library](https://github.com/unified-font-object/ufoLib) (released by the authors of the UFO specification) and additional tests that are implemented in the ufolint application.  ufolint catches exceptions raised in the ufoLib public read methods for all *.plist file types and all ufoLib validations performed on *.glif files.  These are returned to users with informative error messages that indicate the filepath(s) of concern and exit status code 1.
 
 
-## Install and Upgrade
+## Local Install and Upgrade
 
 Use the command:
 
@@ -67,7 +67,7 @@ For critical failures that prevent the completion of further testing, ufolint ex
 ufolint provides verbose, useful error messages that include the file(s) of concern, the error type, and in many cases, the problematic line in the file.
 
 
-### Travis CI Setup
+## Travis CI Setup
 
 To continuously test your UFO source changes on [Travis](https://travis-ci.org) with each commit pushed or pull request submitted to your Github repository, use these initial two steps from the [Travis Getting Started Guide](https://docs.travis-ci.com/user/getting-started/):
 
