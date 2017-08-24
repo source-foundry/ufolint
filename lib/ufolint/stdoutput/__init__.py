@@ -29,10 +29,10 @@ class StdStreamer(object):
         if resultobj.test_failed is True:
             self._stream_short(self.short_fail_string)
             if resultobj.exit_failure is True:
-                fail_string = self.ufopath + " failed! Exit with status code 1"
+                fail_string = self.ufopath + " failed ufolint testing! Exit with status code 1"
                 print(os.linesep)
                 print("=" * len(fail_string))
-                print(self.ufopath + " failed! Exit with status code 1")
+                print(self.ufopath + " failed ufolint testing! Exit with status code 1")
                 print("=" * len(fail_string))
                 print(" ")
                 print("Test result that led to failure:")
@@ -45,7 +45,7 @@ class StdStreamer(object):
     def stream_final_failures(self, result_list):
         if len(result_list) > 0:
             print(" ")
-            fail_string = self.ufopath + " failed! Exit with status code 1"
+            fail_string = self.ufopath + " failed ufolint testing! Exit with status code 1"
             print(" ")
             print("=" * len(fail_string))
             print(fail_string)
@@ -59,7 +59,7 @@ class StdStreamer(object):
                 print(self.fail_long_indicator + " " + resultobj.test_long_stdstream_string)
             sys.exit(1)
         else:
-            success_string = self.ufopath + " - All tests passed!"
+            success_string = self.ufopath + " - All ufolint tests passed!"
             print(" ")
             print(" ")
             print("=" * len(success_string))

@@ -35,6 +35,7 @@ class MainRunner(object):
     def run(self):
         # Print UFO filepath header
         print(" ")
+        print("ufolint:")
         print('~' * len(self.ufopath))
         print(self.ufopath)
         print('~' * len(self.ufopath))

@@ -187,7 +187,7 @@ def test_ufolint_stdout_stream_final_failures_all_successes(capsys):
     fail_result_list = []  # there were no failures included in the fail list
     ss.stream_final_failures(fail_result_list)
     out, err = capsys.readouterr()
-    assert 'All tests passed' in out
+    assert 'All ufolint tests passed' in out
 
 
 def test_ufolint_stdout_stream_final_failures_singlefail(capsys):
