@@ -65,6 +65,3 @@ class StdStreamer(object):
             print("=" * len(success_string))
             print(success_string)
             print("=" * len(success_string))
-            # sys.exit(0)  exit should not occur here so that can support multi UFO testing.  Exit code 0 is in top level app.py module
-
-
