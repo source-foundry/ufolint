@@ -94,7 +94,7 @@ class MetainfoPlistValidator(AbstractPlistValidator):
             res.test_long_stdstream_string = "metainfo.plist is not available on the path " + self.testpath
             ss.stream_result(res)
         try:
-            ufolib_reader = UFOReader(self.ufopath)
+            ufolib_reader = UFOReader(self.ufopath, validate=True)
             ufolib_reader.readMetaInfo()
             res.test_failed = False
             ss.stream_result(res)
@@ -131,7 +131,7 @@ class FontinfoPlistValidator(AbstractPlistValidator):
             return self.test_fail_list
         try:
             # read fontinfo.plist with ufoLib - the ufoLib library performs type validations on values on read
-            ufolib_reader = UFOReader(self.ufopath)
+            ufolib_reader = UFOReader(self.ufopath, validate=True)
             ufolib_reader.readInfo(self.fontinfo_obj)
             res.test_failed = False
             ss.stream_result(res)
@@ -162,7 +162,7 @@ class GroupsPlistValidator(AbstractPlistValidator):
             return self.test_fail_list
         try:
             # read groups.plist with ufoLib - the ufoLib library performs type validations on values on read
-            ufolib_reader = UFOReader(self.ufopath)
+            ufolib_reader = UFOReader(self.ufopath, validate=True)
             ufolib_reader.readGroups()
             res.test_failed = False
             ss.stream_result(res)
@@ -193,7 +193,7 @@ class KerningPlistValidator(AbstractPlistValidator):
             return self.test_fail_list
         try:
             # read kerning.plist with ufoLib - the ufoLib library performs type validations on values on read
-            ufolib_reader = UFOReader(self.ufopath)
+            ufolib_reader = UFOReader(self.ufopath, validate=True)
             ufolib_reader.readKerning()
             res.test_failed = False
             ss.stream_result(res)
@@ -224,7 +224,7 @@ class LibPlistValidator(AbstractPlistValidator):
             return self.test_fail_list
         try:
             # read lib.plist with ufoLib - the ufoLib library performs type validations on values on read
-            ufolib_reader = UFOReader(self.ufopath)
+            ufolib_reader = UFOReader(self.ufopath, validate=True)
             ufolib_reader.readLib()
             res.test_failed = False
             ss.stream_result(res)
@@ -255,7 +255,7 @@ class ContentsPlistValidator(AbstractPlistValidator):
                 # read contents.plist with ufoLib as GlyphSet instantiation
                 # the ufoLib library performs type validations on values on read
                 # glyphs_dir_list is a list of lists mapped to glyphs dir name, glyphs dir path
-                gs = GlyphSet(rel_dir_path, ufoFormatVersion=self.ufoversion)  # test for raised exceptions
+                gs = GlyphSet(rel_dir_path, ufoFormatVersion=self.ufoversion, validateRead=True)  # test for raised exceptions
                 res.test_failed = False
                 ss.stream_result(res)
             except Exception as e:
@@ -286,7 +286,7 @@ class LayercontentsPlistValidator(AbstractPlistValidator):
             return self.test_fail_list
         try:
             # read layercontents.plist with ufoLib - the ufoLib library performs type validations on values on read
-            ufolib_reader = UFOReader(self.ufopath)
+            ufolib_reader = UFOReader(self.ufopath, validate=True)
             ufolib_reader.getLayerNames()
             res.test_failed = False
             ss.stream_result(res)
@@ -323,7 +323,7 @@ class LayerinfoPlistValidator(AbstractPlistValidator):
             rel_dir_path = os.path.join(self.ufopath, glyphs_dir[1])
 
             try:
-                gs = GlyphSet(rel_dir_path, ufoFormatVersion=self.ufoversion)
+                gs = GlyphSet(rel_dir_path, ufoFormatVersion=self.ufoversion, validateRead=True)
                 gs.readLayerInfo(self.layerinfo_obj)
                 res.test_failed = False
                 ss.stream_result(res)
