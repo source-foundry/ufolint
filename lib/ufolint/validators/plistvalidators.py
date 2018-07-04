@@ -255,7 +255,7 @@ class ContentsPlistValidator(AbstractPlistValidator):
                 # read contents.plist with ufoLib as GlyphSet instantiation
                 # the ufoLib library performs type validations on values on read
                 # glyphs_dir_list is a list of lists mapped to glyphs dir name, glyphs dir path
-                gs = GlyphSet(rel_dir_path, ufoFormatVersion=self.ufoversion, validateRead=True)  # test for raised exceptions
+                GlyphSet(rel_dir_path, ufoFormatVersion=self.ufoversion, validateRead=True)  # test for raised exceptions
                 res.test_failed = False
                 ss.stream_result(res)
             except Exception as e:
