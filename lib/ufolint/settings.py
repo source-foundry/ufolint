@@ -24,7 +24,7 @@ ufolint is a UFO source file linter.
 Usage:
 
   $ ufolint [UFO path 1] ([UFO path2] [UFO path ...])
-  
+
 The application returns exit status code 0 if all tests are successful and exit status code 1 if any failures are detected.
 
 See documentation on the source repository (link above) for testing details.
