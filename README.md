@@ -3,7 +3,7 @@
 [![Build Status](https://semaphoreci.com/api/v1/sourcefoundry/ufolint/branches/master/shields_badge.svg)](https://semaphoreci.com/sourcefoundry/ufolint)
 [![Build status](https://ci.appveyor.com/api/projects/status/lsuj8p7myp6mdo2e/branch/master?svg=true)](https://ci.appveyor.com/project/chrissimpkins/ufolint/branch/master) 
 [![codecov](https://codecov.io/gh/source-foundry/ufolint/branch/master/graph/badge.svg)](https://codecov.io/gh/source-foundry/ufolint)
-
+[![PyPI](https://img.shields.io/pypi/v/ufolint.svg)](https://pypi.org/project/ufolint)
 
 ufolint is a source file linter for typeface development in [Unified Font Object](http://unifiedfontobject.org/) (UFO) source code.  It was designed for continuous integration testing of UFO source contributions to typeface projects. 
 
