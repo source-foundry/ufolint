@@ -5,10 +5,8 @@ import os
 import sys
 try:  # pragma nocoverage
     from plistlib import readPlist as load
-    from plistlib import writePlist as dump
 except ImportError:  # pragma nocoverage
     from plistlib import load
-    from plistlib import dump
 
 from ufoLib import UFOReader
 
@@ -58,7 +56,7 @@ class MainRunner(object):
         self._check_ufo_import_and_define_ufo_version()   # confirm ufoLib can import directory. defines UFOReader object as class property
         if self.ufoversion == 3:
             self._check_layercontents_plist_exists()                  # tests for presence of a layercontents.plist in root of UFO
-            self._validate_read_load_glyphsdirs_layercontents_plist() # validate layercontents.plist xml and load glyphs dirs
+            self._validate_read_load_glyphsdirs_layercontents_plist()  # validate layercontents.plist xml and load glyphs dirs
         elif self.ufoversion == 2:
             self.ufo_glyphs_dir_list = [['public.default', 'glyphs']]  # define as single glyphs directory for UFOv2
         else:   # pragma nocoverage fail if unsupported UFO version (ufolint fail in case behind released UFO version)
@@ -371,4 +369,3 @@ class MainRunner(object):
             res.exit_failure = True
             res.test_long_stdstream_string = "Failed to read " + layercontents_plist_path + ". Error: " + str(e)
             ss.stream_result(res)
-
