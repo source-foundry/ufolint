@@ -1,5 +1,13 @@
 ## Changelog
 
+### v0.3.0
+
+- updated ufoLib dependency to v2.2.1
+- modified ufoLib.UFOReader instantiation in order to continue to support validation on UFO file reads after the ufoLib dependency changes
+- modified ufoLib.glifLib.GlyphSet instantiation in order to continue to support validation on UFO file reads after the ufoLib dependency changes
+- added Python 3.7 interpreter testing in CI testing settings files
+- eliminated Python 3.4 interpreter testing in CI testing settings files
+
 ### v0.2.2
 
 - updated ufoLib dependency to v2.1.1 (PR #6)
