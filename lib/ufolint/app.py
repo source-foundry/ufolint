@@ -38,4 +38,3 @@ def main():
             hh.run()
 
     sys.exit(0)  # if the script completes without status code 1 SystemExit being raised, then all tests passed
-
