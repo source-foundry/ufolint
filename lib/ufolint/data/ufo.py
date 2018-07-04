@@ -120,5 +120,3 @@ class Ufo3(Ufo):
             glyphsdir_path = os.path.join(self.ufopath, glyphsdir[1])
             glyphsdir_path_list.append(glyphsdir_path)
         return glyphsdir_path_list
-
-
