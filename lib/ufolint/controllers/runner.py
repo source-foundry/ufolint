@@ -183,7 +183,7 @@ class MainRunner(object):
             data_dir_path = os.path.join(self.ufopath, 'data')
 
             if dir_exists(data_dir_path):
-                ufo_reader = UFOReader(self.ufopath)
+                ufo_reader = UFOReader(self.ufopath, validate=True)
                 raw_data_list = ufo_reader.getDataDirectoryListing()
                 data_list = []
                 for item in raw_data_list:
@@ -277,7 +277,7 @@ class MainRunner(object):
         ss = StdStreamer(self.ufopath)
         res = Result(self.ufopath)
         try:
-            ufolib_reader = UFOReader(self.ufopath)
+            ufolib_reader = UFOReader(self.ufopath, validate=True)
             self.ufoversion = ufolib_reader.formatVersion
             self.ufolib_reader = ufolib_reader
             res.test_failed = False
