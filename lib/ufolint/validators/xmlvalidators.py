@@ -3,10 +3,8 @@
 
 try:  # pragma: no cover
     import xml.etree.cElementTree as Etree            # python 2
-    from xml.etree.cElementTree import ParseError
 except ImportError:  # pragma: no cover
     import xml.etree.ElementTree as Etree             # python 3
-    from xml.etree.ElementTree import ParseError
 
 
 def is_valid_xml_path(filepath):
