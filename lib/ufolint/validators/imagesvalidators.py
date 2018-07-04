@@ -42,4 +42,3 @@ def run_all_images_validations(ufoobj):
                     test_error_list.append(res)    # add to error list returned to calling code
                     ss.stream_result(res)
     return test_error_list   # return list of identified errors to the calling code
-
