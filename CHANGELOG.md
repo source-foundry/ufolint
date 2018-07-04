@@ -1,5 +1,13 @@
 ## Changelog
 
+### v0.3.1
+
+- added license to Python wheels
+- source formatting changes
+- plistvalidators module: eliminated unnecessary assignment
+- runner module: eliminated unnecessary import
+- xmlvalidators module: eliminated unnecessary import
+
 ### v0.3.0
 
 - updated ufoLib dependency to v2.2.1
