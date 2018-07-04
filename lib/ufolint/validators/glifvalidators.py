@@ -28,7 +28,7 @@ def run_all_glif_validations(ufoobj):
         sys.stdout.flush()
         res = Result(glyphsdir)
         try:
-            gs = GlyphSet(glyphsdir, ufoFormatVersion=ufoversion)   # create a ufoLib GlyphSet
+            gs = GlyphSet(glyphsdir, ufoFormatVersion=ufoversion, validateRead=True)   # create a ufoLib GlyphSet
             # do not report success for this, previous testing has passed this
         except Exception as e:
             res.test_failed = True
