@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.3.2
+
+- updated ufoLib dependency to v2.3.1
+
 ### v0.3.1
 
 - added license to Python wheels
