@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.3.3
+
+- updated ufoLib dependency to v2.3.2
+
 ### v0.3.2
 
 - updated ufoLib dependency to v2.3.1
