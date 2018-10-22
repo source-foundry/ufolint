@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.3.4
+
+- force install of ufoLib dependency at version >= 2.2.0.  This is release where optional validation support introduced and code in this project was modified to support the changes in ufoLib
+
 ### v0.3.3
 
 - updated ufoLib dependency to v2.3.2
