@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os
 import sys
 
-from ufoLib.glifLib import GlyphSet
+from ufoLib.glifLib import GlyphSet, glyphNameToFileName
 
 from ufolint.data.tstobj import Result
 from ufolint.stdoutput import StdStreamer
@@ -48,7 +49,8 @@ def run_all_glif_validations(ufoobj):
                 glif_count += 1
             except Exception as e:
                 res.test_failed = True
-                res.test_long_stdstream_string = glyphname + " test failed with error: " + str(e)
+                filename = os.path.join(glyphsdir, glyphNameToFileName(glyphname, None))
+                res.test_long_stdstream_string = '{} (glyph "{}"): Test failed with error: {}'.format(filename, glyphname, e)
                 ss.stream_result(res)
                 test_error_list.append(res)
                 glif_count += 1
