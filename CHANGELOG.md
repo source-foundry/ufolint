@@ -1,5 +1,11 @@
 ## Changelog
 
+### v0.3.5
+
+- improved error messages on *.glif file test failures
+- added CONTRIBUTORS.md documentation
+- modified copyright in license and in-application help to "Source Foundry Authors"
+
 ### v0.3.4
 
 - force install of ufoLib dependency at version >= 2.2.0.  This is release where optional validation support introduced and code in this project was modified to support the changes in ufoLib
