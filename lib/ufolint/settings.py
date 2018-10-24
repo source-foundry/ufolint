@@ -14,7 +14,7 @@ patch_version = "5"
 
 HELP = """====================================================
 ufolint
-Copyright 2018 Christopher Simpkins
+Copyright 2018 Source Foundry Authors
 MIT License
 Source: https://github.com/source-foundry/ufolint
 ====================================================
