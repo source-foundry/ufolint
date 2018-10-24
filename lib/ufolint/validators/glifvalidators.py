@@ -48,7 +48,7 @@ def run_all_glif_validations(ufoobj):
                 glif_count += 1
             except Exception as e:
                 res.test_failed = True
-                res.test_long_stdstream_string = 'Test for glyph "{}" failed with error: {}'.format(glyphname, e)
+                res.test_long_stdstream_string = '{}, glyph "{}": Test failed with error: {}'.format(glyphsdir, glyphname, e)
                 ss.stream_result(res)
                 test_error_list.append(res)
                 glif_count += 1
