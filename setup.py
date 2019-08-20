@@ -39,7 +39,7 @@ setup(
     platforms=['any'],
     packages=find_packages("lib"),
     package_dir={'': 'lib'},
-    install_requires=['commandlines', 'ufoLib>=2.2.0'],
+    install_requires=['commandlines', 'fontTools[ufo]>=3.31.0'],
     entry_points={
         'console_scripts': [
             'ufolint = ufolint.app:main'

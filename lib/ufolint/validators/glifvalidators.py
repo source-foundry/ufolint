@@ -4,7 +4,7 @@
 import os
 import sys
 
-from ufoLib.glifLib import GlyphSet, glyphNameToFileName
+from fontTools.ufoLib.glifLib import GlyphSet, glyphNameToFileName
 
 from ufolint.data.tstobj import Result
 from ufolint.stdoutput import StdStreamer

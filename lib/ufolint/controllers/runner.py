@@ -8,7 +8,7 @@ try:  # pragma nocoverage
 except ImportError:  # pragma nocoverage
     from plistlib import load
 
-from ufoLib import UFOReader
+from fontTools.ufoLib import UFOReader
 
 from ufolint.data.tstobj import Result
 from ufolint.data.ufo import Ufo2, Ufo3
