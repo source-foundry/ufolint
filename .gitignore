@@ -67,3 +67,6 @@ target/
 # Project files
 tests/runner.py
 tests/profiler.py
+
+#pytype files
+.pytype
