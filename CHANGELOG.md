@@ -1,5 +1,19 @@
 ## Changelog
 
+### v0.4.0
+
+- converted from ufoLib to fontTools.ufoLib dependency
+- dropped support for Python 2.7
+- dropped support for Python 3 versions < 3.5
+- setup.py overhaul with new Python 3.5+ Python interpreter requirement
+- add fontTools [ufo] extras dependencies to requirements.txt
+- - switched `basestring` type to `str` type in `ufolint.validators.typevalidators` module
+- PEP8 formatting changes
+- add Makefile
+- remove unnecessary shell scripts (functionality replaced by Makefile)
+- update MANIFEST.in file paths
+- changed Python interpreter version in tox.ini configuration file
+
 ### v0.3.5
 
 - improved error messages on *.glif file test failures
