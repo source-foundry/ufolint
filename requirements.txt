@@ -1,2 +1,2 @@
-fontTools==3.44.0
+fontTools[ufo]==3.44.0
 commandlines
