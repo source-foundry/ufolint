@@ -5,8 +5,8 @@
 # Version Number
 # ------------------------------------------------------------------------------
 major_version = "0"
-minor_version = "3"
-patch_version = "5"
+minor_version = "4"
+patch_version = "0"
 
 # ------------------------------------------------------------------------------
 # Help String
@@ -14,7 +14,7 @@ patch_version = "5"
 
 HELP = """====================================================
 ufolint
-Copyright 2018 Source Foundry Authors
+Copyright 2019 Source Foundry Authors
 MIT License
 Source: https://github.com/source-foundry/ufolint
 ====================================================
