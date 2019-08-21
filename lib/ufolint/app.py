@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # ====================================================
-# Copyright 2018 Christopher Simpkins
+# Copyright 2018 Source Foundry Authors
 # MIT License
 # ====================================================
 
