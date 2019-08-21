@@ -11,7 +11,7 @@ pin: False
 # update schedule
 # default: empty
 # allowed: "every day", "every week", ..
-schedule: "every week"
+schedule: "every week on monday"
 
 # allow to close stale PRs
 # default: True
