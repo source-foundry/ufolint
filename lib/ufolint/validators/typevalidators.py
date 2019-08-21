@@ -1,14 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-try:  # pragma: no cover
-    basestring
-except NameError:  # pragma: no cover
-    basestring = str
-
 
 def is_string_type(needle):
-    if isinstance(needle, basestring):
+    if isinstance(needle, str):
         return True
     else:
         return False
