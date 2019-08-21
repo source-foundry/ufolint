@@ -33,7 +33,7 @@ The application performs a UFO version specific static analysis of the source te
   - images follow UFO v3+ png specification
   - source files import into ufoLib library with ufoLib public methods
 
-These tests are performed through a combination of public methods in the [ufoLib library](https://github.com/unified-font-object/ufoLib) (released by the authors of the UFO specification) and additional tests that are implemented in the ufolint application.  ufolint catches exceptions raised in the ufoLib public read methods for all *.plist file types and all ufoLib validations performed on *.glif files.  These are returned to users with informative error messages that indicate the filepath(s) of concern and exit status code 1.
+These tests are performed through a combination of public methods in the [fontTools.ufoLib library](https://github.com/fonttools/fonttools/tree/master/Lib/fontTools/ufoLib) and additional tests that are implemented in the ufolint application.  ufolint catches exceptions raised in the ufoLib public read methods for all *.plist file types and all ufoLib validations performed on *.glif files.  These are returned to users with informative error messages that indicate the filepath(s) of concern and exit status code 1.
 
 
 # Install and Upgrade
@@ -127,7 +127,7 @@ This Travis setting structure performs the variant tests in parallel for each of
 
 ## Acknowledgments
 
-Built with the fantastic [ufoLib library](https://github.com/unified-font-object/ufoLib) where a majority of the UFO validation work has been performed!
+Built with the fantastic [fontTools ufoLib library](https://github.com/fonttools/fonttools) where a majority of the UFO validation work has been performed!
 
 
 ## License
