@@ -1,10 +1,16 @@
+import io
 import os
 import re
+import sys
 from setuptools import setup, find_packages
 
+REQUIRES_PYTHON = ">=3.5.0"
 
-def docs_read(fname):
-    return open(os.path.join(os.path.dirname(__file__), 'docs', fname)).read()
+# Optional packages
+EXTRAS_REQUIRES = {
+    # for developer installs
+    "dev": ["wheel", "setuptools", "twine", "coverage", "pytest", "tox", "flake8", "pytype"]
+}
 
 
 def version_read():
@@ -27,11 +33,24 @@ def version_read():
     return major_version + "." + minor_version + "." + patch_version
 
 
+# Use repository Markdown README.md for PyPI long description
+try:
+    with io.open("README.md", encoding="utf-8") as f:
+        readme = f.read()
+except IOError as readme_e:
+    sys.stderr.write(
+        "[ERROR] setup.py: Failed to read the README.md file for the long description definition: {}".format(
+            str(readme_e)
+        )
+    )
+    raise readme_e
+
 setup(
     name='ufolint',
     version=version_read(),
     description='UFO source file linter',
-    long_description=(docs_read('README.rst')),
+    long_description=readme,
+    long_description_content_type="text/markdown",
     url='https://github.com/source-foundry/ufolint',
     license='MIT license',
     author='Christopher Simpkins',
@@ -44,9 +63,11 @@ setup(
         'console_scripts': [
             'ufolint = ufolint.app:main'
         ],
-},
+    },
     keywords='',
     include_package_data=True,
+    extras_require=EXTRAS_REQUIRES,
+    python_requires=REQUIRES_PYTHON,
     classifiers=[
         'Development Status :: 4 - Beta',
         'Natural Language :: English',
@@ -59,6 +80,7 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
-        'Topic :: Software Development :: Libraries :: Python Modules'
+        'Topic :: Software Development :: Libraries :: Python Modules',
+        "Topic :: Text Processing :: Fonts",
     ],
 )
