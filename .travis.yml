@@ -17,10 +17,6 @@ matrix:
         - coverage report -m
       after_success:
         - bash <(curl -s https://codecov.io/bash)
-    - python: 3.5
-      env: TOX_ENV=py35
-      install: pip install --upgrade tox pytest
-      script: tox -e $TOX_ENV
     - python: 3.6
       env: TOX_ENV=py36
       install: pip install --upgrade tox pytest

@@ -4,7 +4,7 @@ import re
 import sys
 from setuptools import setup, find_packages
 
-REQUIRES_PYTHON = ">=3.5.0"
+REQUIRES_PYTHON = ">=3.6.0"
 
 # Optional packages
 EXTRAS_REQUIRES = {
@@ -15,9 +15,9 @@ EXTRAS_REQUIRES = {
 
 def version_read():
     settings_file = open(os.path.join(os.path.dirname(__file__), 'lib', 'ufolint', 'settings.py')).read()
-    major_regex = """major_version\s*?=\s*?["']{1}(\d+)["']{1}"""
-    minor_regex = """minor_version\s*?=\s*?["']{1}(\d+)["']{1}"""
-    patch_regex = """patch_version\s*?=\s*?["']{1}(\d+)["']{1}"""
+    major_regex = r"""major_version\s*?=\s*?["']{1}(\d+)["']{1}"""
+    minor_regex = r"""minor_version\s*?=\s*?["']{1}(\d+)["']{1}"""
+    patch_regex = r"""patch_version\s*?=\s*?["']{1}(\d+)["']{1}"""
     major_match = re.search(major_regex, settings_file)
     minor_match = re.search(minor_regex, settings_file)
     patch_match = re.search(patch_regex, settings_file)
@@ -74,12 +74,9 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
         'Topic :: Software Development :: Libraries :: Python Modules',
         "Topic :: Text Processing :: Fonts",
     ],

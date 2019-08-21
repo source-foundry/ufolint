@@ -4,8 +4,8 @@
 
 - converted from ufoLib to fontTools.ufoLib dependency
 - dropped support for Python 2.7
-- dropped support for Python 3 versions < 3.5
-- setup.py overhaul with new Python 3.5+ Python interpreter requirement
+- dropped support for Python 3 versions < 3.6
+- setup.py overhaul with new Python 3.6+ Python interpreter requirement
 - add fontTools [ufo] extras dependencies to requirements.txt
 - - switched `basestring` type to `str` type in `ufolint.validators.typevalidators` module
 - PEP8 formatting changes
