@@ -3,10 +3,7 @@
 
 import os
 import sys
-try:  # pragma nocoverage
-    from plistlib import readPlist as load
-except ImportError:  # pragma nocoverage
-    from plistlib import load
+from plistlib import load
 
 from fontTools.ufoLib import UFOReader
 
@@ -332,22 +329,23 @@ class MainRunner(object):
         res = Result(metainfo_plist_path)
         ss = StdStreamer(metainfo_plist_path)
         try:
-            meta_dict = load(metainfo_plist_path)
-            if 'formatVersion' in meta_dict.keys():
-                if isinstance(meta_dict['formatVersion'], int):
-                    res.test_failed = False
-                    ss.stream_result(res)
+            with open(metainfo_plist_path, "rb") as f:
+                meta_dict = load(f)
+                if 'formatVersion' in meta_dict.keys():
+                    if isinstance(meta_dict['formatVersion'], int):
+                        res.test_failed = False
+                        ss.stream_result(res)
+                    else:
+                        res.test_failed = True
+                        res.exit_failure = True  # early exit if fails
+                        res.test_long_stdstream_string = metainfo_plist_path + " 'formatVersion' value must be specified as" \
+                                                                               " an integer"
+                        ss.stream_result(res)
                 else:
                     res.test_failed = True
                     res.exit_failure = True  # early exit if fails
-                    res.test_long_stdstream_string = metainfo_plist_path + " 'formatVersion' value must be specified as" \
-                                                                           " an integer"
+                    res.test_long_stdstream_string = "Failed to read the 'formatVersion' value in " + metainfo_plist_path
                     ss.stream_result(res)
-            else:
-                res.test_failed = True
-                res.exit_failure = True  # early exit if fails
-                res.test_long_stdstream_string = "Failed to read the 'formatVersion' value in " + metainfo_plist_path
-                ss.stream_result(res)
         except Exception as e:
             res.test_failed = True
             res.exit_failure = True  # early exit if fails
@@ -361,9 +359,10 @@ class MainRunner(object):
         ss = StdStreamer(layercontents_plist_path)
         try:
             # loads as [ ['layername1', 'glyphsdir1'], ['layername2', 'glyphsdir2'] ]
-            self.ufo_glyphs_dir_list = load(layercontents_plist_path)
-            res.test_failed = False
-            ss.stream_result(res)
+            with open(layercontents_plist_path, "rb") as f:
+                self.ufo_glyphs_dir_list = load(f)
+                res.test_failed = False
+                ss.stream_result(res)
         except Exception as e:
             res.test_failed = True
             res.exit_failure = True

@@ -2,11 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os.path
-
-try:  # pragma: no cover
-    import xml.etree.cElementTree as ETree
-except ImportError:   # pragma: no cover
-    import xml.etree.ElementTree as ETree
+import xml.etree.ElementTree as ETree
 
 from ufolint.data.tstobj import Result
 from ufolint.data.ufo import Ufo2, Ufo3

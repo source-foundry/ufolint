@@ -1,10 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-try:  # pragma: no cover
-    import xml.etree.cElementTree as Etree            # python 2
-except ImportError:  # pragma: no cover
-    import xml.etree.ElementTree as Etree             # python 3
+import xml.etree.ElementTree as Etree             # python 3
 
 
 def is_valid_xml_path(filepath):
