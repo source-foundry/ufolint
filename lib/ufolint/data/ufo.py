@@ -7,7 +7,9 @@ import os.path
 class Ufo(object):
     def __init__(self, ufopath, glyphsdir_list):
         self.ufopath = ufopath
-        self.ufoversion = None  # defined on instantiation in the classes that inherit Ufo
+        self.ufoversion = (
+            None
+        )  # defined on instantiation in the classes that inherit Ufo
         self.glyphsdir_list = glyphsdir_list
         self.mandatory_root_basefilepaths = None
         self.mandatory_glyphsdir_basefilepaths = None
@@ -41,7 +43,9 @@ class Ufo(object):
         path_list = []
         for glyphsdir in self.glyphsdir_list:
             glyphsdir_basename = glyphsdir[1]
-            path_list.append(self._make_glyphsdir_plist_path(glyphsdir_basename, basefilename))
+            path_list.append(
+                self._make_glyphsdir_plist_path(glyphsdir_basename, basefilename)
+            )
         return path_list
 
     def get_mandatory_filepaths_list(self):
@@ -52,9 +56,13 @@ class Ufo(object):
         """
         mandatory_filepath_list = []
         for mandatory_root_basefile in self.mandatory_root_basefilepaths:
-            mandatory_filepath_list.append(self.get_root_plist_filepath(mandatory_root_basefile))
+            mandatory_filepath_list.append(
+                self.get_root_plist_filepath(mandatory_root_basefile)
+            )
         for mandatory_glyphs_basefile in self.mandatory_glyphsdir_basefilepaths:
-            glyphsdirs_filelist = self.get_glyphsdir_plist_filepath_list(mandatory_glyphs_basefile)
+            glyphsdirs_filelist = self.get_glyphsdir_plist_filepath_list(
+                mandatory_glyphs_basefile
+            )
             for a_file in glyphsdirs_filelist:
                 mandatory_filepath_list.append(a_file)
         return mandatory_filepath_list
@@ -72,21 +80,21 @@ class Ufo2(Ufo):
         self.ufopath = ufopath
         self.ufoversion = 2
         self.glyphsdir_list = glyphsdir_list
-        self.mandatory_root_basefilepaths = ['metainfo.plist']
-        self.mandatory_glyphsdir_basefilepaths = ['contents.plist']
+        self.mandatory_root_basefilepaths = ["metainfo.plist"]
+        self.mandatory_glyphsdir_basefilepaths = ["contents.plist"]
         self.all_root_plist_files_list = [
-            'metainfo.plist',
-            'fontinfo.plist',
-            'groups.plist',
-            'kerning.plist',
-            'lib.plist'
+            "metainfo.plist",
+            "fontinfo.plist",
+            "groups.plist",
+            "kerning.plist",
+            "lib.plist",
         ]
-        self.all_glyphsdir_plist_files_list = [
-            'contents.plist'
-        ]
+        self.all_glyphsdir_plist_files_list = ["contents.plist"]
 
     def get_glyphsdir_path_list(self):
-        glyphsdir_path = os.path.join(self.ufopath, 'glyphs')     # UFOv2 includes only one glyphs directory
+        glyphsdir_path = os.path.join(
+            self.ufopath, "glyphs"
+        )  # UFOv2 includes only one glyphs directory
         return [glyphsdir_path]
 
 
@@ -96,23 +104,17 @@ class Ufo3(Ufo):
         self.ufopath = ufopath
         self.ufoversion = 3
         self.glyphsdir_list = glyphsdir_list
-        self.mandatory_root_basefilepaths = [
-            'metainfo.plist',
-            'layercontents.plist'
-        ]
-        self.mandatory_glyphsdir_basefilepaths = ['contents.plist']
+        self.mandatory_root_basefilepaths = ["metainfo.plist", "layercontents.plist"]
+        self.mandatory_glyphsdir_basefilepaths = ["contents.plist"]
         self.all_root_plist_files_list = [
-            'metainfo.plist',
-            'fontinfo.plist',
-            'groups.plist',
-            'kerning.plist',
-            'lib.plist',
-            'layercontents.plist'
+            "metainfo.plist",
+            "fontinfo.plist",
+            "groups.plist",
+            "kerning.plist",
+            "lib.plist",
+            "layercontents.plist",
         ]
-        self.all_glyphsdir_plist_files_list = [
-            'contents.plist',
-            'layerinfo.plist'
-        ]
+        self.all_glyphsdir_plist_files_list = ["contents.plist", "layerinfo.plist"]
 
     def get_glyphsdir_path_list(self):
         glyphsdir_path_list = []

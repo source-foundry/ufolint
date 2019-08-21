@@ -19,7 +19,10 @@ def main():
     c = Command()
 
     if c.does_not_validate_missing_args():
-        sys.stderr.write("[ufolint] ERROR: Please include one or more UFO directory arguments with your command." + os.linesep)
+        sys.stderr.write(
+            "[ufolint] ERROR: Please include one or more UFO directory arguments with your command."
+            + os.linesep
+        )
         sys.exit(1)
 
     if c.is_help_request():
@@ -37,4 +40,6 @@ def main():
             hh = MainRunner(argument)
             hh.run()
 
-    sys.exit(0)  # if the script completes without status code 1 SystemExit being raised, then all tests passed
+    sys.exit(
+        0
+    )  # if the script completes without status code 1 SystemExit being raised, then all tests passed

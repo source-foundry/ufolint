@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import xml.etree.ElementTree as Etree             # python 3
+import xml.etree.ElementTree as Etree  # python 3
 
 
 def is_valid_xml_path(filepath):
