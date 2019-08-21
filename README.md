@@ -1,7 +1,7 @@
 <img src ="https://raw.githubusercontent.com/source-foundry/ufolint/images/images/title-header-crunch.png" />
 
 [![PyPI](https://img.shields.io/pypi/v/ufolint.svg)](https://pypi.org/project/ufolint)
-[![Build Status](https://semaphoreci.com/api/v1/sourcefoundry/ufolint/branches/master/shields_badge.svg)](https://semaphoreci.com/sourcefoundry/ufolint)
+[![Build Status](https://travis-ci.org/source-foundry/ufolint.svg?branch=master)](https://travis-ci.org/source-foundry/ufolint)
 [![Build status](https://ci.appveyor.com/api/projects/status/lsuj8p7myp6mdo2e/branch/master?svg=true)](https://ci.appveyor.com/project/chrissimpkins/ufolint/branch/master) 
 [![codecov](https://codecov.io/gh/source-foundry/ufolint/branch/master/graph/badge.svg)](https://codecov.io/gh/source-foundry/ufolint)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/53663b1c61874ebb8b3022ee9945f5c8)](https://app.codacy.com/app/SourceFoundry/ufolint)
