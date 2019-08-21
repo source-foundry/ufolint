@@ -3,7 +3,7 @@
 
 import os
 
-from ufoLib.validators import pngValidator
+from fontTools.ufoLib.validators import pngValidator
 
 from ufolint.utilities import file_exists, dir_exists
 from ufolint.data.tstobj import Result

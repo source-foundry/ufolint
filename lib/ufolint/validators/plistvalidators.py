@@ -13,8 +13,8 @@ from ufolint.data.ufo import Ufo2, Ufo3
 from ufolint.stdoutput import StdStreamer
 from ufolint.utilities import file_exists
 
-from ufoLib import UFOReader
-from ufoLib.glifLib import GlyphSet
+from fontTools.ufoLib import UFOReader
+from fontTools.ufoLib.glifLib import GlyphSet
 
 
 class AbstractPlistValidator(object):
