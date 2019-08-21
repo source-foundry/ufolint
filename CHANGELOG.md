@@ -2,12 +2,15 @@
 
 ### v0.4.0
 
-- converted from ufoLib to fontTools.ufoLib dependency
+- converted from `ufoLib` to `fontTools.ufoLib` dependency
 - dropped support for Python 2.7
 - dropped support for Python 3 versions < 3.6
 - setup.py overhaul with new Python 3.6+ Python interpreter requirement
 - add fontTools [ufo] extras dependencies to requirements.txt
-- - switched `basestring` type to `str` type in `ufolint.validators.typevalidators` module
+- switched Py2 `basestring` type to `str` type in `ufolint.validators.typevalidators` module
+- removed Py2 `plistlib.readPlist` in `ufolint.controllers.runner` module
+- removed Py2 `xml.etree.CElementTree` in `ufolint.validators.plistvalidators`
+- removed Py2 `xml.etree.CElementTree` in `ufolint.validators.xmlvalidators`
 - PEP8 formatting changes
 - add Makefile
 - remove unnecessary shell scripts (functionality replaced by Makefile)
