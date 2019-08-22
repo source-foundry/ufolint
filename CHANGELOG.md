@@ -11,7 +11,7 @@
 - removed Py2 `plistlib.readPlist` in `ufolint.controllers.runner` module
 - removed Py2 `xml.etree.CElementTree` in `ufolint.validators.plistvalidators`
 - removed Py2 `xml.etree.CElementTree` in `ufolint.validators.xmlvalidators`
-- PEP8 formatting changes
+- PEP8 Python source formatting changes
 - add Makefile
 - remove unnecessary shell scripts (functionality replaced by Makefile)
 - update MANIFEST.in file paths
