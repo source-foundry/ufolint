@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.4.1
+
+- package wheel for Python 3 only
+
 ### v0.4.0
 
 - converted from `ufoLib` to `fontTools.ufoLib` dependency
