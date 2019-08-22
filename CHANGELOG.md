@@ -3,6 +3,7 @@
 ### v0.4.0
 
 - converted from `ufoLib` to `fontTools.ufoLib` dependency
+- add requirement for `fontTools` library v4.0.0 (first Python 3.6+ only release)
 - dropped support for Python 2.7
 - dropped support for Python 3 versions < 3.6
 - setup.py overhaul with new Python 3.6+ Python interpreter requirement
