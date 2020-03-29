@@ -1,5 +1,12 @@
 ## Changelog
 
+### v1.0.0
+
+- v1 release
+- broadened pinning of Python dependency versions
+- updated build dependencies to current release versions
+- test against pinned dependency versions in tox CI testing
+
 ### v0.4.1
 
 - package wheel for Python 3 only
@@ -24,13 +31,13 @@
 
 ### v0.3.5
 
-- improved error messages on *.glif file test failures
+- improved error messages on \*.glif file test failures
 - added CONTRIBUTORS.md documentation
 - modified copyright in license and in-application help to "Source Foundry Authors"
 
 ### v0.3.4
 
-- force install of ufoLib dependency at version >= 2.2.0.  This is release where optional validation support introduced and code in this project was modified to support the changes in ufoLib
+- force install of ufoLib dependency at version >= 2.2.0. This is release where optional validation support introduced and code in this project was modified to support the changes in ufoLib
 
 ### v0.3.3
 
@@ -69,5 +76,3 @@
 ### v0.2.0
 
 - initial release version
-
-

@@ -9,12 +9,23 @@ REQUIRES_PYTHON = ">=3.6.0"
 # Optional packages
 EXTRAS_REQUIRES = {
     # for developer installs
-    "dev": ["wheel", "setuptools", "twine", "coverage", "pytest", "tox", "flake8", "pytype"]
+    "dev": [
+        "wheel",
+        "setuptools",
+        "twine",
+        "coverage",
+        "pytest",
+        "tox",
+        "flake8",
+        "pytype",
+    ]
 }
 
 
 def version_read():
-    settings_file = open(os.path.join(os.path.dirname(__file__), 'lib', 'ufolint', 'settings.py')).read()
+    settings_file = open(
+        os.path.join(os.path.dirname(__file__), "lib", "ufolint", "settings.py")
+    ).read()
     major_regex = r"""major_version\s*?=\s*?["']{1}(\d+)["']{1}"""
     minor_regex = r"""minor_version\s*?=\s*?["']{1}(\d+)["']{1}"""
     patch_regex = r"""patch_version\s*?=\s*?["']{1}(\d+)["']{1}"""
@@ -46,38 +57,35 @@ except IOError as readme_e:
     raise readme_e
 
 setup(
-    name='ufolint',
+    name="ufolint",
     version=version_read(),
-    description='UFO source file linter',
+    description="UFO source file linter",
     long_description=readme,
     long_description_content_type="text/markdown",
-    url='https://github.com/source-foundry/ufolint',
-    license='MIT license',
-    author='Christopher Simpkins',
-    author_email='chris@sourcefoundry.org',
-    platforms=['any'],
+    url="https://github.com/source-foundry/ufolint",
+    license="MIT license",
+    author="Christopher Simpkins",
+    author_email="chris@sourcefoundry.org",
+    platforms=["any"],
     packages=find_packages("lib"),
-    package_dir={'': 'lib'},
-    install_requires=['commandlines', 'fontTools[ufo]>=3.31.0'],
-    entry_points={
-        'console_scripts': [
-            'ufolint = ufolint.app:main'
-        ],
-    },
-    keywords='',
+    package_dir={"": "lib"},
+    install_requires=["commandlines", "fontTools[ufo]>=3.31.0"],
+    entry_points={"console_scripts": ["ufolint = ufolint.app:main"],},
+    keywords="",
     include_package_data=True,
     extras_require=EXTRAS_REQUIRES,
     python_requires=REQUIRES_PYTHON,
     classifiers=[
-        'Development Status :: 4 - Beta',
-        'Natural Language :: English',
-        'License :: OSI Approved :: MIT License',
-        'Operating System :: OS Independent',
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-        'Topic :: Software Development :: Libraries :: Python Modules',
+        "Development Status :: 5 - Production/Stable",
+        "Natural Language :: English",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: Text Processing :: Fonts",
     ],
 )
