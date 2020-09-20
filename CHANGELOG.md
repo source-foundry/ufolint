@@ -1,5 +1,10 @@
 ## Changelog
 
+### v1.0.1
+
+- refactor to achieve line lengths < 90
+- convert to GitHub Actions CI testing service
+
 ### v1.0.0
 
 - v1 release
