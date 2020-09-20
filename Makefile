@@ -29,7 +29,7 @@ test-coverage:
 #	coverage html
 
 test-lint:
-	flake8 --ignore=E501,W50 lib/ufolint
+	flake8 --ignore=W50 lib/ufolint
 
 test-type-check:
 	pytype lib/ufolint
