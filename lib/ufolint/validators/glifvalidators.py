@@ -46,7 +46,9 @@ def run_all_glif_validations(ufoobj):
             )
             ss.stream_result(res)
             test_error_list.append(res)
-            break  # break out loop as it was not possible to read the GlyphSet for this directory, gs not instantiated
+            # break out loop as it was not possible to read the GlyphSet for
+            # this directory, gs not instantiated
+            break
 
         glif_count = 0  # reset glyphs directory .glif file counter
         for (
@@ -57,17 +59,19 @@ def run_all_glif_validations(ufoobj):
             res = Result(gs.contents[glyphname])
             try:
                 go = GlifObj()
-                gs.readGlyph(
-                    glyphname, glyphObject=go
-                )  # read the glif file and perform ufoLib validations, requires the glyphObject for validations
+                # read the glif file and perform ufoLib validations,
+                # requires the glyphObject for validations
+                gs.readGlyph(glyphname, glyphObject=go)
                 res.test_failed = False
                 ss.stream_result(res)
                 glif_count += 1
             except Exception as e:
                 res.test_failed = True
                 filename = os.path.join(glyphsdir, glyphNameToFileName(glyphname, None))
-                res.test_long_stdstream_string = '{} (glyph "{}"): Test failed with error: {}'.format(
-                    filename, glyphname, e
+                res.test_long_stdstream_string = (
+                    '{} (glyph "{}"): Test failed with error: {}'.format(
+                        filename, glyphname, e
+                    )
                 )
                 ss.stream_result(res)
                 test_error_list.append(res)

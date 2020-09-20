@@ -39,9 +39,7 @@ class StdStreamer(object):
                 print(" ")
                 print("Test result that led to failure:")
                 print(
-                    self.fail_long_indicator
-                    + " "
-                    + resultobj.test_long_stdstream_string
+                    self.fail_long_indicator + " " + resultobj.test_long_stdstream_string
                 )
                 print(" ")  # add newline to stdout before exiting
                 sys.exit(1)
@@ -65,9 +63,7 @@ class StdStreamer(object):
 
             for resultobj in result_list_deduped:
                 print(
-                    self.fail_long_indicator
-                    + " "
-                    + resultobj.test_long_stdstream_string
+                    self.fail_long_indicator + " " + resultobj.test_long_stdstream_string
                 )
             sys.exit(1)
         else:

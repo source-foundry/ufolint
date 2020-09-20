@@ -8,8 +8,8 @@ class Ufo(object):
     def __init__(self, ufopath, glyphsdir_list):
         self.ufopath = ufopath
         self.ufoversion = (
-            None
-        )  # defined on instantiation in the classes that inherit Ufo
+            None  # defined on instantiation in the classes that inherit Ufo
+        )
         self.glyphsdir_list = glyphsdir_list
         self.mandatory_root_basefilepaths = None
         self.mandatory_glyphsdir_basefilepaths = None
@@ -50,8 +50,8 @@ class Ufo(object):
 
     def get_mandatory_filepaths_list(self):
         """
-        Creates a list of relative filepaths to mandatory files in UFO source.  These files are defined in the
-        Ufo2 and Ufo3 classes that inherit from Ufo
+        Creates a list of relative filepaths to mandatory files in UFO source.
+        These files are defined in the Ufo2 and Ufo3 classes that inherit from Ufo
         :return: list of filepath strings
         """
         mandatory_filepath_list = []

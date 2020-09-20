@@ -12,8 +12,10 @@ from ufolint.stdoutput import StdStreamer
 
 def run_all_images_validations(ufoobj):
     """
-    Tests images directory without testing to confirm that directory is present.  Directory existence testing performed
-    in calling code.  Uses ufoLib.validators.pngValidator public method to validate files identified in 'images' dir
+    Tests images directory without testing to confirm that directory is present.
+    Directory existence testing performed in calling code.  Uses
+    ufoLib.validators.pngValidator public method to validate files identified
+    in 'images' dir
     :param ufoobj: ufolint.data.ufo.Ufo object
     :return: (list) list of failed test results as ufolint.tstobj.Result objects
     """
@@ -22,16 +24,15 @@ def run_all_images_validations(ufoobj):
     images_dir_path = os.path.join(ufoobj.ufopath, "images")
 
     if dir_exists(images_dir_path) is False:
-        return (
-            []
-        )  # if the directory path does not exist, return an empty test_error_list to calling code
+        # if the directory path does not exist,
+        # return an empty test_error_list to calling code
+        return []
 
     for testimage_rel_path in os.listdir(images_dir_path):
         testimage_path = os.path.join(images_dir_path, testimage_rel_path)
         if file_exists(testimage_path):
-            if (
-                testimage_rel_path[0] == "."
-            ):  # ignore files that are dotfiles in directory (e.g. .DS_Store on OS X)
+            # ignore files that are dotfiles in directory (e.g. .DS_Store on OS X)
+            if testimage_rel_path[0] == ".":
                 pass
             else:
                 passed_ufolib_tests, error = pngValidator(

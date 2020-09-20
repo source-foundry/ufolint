@@ -53,7 +53,9 @@ class AbstractPlistValidator(object):
             if file_exists(testpath):
                 res = self._parse_xml(testpath)
                 ss.stream_result(res)
-            else:  # there is no file to check, mandatory files have already been checked, this is a success
+            # there is no file to check, mandatory files have already
+            # been checked, this is a success
+            else:
                 res = Result(testpath)
                 res.test_failed = False
                 ss.stream_result(res)
@@ -63,13 +65,14 @@ class AbstractPlistValidator(object):
                 if file_exists(testpath):
                     res = self._parse_xml(testpath)
                     ss.stream_result(res)
-                else:  # there is no file to check, mandatory files have already been checked, this is a success
+                # there is no file to check, mandatory files have already been checked,
+                # this is a success
+                else:
                     res = Result(testpath)
                     res.test_failed = False
                     ss.stream_result(res)
-        return (
-            self.test_fail_list
-        )  # return to the calling code so that it can be maintained for final user report
+        # return to the calling code so that it can be maintained for final user report
+        return self.test_fail_list
 
     def run_ufolib_import_validation(self):
         raise NotImplementedError
@@ -85,8 +88,8 @@ class MetainfoPlistValidator(AbstractPlistValidator):
 
     def run_ufolib_import_validation(self):
         """
-        ufoLib UFOReader.readMetaInfo method validates the UFO version number.  This method adds validation for
-        expected reverse URL name scheme in
+        ufoLib UFOReader.readMetaInfo method validates the UFO version number.
+        This method adds validation for expected reverse URL name scheme
         :return: (list) list of test failure Result objects
         """
 
@@ -140,12 +143,13 @@ class FontinfoPlistValidator(AbstractPlistValidator):
         ss = StdStreamer(self.ufopath)
         if file_exists(self.testpath) is False:
             res.test_failed = (
-                False
-            )  # not a mandatory file in UFO spec, test passes if missing
+                False  # not a mandatory file in UFO spec, test passes if missing
+            )
             ss.stream_result(res)
             return self.test_fail_list
         try:
-            # read fontinfo.plist with ufoLib - the ufoLib library performs type validations on values on read
+            # read fontinfo.plist with ufoLib - the ufoLib library performs type
+            # validations on values on read
             ufolib_reader = UFOReader(self.ufopath, validate=True)
             ufolib_reader.readInfo(self.fontinfo_obj)
             res.test_failed = False
@@ -175,12 +179,13 @@ class GroupsPlistValidator(AbstractPlistValidator):
         ss = StdStreamer(self.ufopath)
         if file_exists(self.testpath) is False:
             res.test_failed = (
-                False
-            )  # not a mandatory file in UFO spec, test passes if missing
+                False  # not a mandatory file in UFO spec, test passes if missing
+            )
             ss.stream_result(res)
             return self.test_fail_list
         try:
-            # read groups.plist with ufoLib - the ufoLib library performs type validations on values on read
+            # read groups.plist with ufoLib - the ufoLib library performs type
+            # validations on values on read
             ufolib_reader = UFOReader(self.ufopath, validate=True)
             ufolib_reader.readGroups()
             res.test_failed = False
@@ -211,13 +216,13 @@ class KerningPlistValidator(AbstractPlistValidator):
         res = Result(self.testpath)
         ss = StdStreamer(self.ufopath)
         if file_exists(self.testpath) is False:
-            res.test_failed = (
-                False
-            )  # not a mandatory file in UFO spec, test passes if missing
+            # not a mandatory file in UFO spec, test passes if missing
+            res.test_failed = False
             ss.stream_result(res)
             return self.test_fail_list
         try:
-            # read kerning.plist with ufoLib - the ufoLib library performs type validations on values on read
+            # read kerning.plist with ufoLib - the ufoLib library performs type
+            # validations on values on read
             ufolib_reader = UFOReader(self.ufopath, validate=True)
             ufolib_reader.readKerning()
             res.test_failed = False
@@ -246,13 +251,13 @@ class LibPlistValidator(AbstractPlistValidator):
         res = Result(self.testpath)
         ss = StdStreamer(self.ufopath)
         if file_exists(self.testpath) is False:
-            res.test_failed = (
-                False
-            )  # not a mandatory file in UFO spec, test passes if missing
+            # not a mandatory file in UFO spec, test passes if missing
+            res.test_failed = False
             ss.stream_result(res)
             return self.test_fail_list
         try:
-            # read lib.plist with ufoLib - the ufoLib library performs type validations on values on read
+            # read lib.plist with ufoLib - the ufoLib library performs type
+            # validations on values on read
             ufolib_reader = UFOReader(self.ufopath, validate=True)
             ufolib_reader.readLib()
             res.test_failed = False
@@ -272,9 +277,8 @@ class ContentsPlistValidator(AbstractPlistValidator):
         super(ContentsPlistValidator, self).__init__(
             ufopath, ufoversion, glyphs_dir_list
         )
-        self.testfile = (
-            "contents.plist"
-        )  # can occur in multiple glyphs directories in UFOv3+
+        # can occur in multiple glyphs directories in UFOv3+
+        self.testfile = "contents.plist"
         self.glyphs_dir_list = glyphs_dir_list
 
     def run_ufolib_import_validation(self):
@@ -289,7 +293,8 @@ class ContentsPlistValidator(AbstractPlistValidator):
             try:
                 # read contents.plist with ufoLib as GlyphSet instantiation
                 # the ufoLib library performs type validations on values on read
-                # glyphs_dir_list is a list of lists mapped to glyphs dir name, glyphs dir path
+                # glyphs_dir_list is a list of lists mapped to glyphs dir name,
+                # glyphs dir path
                 GlyphSet(
                     rel_dir_path, ufoFormatVersion=self.ufoversion, validateRead=True
                 )  # test for raised exceptions
@@ -331,21 +336,22 @@ class LayercontentsPlistValidator(AbstractPlistValidator):
             ss.stream_result(res)
             return self.test_fail_list
         try:
-            # read layercontents.plist with ufoLib - the ufoLib library performs type validations on values on read
+            # read layercontents.plist with ufoLib - the ufoLib library performs type
+            # validations on values on read
             ufolib_reader = UFOReader(self.ufopath, validate=True)
             ufolib_reader.getLayerNames()
             res.test_failed = False
             ss.stream_result(res)
         except Exception as e:
-            if (
-                self.testpath in self.mandatory_filepaths_list
-            ):  # if part of mandatory file spec for UFO version, fail early
+            # if part of mandatory file spec for UFO version, fail early
+            if self.testpath in self.mandatory_filepaths_list:
                 res.test_failed = True
-                res.exit_failure = True  # fail early b/c it is mandatory part of spec
+                # fail early b/c it is mandatory part of spec
+                res.exit_failure = True
             else:
-                res.test_failed = (
-                    True
-                )  # fail the test, but wait to report until all other tests complete
+                # fail the test, but wait to report until all other
+                # tests complete
+                res.test_failed = True
             res.test_long_stdstream_string = (
                 self.testpath + " failed ufoLib import test with error: " + str(e)
             )
@@ -369,7 +375,8 @@ class LayerinfoPlistValidator(AbstractPlistValidator):
 
     def run_ufolib_import_validation(self):
         """
-        ufoLib GlyphSet.readLayerInfo method performs validations of layerinfo.plist file(s)
+        ufoLib GlyphSet.readLayerInfo method performs validations of
+        layerinfo.plist file(s)
         :return: (list) list of test failure Result objects
         """
         ss = StdStreamer(self.ufopath)

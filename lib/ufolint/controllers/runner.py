@@ -34,12 +34,10 @@ class MainRunner(object):
         self.ufopath = ufopath
         self.ufolib_reader = None
         self.ufoversion = None
-        self.failures_list = (
-            []
-        )  # list of strings that include all failures across all tests for final report
-        self.ufo_glyphs_dir_list = (
-            []
-        )  # list of glyphs directory(ies) available in the source (>1 permitted in UFOv3+)
+        # list of strings that include all failures across all tests for final report
+        self.failures_list = []
+        # list of glyphs directory(ies) available in the source(>1 permitted in UFOv3+)
+        self.ufo_glyphs_dir_list = []
         self.ufoobj = None
 
     def run(self):
@@ -51,29 +49,38 @@ class MainRunner(object):
         print("~" * len(self.ufopath))
         print(" ")
 
-        # [START] EARLY FAIL TESTS ----------------------------------------------------------------
+        # [START] EARLY FAIL TESTS ------------------------------------------------------
         #      UFO directory filepath
         #      .ufo directory extension
         #      import with ufoLib
         #      version check
         #      ufo obj define
-        #        v3 only: presence of layercontents.plist to define the glyphs directories in source
+        #        v3 only: presence of layercontents.plist to define the glyphs
+        #                 directories in source
         #        v2 only: no layercontents.plist, define as single glyphs directory
         ss = StdStreamer(self.ufopath)
         ss.stream_testname("UFO directory")
-        self._check_ufo_dir_path_exists()  # tests user defined UFO directory path
-        self._check_ufo_dir_extension()  # tests for .ufo extension on directory
-        self._check_metainfo_plist_exists()  # confirm presence of metainfo.plist to define UFO version
-        self._validate_read_data_types_metainfo_plist()  # validate the version data type as integer (workaround for bug in ufoLib)
-        self._check_ufo_import_and_define_ufo_version()  # confirm ufoLib can import directory. defines UFOReader object as class property
+        # tests user defined UFO directory path
+        self._check_ufo_dir_path_exists()
+        # tests for .ufo extension on directory
+        self._check_ufo_dir_extension()
+        # confirm presence of metainfo.plist to define UFO version
+        self._check_metainfo_plist_exists()
+        # validate the version data type as integer (workaround for bug in ufoLib)
+        self._validate_read_data_types_metainfo_plist()
+        # confirm ufoLib can import directory. defines UFOReader object as class property
+        self._check_ufo_import_and_define_ufo_version()
         if self.ufoversion == 3:
-            self._check_layercontents_plist_exists()  # tests for presence of a layercontents.plist in root of UFO
-            self._validate_read_load_glyphsdirs_layercontents_plist()  # validate layercontents.plist xml and load glyphs dirs
+            # tests for presence of a layercontents.plist in root of UFO
+            self._check_layercontents_plist_exists()
+            # validate layercontents.plist xml and load glyphs dirs
+            self._validate_read_load_glyphsdirs_layercontents_plist()
         elif self.ufoversion == 2:
-            self.ufo_glyphs_dir_list = [
-                ["public.default", "glyphs"]
-            ]  # define as single glyphs directory for UFOv2
-        else:  # pragma nocoverage fail if unsupported UFO version (ufolint fail in case behind released UFO version)
+            # define as single glyphs directory for UFOv2
+            self.ufo_glyphs_dir_list = [["public.default", "glyphs"]]
+        # fail if unsupported UFO version (ufolint fail in case behind released
+        # UFO version)
+        else:  # pragma nocoverage
             sys.stderr.write(
                 os.linesep
                 + "[ufolint] UFO v"
@@ -107,7 +114,8 @@ class MainRunner(object):
                 ss.stream_result(res)
             print(" ")
 
-        # create Ufo objects for subsequent tests - all Ufo object dependent tests must take place below this level
+        # create Ufo objects for subsequent tests - all Ufo object dependent
+        # tests must take place below this level
         if self.ufoversion == 2:
             self.ufoobj = Ufo2(self.ufopath, self.ufo_glyphs_dir_list)
         elif self.ufoversion == 3:
@@ -131,9 +139,9 @@ class MainRunner(object):
                 ss.stream_result(res)
         print(" ")
         # [END] Mandatory file path tests
-        # [END] EARLY FAIL TESTS ----------------------------------------------------------------
+        # [END] EARLY FAIL TESTS ----------------------------------------------------
 
-        # [START] XML VALIDATION TESTS  -----------------------------------------------------------
+        # [START] XML VALIDATION TESTS  ---------------------------------------------
         ss.stream_testname("XML formatting")
         meta_val = MetainfoPlistValidator(
             self.ufopath, self.ufoversion, self.ufo_glyphs_dir_list
@@ -170,7 +178,8 @@ class MainRunner(object):
         lc_xml_fail_list = layercont_val.run_xml_validation()
         li_xml_fail_list = layerinfo_val.run_xml_validation()
 
-        # xml validations return lists of all failures, append these to the class failures_list Python list
+        # xml validations return lists of all failures,
+        # append these to the class failures_list Python list
         for thelist in (
             mv_xml_fail_list,
             fi_xml_fail_list,
@@ -184,9 +193,10 @@ class MainRunner(object):
             for failed_test_result in thelist:
                 self.failures_list.append(failed_test_result)
         print(" ")
-        # [END] XML VALIDATION TESTS  --------------------------------------------------------------
+        # [END] XML VALIDATION TESTS  ---------------------------------------------------
 
-        # [START] plist FILE VALIDATION TESTS (includes numerous ufoLib library validations on plist file reads)
+        # [START] plist FILE VALIDATION TESTS (includes numerous ufoLib library
+        # validations on plist file reads)
         ss.stream_testname("*.plist spec")
         mv_ufolib_import_fail_list = meta_val.run_ufolib_import_validation()
         fi_ufolib_import_fail_list = fontinfo_val.run_ufolib_import_validation()
@@ -235,9 +245,9 @@ class MainRunner(object):
                 raw_data_list = ufo_reader.getDataDirectoryListing()
                 data_list = []
                 for item in raw_data_list:
-                    if (
-                        not item[0] == "."
-                    ):  # eliminate dotfiles picked up by the ufoLib method (e.g. .DS_Store on OSX)
+                    # eliminate dotfiles picked up by the ufoLib method
+                    # (e.g. .DS_Store on OSX)
+                    if not item[0] == ".":
                         data_list.append(item)
                 if len(data_list) == 0:
                     sys.stdout.write("empty")
@@ -273,9 +283,10 @@ class MainRunner(object):
             self.failures_list.append(glif_failure_result)
         # [END] *.glif VALIDATION TESTS
 
-        # TESTS COMPLETED --------------------------------------------------------------------------
-        #   stream all failure results as a newline delimited list to user and exit with status code 1
-        #   if failures are present, status code 0 if failures are not present
+        # TESTS COMPLETED --------------------------------------------------------------
+        #   stream all failure results as a newline delimited list to user and exit
+        #   with status code 1 if failures are present, status code 0 if failures
+        #   are not present
         ss = StdStreamer(self.ufopath)
         ss.stream_final_failures(self.failures_list)
 
@@ -299,9 +310,9 @@ class MainRunner(object):
             ss.stream_result(res)
         else:
             res.test_failed = True
-            res.exit_failure = (
-                True
-            )  # early exit if cannot find this file to define glyphs directories in UFO source
+            # early exit if cannot find this file to define glyphs directories
+            # in UFO source
+            res.exit_failure = True
             res.test_long_stdstream_string = (
                 "layercontents.plist was not found in " + self.ufopath
             )
@@ -309,7 +320,8 @@ class MainRunner(object):
 
     def _check_metainfo_plist_exists(self):
         """
-        Test for presence of metainfo.plist file in the UFO directory. Mandatory file that defines UFO version.
+        Test for presence of metainfo.plist file in the UFO directory.
+        Mandatory file that defines UFO version.
         :return: None = method leads to early exit with status code 1 if file not found
         """
         ss = StdStreamer(self.ufopath)
@@ -321,9 +333,9 @@ class MainRunner(object):
             ss.stream_result(res)
         else:
             res.test_failed = True
-            res.exit_failure = (
-                True
-            )  # early exit if cannot find this file to define glyphs directories in UFO source
+            # early exit if cannot find this file to define glyphs directories
+            # in UFO source
+            res.exit_failure = True
             res.test_long_stdstream_string = (
                 "metainfo.plist was not found in " + self.ufopath
             )
@@ -331,9 +343,10 @@ class MainRunner(object):
 
     def _check_ufo_import_and_define_ufo_version(self):
         """
-        Tests UFO directory import with ufoLib UFOReader object and defines class property (ufo) with the
-        ufoLib UFOReader object.  This object is used for additional tests in this module.  Failures added to the
-        class property failures_list for final report
+        Tests UFO directory import with ufoLib UFOReader object and defines class
+        property (ufo) with the ufoLib UFOReader object.  This object is used for
+        additional tests in this module.  Failures added to the class property
+        failures_list for final report
         :return: None
         """
         ss = StdStreamer(self.ufopath)
@@ -358,9 +371,9 @@ class MainRunner(object):
 
     def _check_ufo_dir_extension(self):
         """
-        Tests for .ufo extension on the user defined (command line) directory path. Results
-        streamed through std output stream. Failures added to the
-        class property failures_list for final report
+        Tests for .ufo extension on the user defined (command line) directory path.
+        Results streamed through std output stream. Failures added to the class
+        property failures_list for final report
         :return: None
         """
         ss = StdStreamer(self.ufopath)
