@@ -4,6 +4,10 @@
 
 - refactor to achieve line lengths < 90
 - convert to GitHub Actions CI testing service
+- upgrade appdirs dependency to v1.4.4
+- upgrade fonttools dependency to v4.14.0
+- upgrade pytz dependency to v2020.1
+- upgrade six dependency to 1.15.0
 
 ### v1.0.0
 
