@@ -1,5 +1,11 @@
 ## Changelog
 
+### v1.0.2
+
+- add cPython 3.9 testing
+- add CodeQL static source testing
+- update fonttools dependency to v4.16.1
+
 ### v1.0.1
 
 - refactor to achieve line lengths < 90
