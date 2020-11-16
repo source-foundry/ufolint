@@ -1,5 +1,10 @@
 ## Changelog
 
+### v1.0.3
+
+- dependency update patch
+- bump fonttools to v4.17.0
+
 ### v1.0.2
 
 - add cPython 3.9 testing
