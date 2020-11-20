@@ -647,6 +647,19 @@ def test_validators_plist_ufo3_contents_missing_file_fail():
     assert len(ufolib_fail_list) == 0
 
 
+def test_validators_plist_ufo3_contents_missing_file_fail(capsys):
+    contents_ufo_path = os.path.join(contents_test_dir_failpath, 'UFO3-UnlistedGlifs.ufo')
+    contents_validator = plistvalidators.ContentsPlistValidator(contents_ufo_path, 3, ufo3_dir_list)
+
+    with pytest.raises(SystemExit) as pytest_wrapped_e:
+        contents_validator.run_ufolib_import_validation()
+
+    out, _ = capsys.readouterr()
+    assert pytest_wrapped_e.type == SystemExit
+    assert pytest_wrapped_e.value.code == 1
+    assert 'rogue files not listed in contents.plist: a.001.glif' in out
+
+
 def test_validators_plist_ufo2_contents_xml_fail(capsys):
     contents_ufo_path = os.path.join(contents_test_dir_failpath, 'UFO2-XMLcont.ufo')
     contents_validator = plistvalidators.ContentsPlistValidator(contents_ufo_path, 2, ufo2_dir_list)
