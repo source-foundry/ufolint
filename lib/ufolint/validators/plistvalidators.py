@@ -81,9 +81,7 @@ class AbstractPlistValidator(object):
 
 class MetainfoPlistValidator(AbstractPlistValidator):
     def __init__(self, ufopath, ufoversion, glyphs_dir_list):
-        super(MetainfoPlistValidator, self).__init__(
-            ufopath, ufoversion, glyphs_dir_list
-        )
+        super(MetainfoPlistValidator, self).__init__(ufopath, ufoversion, glyphs_dir_list)
         self.testfile = "metainfo.plist"
         self.testpath = self.ufoobj.get_root_plist_filepath(self.testfile)
 
@@ -123,9 +121,7 @@ class MetainfoPlistValidator(AbstractPlistValidator):
 
 class FontinfoPlistValidator(AbstractPlistValidator):
     def __init__(self, ufopath, ufoversion, glyphs_dir_list):
-        super(FontinfoPlistValidator, self).__init__(
-            ufopath, ufoversion, glyphs_dir_list
-        )
+        super(FontinfoPlistValidator, self).__init__(ufopath, ufoversion, glyphs_dir_list)
         self.testfile = "fontinfo.plist"
         self.testpath = self.ufoobj.get_root_plist_filepath(self.testfile)
 
@@ -203,9 +199,7 @@ class GroupsPlistValidator(AbstractPlistValidator):
 
 class KerningPlistValidator(AbstractPlistValidator):
     def __init__(self, ufopath, ufoversion, glyphs_dir_list):
-        super(KerningPlistValidator, self).__init__(
-            ufopath, ufoversion, glyphs_dir_list
-        )
+        super(KerningPlistValidator, self).__init__(ufopath, ufoversion, glyphs_dir_list)
         self.testfile = "kerning.plist"
         self.testpath = self.ufoobj.get_root_plist_filepath(self.testfile)
 
@@ -275,9 +269,7 @@ class LibPlistValidator(AbstractPlistValidator):
 
 class ContentsPlistValidator(AbstractPlistValidator):
     def __init__(self, ufopath, ufoversion, glyphs_dir_list):
-        super(ContentsPlistValidator, self).__init__(
-            ufopath, ufoversion, glyphs_dir_list
-        )
+        super(ContentsPlistValidator, self).__init__(ufopath, ufoversion, glyphs_dir_list)
         # can occur in multiple glyphs directories in UFOv3+
         self.testfile = "contents.plist"
         self.glyphs_dir_list = glyphs_dir_list
@@ -316,8 +308,8 @@ class ContentsPlistValidator(AbstractPlistValidator):
                         res.test_failed = True
                         res.exit_failure = True  # sacrilege
                         res.test_long_stdstream_string = (
-                            f"{str(rel_dir_path)} contains rogue files not listed in contents.plist: "
-                            f"{', '.join(unlisted_files)}"
+                            f"{str(rel_dir_path)} contains rogue files not listed "
+                            f"in contents.plist: {', '.join(unlisted_files)}"
                         )
                         self.test_fail_list.append(res)
 
