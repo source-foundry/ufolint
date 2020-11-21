@@ -3,6 +3,7 @@
 
 import os.path
 import xml.etree.ElementTree as ETree
+from pathlib import Path
 
 from ufolint.data.tstobj import Result
 from ufolint.data.ufo import Ufo2, Ufo3
@@ -80,9 +81,7 @@ class AbstractPlistValidator(object):
 
 class MetainfoPlistValidator(AbstractPlistValidator):
     def __init__(self, ufopath, ufoversion, glyphs_dir_list):
-        super(MetainfoPlistValidator, self).__init__(
-            ufopath, ufoversion, glyphs_dir_list
-        )
+        super(MetainfoPlistValidator, self).__init__(ufopath, ufoversion, glyphs_dir_list)
         self.testfile = "metainfo.plist"
         self.testpath = self.ufoobj.get_root_plist_filepath(self.testfile)
 
@@ -122,9 +121,7 @@ class MetainfoPlistValidator(AbstractPlistValidator):
 
 class FontinfoPlistValidator(AbstractPlistValidator):
     def __init__(self, ufopath, ufoversion, glyphs_dir_list):
-        super(FontinfoPlistValidator, self).__init__(
-            ufopath, ufoversion, glyphs_dir_list
-        )
+        super(FontinfoPlistValidator, self).__init__(ufopath, ufoversion, glyphs_dir_list)
         self.testfile = "fontinfo.plist"
         self.testpath = self.ufoobj.get_root_plist_filepath(self.testfile)
 
@@ -202,9 +199,7 @@ class GroupsPlistValidator(AbstractPlistValidator):
 
 class KerningPlistValidator(AbstractPlistValidator):
     def __init__(self, ufopath, ufoversion, glyphs_dir_list):
-        super(KerningPlistValidator, self).__init__(
-            ufopath, ufoversion, glyphs_dir_list
-        )
+        super(KerningPlistValidator, self).__init__(ufopath, ufoversion, glyphs_dir_list)
         self.testfile = "kerning.plist"
         self.testpath = self.ufoobj.get_root_plist_filepath(self.testfile)
 
@@ -274,9 +269,7 @@ class LibPlistValidator(AbstractPlistValidator):
 
 class ContentsPlistValidator(AbstractPlistValidator):
     def __init__(self, ufopath, ufoversion, glyphs_dir_list):
-        super(ContentsPlistValidator, self).__init__(
-            ufopath, ufoversion, glyphs_dir_list
-        )
+        super(ContentsPlistValidator, self).__init__(ufopath, ufoversion, glyphs_dir_list)
         # can occur in multiple glyphs directories in UFOv3+
         self.testfile = "contents.plist"
         self.glyphs_dir_list = glyphs_dir_list
@@ -289,23 +282,44 @@ class ContentsPlistValidator(AbstractPlistValidator):
         ss = StdStreamer(self.ufopath)
         for glyphs_dir in self.ufoobj.glyphsdir_list:
             res = Result(glyphs_dir[1])
-            rel_dir_path = os.path.join(self.ufopath, glyphs_dir[1])
+            rel_dir_path = Path(self.ufopath, glyphs_dir[1])
             try:
                 # read contents.plist with ufoLib as GlyphSet instantiation
                 # the ufoLib library performs type validations on values on read
                 # glyphs_dir_list is a list of lists mapped to glyphs dir name,
                 # glyphs dir path
-                GlyphSet(
+                gs = GlyphSet(
                     rel_dir_path, ufoFormatVersion=self.ufoversion, validateRead=True
                 )  # test for raised exceptions
                 res.test_failed = False
+
+                # Check for unlisted files if contents.plist exists. It is mandated by
+                # the spec, but if it does not exist, glifLib will shrug and say the
+                # glyph set was empty.
+                if (rel_dir_path / self.testfile).exists():
+                    files = set(gs.contents.values())
+                    files.update(("contents.plist", "layerinfo.plist"))
+                    files_actually = set(
+                        str(p.relative_to(rel_dir_path))
+                        for p in rel_dir_path.glob("**/*")
+                    )
+                    unlisted_files = files_actually - files
+                    if unlisted_files:
+                        res.test_failed = True
+                        res.exit_failure = True  # sacrilege
+                        res.test_long_stdstream_string = (
+                            f"{str(rel_dir_path)} contains rogue files not listed "
+                            f"in contents.plist: {', '.join(unlisted_files)}"
+                        )
+                        self.test_fail_list.append(res)
+
                 ss.stream_result(res)
             except Exception as e:
                 res.test_failed = True
                 res.exit_failure = True  # mandatory file
                 res.test_long_stdstream_string = (
                     "contents.plist in "
-                    + rel_dir_path
+                    + str(rel_dir_path)
                     + " failed ufoLib import test with error: "
                     + str(e)
                 )
