@@ -1,9 +1,17 @@
 ## Changelog
 
+### v1.1.0
+
+- new validation: confirm that all glif files are listed in contents.plist (#82)
+- update fonttools dependency to v4.17.1
+- add Python 3.9 classifier in setup.py
+- add pull request trigger for GitHub Actions CI testing
+
 ### v1.0.3
 
 - dependency update patch
 - bump fonttools to v4.17.0
+- bump pytz to v2020.4
 
 ### v1.0.2
 
