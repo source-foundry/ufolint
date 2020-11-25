@@ -2,7 +2,7 @@
 
 ### v1.1.1
 
-- fix: contents.plist Path object must be cast to a str to avoid fontTools ufoLib expectations, this addresses a ufoLib exception raised on contents.plist validation introduced in v1.1.0 release
+- fix: contents.plist Path object must be cast to a str to address fontTools ufoLib expectations, this addresses a ufoLib exception raised on contents.plist validation introduced in v1.1.0 release
 
 ### v1.1.0
 
