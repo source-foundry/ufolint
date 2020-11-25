@@ -1,5 +1,9 @@
 ## Changelog
 
+### v1.1.1
+
+- fix: contents.plist Path object must be cast to a str to avoid fontTools ufoLib expectations, this addresses a ufoLib exception raised on contents.plist validation introduced in v1.1.0 release
+
 ### v1.1.0
 
 - new validation: confirm that all glif files are listed in contents.plist (#82)
