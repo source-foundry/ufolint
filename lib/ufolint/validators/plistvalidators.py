@@ -289,7 +289,7 @@ class ContentsPlistValidator(AbstractPlistValidator):
                 # glyphs_dir_list is a list of lists mapped to glyphs dir name,
                 # glyphs dir path
                 gs = GlyphSet(
-                    rel_dir_path, ufoFormatVersion=self.ufoversion, validateRead=True
+                    str(rel_dir_path), ufoFormatVersion=self.ufoversion, validateRead=True
                 )  # test for raised exceptions
                 res.test_failed = False
 
