@@ -353,7 +353,7 @@ class MainRunner(object):
         res = Result(self.ufopath)
         try:
             ufolib_reader = UFOReader(self.ufopath, validate=True)
-            self.ufoversion = ufolib_reader.formatVersion
+            self.ufoversion = ufolib_reader.formatVersionTuple[0]
             self.ufolib_reader = ufolib_reader
             res.test_failed = False
             ss.stream_result(res)
