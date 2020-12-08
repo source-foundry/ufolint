@@ -621,30 +621,38 @@ def test_validators_plist_ufo3_contents_success():
 
 # Fail tests
 
-def test_validators_plist_ufo2_contents_missing_file_fail():
+def test_validators_plist_ufo2_contents_missing_file_fail(capsys):
     contents_ufo_path = os.path.join(contents_test_dir_failpath, 'UFO2-MissingCont.ufo')
     contents_validator = plistvalidators.ContentsPlistValidator(contents_ufo_path, 2, ufo2_dir_list)
 
     xml_fail_list = contents_validator.run_xml_validation()
-    ufolib_fail_list = contents_validator.run_ufolib_import_validation()
+    with pytest.raises(SystemExit) as pytest_wrapped_e:
+        contents_validator.run_ufolib_import_validation()
 
     assert isinstance(xml_fail_list, list)
-    assert isinstance(ufolib_fail_list, list)
-    assert len(xml_fail_list) == 0
-    assert len(ufolib_fail_list) == 0
+    assert len(xml_fail_list) == 1
+
+    out, _ = capsys.readouterr()
+    assert pytest_wrapped_e.type == SystemExit
+    assert pytest_wrapped_e.value.code == 1
+    assert 'contents.plist is missing.' in out
 
 
-def test_validators_plist_ufo3_contents_missing_file_fail():
+def test_validators_plist_ufo3_contents_missing_file_fail(capsys):
     contents_ufo_path = os.path.join(contents_test_dir_failpath, 'UFO3-MissingCont.ufo')
     contents_validator = plistvalidators.ContentsPlistValidator(contents_ufo_path, 3, ufo3_dir_list)
 
     xml_fail_list = contents_validator.run_xml_validation()
-    ufolib_fail_list = contents_validator.run_ufolib_import_validation()
+    with pytest.raises(SystemExit) as pytest_wrapped_e:
+        contents_validator.run_ufolib_import_validation()
 
     assert isinstance(xml_fail_list, list)
-    assert isinstance(ufolib_fail_list, list)
-    assert len(xml_fail_list) == 0
-    assert len(ufolib_fail_list) == 0
+    assert len(xml_fail_list) == 1
+
+    out, _ = capsys.readouterr()
+    assert pytest_wrapped_e.type == SystemExit
+    assert pytest_wrapped_e.value.code == 1
+    assert 'contents.plist is missing.' in out
 
 
 def test_validators_plist_ufo3_contents_missing_file_fail(capsys):
