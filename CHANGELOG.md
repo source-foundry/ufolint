@@ -1,5 +1,11 @@
 ## Changelog
 
+### v1.2.0
+
+- add: validation for the presence of contents.plist file in UFO source directories
+- fix: refactored deprecated fontTools.ufoLib.UFOReader.formatVersion property to new formatVersionTuple
+- updated fontTools to v4.18.0 and required 4.18.0+ in this project to support the new contents.plist validation that was added in this release
+
 ### v1.1.1
 
 - fix: contents.plist Path object must be cast to a str to address fontTools ufoLib expectations, this addresses a ufoLib exception raised on contents.plist validation introduced in v1.1.0 release
