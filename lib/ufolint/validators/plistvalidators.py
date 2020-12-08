@@ -289,29 +289,29 @@ class ContentsPlistValidator(AbstractPlistValidator):
                 # glyphs_dir_list is a list of lists mapped to glyphs dir name,
                 # glyphs dir path
                 gs = GlyphSet(
-                    str(rel_dir_path), ufoFormatVersion=self.ufoversion, validateRead=True
+                    str(rel_dir_path),
+                    ufoFormatVersion=self.ufoversion,
+                    validateRead=True,
+                    expectContentsFile=True,
                 )  # test for raised exceptions
                 res.test_failed = False
 
-                # Check for unlisted files if contents.plist exists. It is mandated by
-                # the spec, but if it does not exist, glifLib will shrug and say the
-                # glyph set was empty.
-                if (rel_dir_path / self.testfile).exists():
-                    files = set(gs.contents.values())
-                    files.update(("contents.plist", "layerinfo.plist"))
-                    files_actually = set(
-                        str(p.relative_to(rel_dir_path))
-                        for p in rel_dir_path.glob("**/*")
+                # Check for unlisted files.
+                files = set(gs.contents.values())
+                files.update(("contents.plist", "layerinfo.plist"))
+                files_actually = set(
+                    str(p.relative_to(rel_dir_path))
+                    for p in rel_dir_path.glob("**/*")
+                )
+                unlisted_files = files_actually - files
+                if unlisted_files:
+                    res.test_failed = True
+                    res.exit_failure = True  # sacrilege
+                    res.test_long_stdstream_string = (
+                        f"{str(rel_dir_path)} contains rogue files not listed "
+                        f"in contents.plist: {', '.join(unlisted_files)}"
                     )
-                    unlisted_files = files_actually - files
-                    if unlisted_files:
-                        res.test_failed = True
-                        res.exit_failure = True  # sacrilege
-                        res.test_long_stdstream_string = (
-                            f"{str(rel_dir_path)} contains rogue files not listed "
-                            f"in contents.plist: {', '.join(unlisted_files)}"
-                        )
-                        self.test_fail_list.append(res)
+                    self.test_fail_list.append(res)
 
                 ss.stream_result(res)
             except Exception as e:
