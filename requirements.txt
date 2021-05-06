@@ -9,7 +9,7 @@ commandlines==0.4.1       # via ufolint (setup.py)
 fonttools[ufo]==4.22.1    # via ufolint (setup.py)
 fs==2.4.13                # via fonttools
 pytz==2021.1              # via fs
-six==1.15.0               # via fs
+six==1.16.0               # via fs
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
